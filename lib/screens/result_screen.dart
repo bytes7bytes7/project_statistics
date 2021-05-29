@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import '../screens/global/global_parameters.dart';
-import '../screens/widgets/flat_wide_button.dart';
-import '../screens/widgets/input_field.dart';
-import '../screens/widgets/outlined_wide_button.dart';
-import '../screens/widgets/plan_card.dart';
 
+import '../screens/widgets/input_field.dart';
 import 'widgets/result_info_line.dart';
 
 class ResultScreen extends StatelessWidget {

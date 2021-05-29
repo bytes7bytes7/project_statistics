@@ -1,4 +1,3 @@
-import '../database/database_helper.dart';
 import '../models/project.dart';
 
 class ProjectRepository {

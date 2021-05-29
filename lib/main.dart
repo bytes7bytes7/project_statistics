@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Project Statistic',
+      title: 'Project Statistics',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       home: HomeScreen(),
