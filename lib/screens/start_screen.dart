@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:project_statistics/bloc/bloc.dart';
 import 'package:project_statistics/bloc/plan_bloc.dart';
+import 'package:project_statistics/database/database_helper.dart';
 import 'package:project_statistics/models/plan.dart';
+import 'package:project_statistics/screens/widgets/choose_field.dart';
 import 'package:project_statistics/screens/widgets/flat_small_button.dart';
+import 'package:project_statistics/screens/widgets/show_info_snack_bar.dart';
+import '../constants.dart';
 import '../screens/global/global_parameters.dart';
 import '../screens/widgets/flat_wide_button.dart';
 import '../screens/widgets/input_field.dart';
@@ -24,6 +28,12 @@ class StartScreen extends StatelessWidget {
           title: Text(
             'Создание Плана',
             style: Theme.of(context).textTheme.headline1,
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.delete_forever_outlined),
+            onPressed: () {
+              DatabaseHelper.db.dropBD();
+            },
           ),
         ),
         body: _Body(),
@@ -126,7 +136,8 @@ class _ContentListState extends State<ContentList> {
   TextEditingController amountController_2;
   TextEditingController amountController_3;
   TextEditingController amountController_4;
-  TextEditingController periodController;
+  TextEditingController startPeriodController;
+  TextEditingController endPeriodController;
   TextEditingController prizeController;
 
   @override
@@ -163,7 +174,10 @@ class _ContentListState extends State<ContentList> {
         text: (widget.plan.amount != null)
             ? widget.plan.amount[3].toString()
             : '');
-    periodController = TextEditingController(text: widget.plan.period ?? '');
+    startPeriodController =
+        TextEditingController(text: widget.plan.startPeriod ?? '');
+    endPeriodController =
+        TextEditingController(text: widget.plan.endPeriod ?? '');
     prizeController =
         TextEditingController(text: widget.plan.prize?.toString() ?? '');
     super.initState();
@@ -180,7 +194,8 @@ class _ContentListState extends State<ContentList> {
     amountController_2.dispose();
     amountController_3.dispose();
     amountController_4.dispose();
-    periodController.dispose();
+    startPeriodController.dispose();
+    endPeriodController.dispose();
     prizeController.dispose();
     super.dispose();
   }
@@ -196,18 +211,22 @@ class _ContentListState extends State<ContentList> {
             InputField(
               label: 'Запросы',
               controller: quantityController_1,
+              textInputType: TextInputType.number,
             ),
             InputField(
               label: 'КП',
               controller: quantityController_2,
+              textInputType: TextInputType.number,
             ),
             InputField(
               label: 'Тендеры',
               controller: quantityController_3,
+              textInputType: TextInputType.number,
             ),
             InputField(
               label: 'Договоры',
               controller: quantityController_4,
+              textInputType: TextInputType.number,
             ),
           ],
         ),
@@ -217,31 +236,53 @@ class _ContentListState extends State<ContentList> {
             InputField(
               label: 'Запросы',
               controller: amountController_1,
+              textInputType: TextInputType.number,
             ),
             InputField(
               label: 'КП',
               controller: amountController_2,
+              textInputType: TextInputType.number,
             ),
             InputField(
               label: 'Тендеры',
               controller: amountController_3,
+              textInputType: TextInputType.number,
             ),
             InputField(
               label: 'Договоры',
               controller: amountController_4,
+              textInputType: TextInputType.number,
             ),
           ],
         ),
         PlanCard(
           title: 'Дополнительно',
           children: [
-            InputField(
-              label: 'Срок',
-              controller: periodController,
+            Row(
+              children: [
+                Flexible(
+                  child: ChooseField(
+                    label: 'Начало',
+                    chooseLabel: 'Начало срока',
+                    group: ConstantData.appMonths,
+                    controller: startPeriodController,
+                  ),
+                ),
+                SizedBox(width: 18),
+                Flexible(
+                  child: ChooseField(
+                    label: 'Конец',
+                    chooseLabel: 'Конец срока',
+                    group: ConstantData.appMonths,
+                    controller: endPeriodController,
+                  ),
+                ),
+              ],
             ),
             InputField(
               label: 'Премия',
               controller: prizeController,
+              textInputType: TextInputType.number,
             ),
           ],
         ),
@@ -264,7 +305,8 @@ class _ContentListState extends State<ContentList> {
                 amountController_2.text.isNotEmpty &&
                 amountController_3.text.isNotEmpty &&
                 amountController_4.text.isNotEmpty &&
-                periodController.text.isNotEmpty &&
+                startPeriodController.text.isNotEmpty &&
+                endPeriodController.text.isNotEmpty &&
                 prizeController.text.isNotEmpty) {
               widget.plan
                 ..quantity = [
@@ -279,10 +321,17 @@ class _ContentListState extends State<ContentList> {
                   double.parse(amountController_3.text),
                   double.parse(amountController_4.text),
                 ]
-                ..period = periodController.text
+                ..startPeriod = startPeriodController.text
+                ..endPeriod = endPeriodController.text
                 ..prize = double.parse(prizeController.text);
               Bloc.bloc.planBloc.updatePlan(widget.plan);
               GlobalParameters.currentPageIndex.value = 1;
+            } else {
+              showInfoSnackBar(
+                context: context,
+                info: 'Заполните все поля',
+                icon: Icons.warning_amber_outlined,
+              );
             }
           },
         ),

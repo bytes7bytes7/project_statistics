@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:project_statistics/models/plan.dart';
+import 'package:project_statistics/models/project.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -15,13 +16,20 @@ class DatabaseHelper {
 
   // Names of tables
   static const String _planTableName = 'plan';
+  static const String _projectTableName = 'project';
 
   // Special columns for plan
   static const String _id = 'id';
   static const String _quantity = 'quantity';
   static const String _amount = 'amount';
-  static const String _period = 'period';
+  static const String _startPeriod = 'startPeriod';
+  static const String _endPeriod = 'endPeriod';
   static const String _prize = 'prize';
+
+  // Special columns for project
+  static const String _title = 'title';
+  static const String _status = 'status';
+  static const String _price = 'price';
 
   static Database _database;
 
@@ -45,8 +53,19 @@ class DatabaseHelper {
         $_id INTEGER PRIMARY KEY AUTOINCREMENT,
         $_quantity TEXT,
         $_amount TEXT,
-        $_period TEXT,
+        $_startPeriod TEXT,
+        $_endPeriod TEXT,
         $_prize REAL
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS $_projectTableName (
+        $_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        $_title TEXT,
+        $_status TEXT,
+        $_price INTEGER,
+        $_startPeriod TEXT,
+        $_endPeriod TEXT
       )
     ''');
   }
@@ -54,23 +73,25 @@ class DatabaseHelper {
   Future dropBD() async {
     final db = await database;
     await db.execute('DROP TABLE IF EXISTS $_planTableName;');
+    await db.execute('DROP TABLE IF EXISTS $_projectTableName;');
     await _createDB(db, _databaseVersion);
   }
 
-  // Future<int> _getMaxId(Database db, String tableName) async {
-  //   var table = await db.rawQuery("SELECT MAX($_id)+1 AS $_id FROM $tableName");
-  //   return table.first["$_id"] ?? 1;
-  // }
+  Future<int> _getMaxId(Database db, String tableName) async {
+    var table = await db.rawQuery("SELECT MAX($_id)+1 AS $_id FROM $tableName");
+    return table.first["$_id"] ?? 1;
+  }
 
   // Plan methods
   Future addPlan(Plan plan) async {
     final db = await database;
     await db.rawInsert(
-      "INSERT INTO $_planTableName ($_quantity, $_amount, $_period, $_prize) VALUES (?,?,?,?)",
+      "INSERT INTO $_planTableName ($_quantity, $_amount, $_startPeriod, $_endPeriod, $_prize) VALUES (?,?,?,?,?)",
       [
         plan.quantity?.join(';'),
         plan.amount?.join(';'),
-        plan.period,
+        plan.startPeriod,
+        plan.endPeriod,
         plan.prize,
       ],
     );
@@ -103,55 +124,57 @@ class DatabaseHelper {
       return Plan();
   }
 
-// Future deleteClient(int id) async {
-//   final db = await database;
-//   db.delete("$_clientTableName", where: "$_id = ?", whereArgs: [id]);
-// }
+  Future deletePlan() async {
+    final db = await database;
+    db.delete("$_planTableName", where: "$_id = ?", whereArgs: [1]);
+  }
 
-// // Fabric methods
-// Future addFabric(Fabric fabric) async {
-//   final db = await database;
-//   fabric.id = await _getMaxId(db, _fabricTableName);
-//   await db.rawInsert(
-//       "INSERT INTO $_fabricTableName ($_id,$_title,$_retailPrice,$_purchasePrice) VALUES (?,?,?,?)",
-//       [
-//         fabric.id,
-//         fabric.title,
-//         fabric.retailPrice,
-//         fabric.purchasePrice,
-//       ]);
-// }
-//
-// Future updateFabric(Fabric fabric) async {
-//   final db = await database;
-//   var map = fabric.toMap();
-//   await db.update("$_fabricTableName", map,
-//       where: "$_id = ?", whereArgs: [fabric.id]);
-// }
-//
-// Future<Fabric> getFabric(int id) async {
-//   final db = await database;
-//   List<Map<String, dynamic>> res =
-//   await db.query("$_fabricTableName", where: "$_id = ?", whereArgs: [id]);
-//   return res.isNotEmpty ? Fabric.fromMap(res.first) : Fabric();
-// }
-//
-// Future<List<Fabric>> getAllFabrics() async {
-//   final db = await database;
-//   List<Map<String, dynamic>> res = await db.query("$_fabricTableName");
-//   return res.isNotEmpty ? res.map((c) => Fabric.fromMap(c)).toList() : [];
-// }
-//
-// Future deleteFabric(int id) async {
-//   final db = await database;
-//   db.delete("$_fabricTableName", where: "$_id = ?", whereArgs: [id]);
-// }
-//
-// Future deleteAllFabrics() async {
-//   final db = await database;
-//   db.rawDelete("DELETE * FROM $_fabricTableName");
-// }
-//
+  // Project methods
+  Future addProject(Project project) async {
+    final db = await database;
+    project.id = await _getMaxId(db, _projectTableName);
+    await db.rawInsert(
+        "INSERT INTO $_projectTableName ($_id,$_title,$_status,$_price, $_startPeriod, $_endPeriod) VALUES (?,?,?,?,?,?)",
+        [
+          project.id,
+          project.title,
+          project.status,
+          project.price,
+          project.startPeriod,
+          project.endPeriod,
+        ]);
+  }
+
+  Future updateProject(Project project) async {
+    final db = await database;
+    var map = project.toMap();
+    await db.update("$_projectTableName", map,
+        where: "$_id = ?", whereArgs: [project.id]);
+  }
+
+  Future<Project> getProject(int id) async {
+    final db = await database;
+    List<Map<String, dynamic>> res =
+    await db.query("$_projectTableName", where: "$_id = ?", whereArgs: [id]);
+    return res.isNotEmpty ? Project.fromMap(res.first) : Project();
+  }
+
+  Future<List<Project>> getAllProjects() async {
+    final db = await database;
+    List<Map<String, dynamic>> res = await db.query("$_projectTableName");
+    return res.isNotEmpty ? res.map((c) => Project.fromMap(c)).toList() : [];
+  }
+
+  Future deleteProject(int id) async {
+    final db = await database;
+    db.delete("$_projectTableName", where: "$_id = ?", whereArgs: [id]);
+  }
+
+  Future deleteAllProjects() async {
+    final db = await database;
+    db.rawDelete("DELETE * FROM $_projectTableName");
+  }
+
 // // Order methods
 // Future addOrder(Order order) async {
 //   final db = await database;

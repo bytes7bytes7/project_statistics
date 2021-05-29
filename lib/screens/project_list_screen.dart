@@ -36,7 +36,7 @@ class ProjectListScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) {
                     return ProjectInfoScreen(
-                      title: 'Новый Проект',
+                      str: 'Новый Проект',
                       project: Project(),
                     );
                   }),
@@ -82,7 +82,7 @@ class __BodyState extends State<_Body> {
         } else if (snapshot.data is ProjectDataState) {
           ProjectDataState state = snapshot.data;
           if (state.projects.length > 0)
-            return _buildContent(state.projects);
+            return ContentList(projects: state.projects);
           else
             return Center(
               child: Text(
@@ -100,21 +100,6 @@ class __BodyState extends State<_Body> {
   Widget _buildLoading() {
     return Center(
       child: LoadingCircle(),
-    );
-  }
-
-  Widget _buildContent(List<Project> projects) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      itemCount: projects.length + 1,
-      itemBuilder: (context, i) {
-        if (i == 0)
-          return SortBar();
-        else
-          return _ProjectCard(
-            project: projects[i - 1],
-          );
-      },
     );
   }
 
@@ -136,6 +121,31 @@ class __BodyState extends State<_Body> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ContentList extends StatelessWidget {
+  const ContentList({
+    Key key,
+    @required this.projects,
+  }) : super(key: key);
+
+  final List<Project> projects;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      itemCount: projects.length + 1,
+      itemBuilder: (context, i) {
+        if (i == 0)
+          return SortBar();
+        else
+          return _ProjectCard(
+            project: projects[i - 1],
+          );
+      },
     );
   }
 }
@@ -167,7 +177,7 @@ class _ProjectCard extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) {
               return ProjectInfoScreen(
-                title: 'Проект',
+                str: 'Проект',
                 project: project,
               );
             }),

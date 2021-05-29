@@ -1,22 +1,23 @@
-import 'package:flutter/material.dart';
-
 class Plan {
   Plan({
     this.quantity,
     this.amount,
-    this.period,
+    this.startPeriod,
+    this.endPeriod,
     this.prize,
   });
 
   List<int> quantity;
   List<double> amount;
-  String period;
+  String startPeriod;
+  String endPeriod;
   double prize;
 
   Plan.fromMap(Map<String, dynamic> map) {
     quantity = map['quantity'];
     amount = map['amount'];
-    period = map['period'];
+    startPeriod = map['startPeriod'];
+    endPeriod = map['endPeriod'];
     prize = map['prize'];
   }
 
@@ -25,7 +26,8 @@ class Plan {
       'id': 1,
       'quantity': quantity?.join(';'),
       'amount': amount?.join(';'),
-      'period': period,
+      'startPeriod': startPeriod,
+      'endPeriod':endPeriod,
       'prize': prize,
     };
   }

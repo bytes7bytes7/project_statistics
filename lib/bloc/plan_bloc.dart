@@ -35,19 +35,8 @@ class PlanBloc {
   }
 
   void updatePlan(Plan plan) async{
-    _planStreamController.sink.add(PlanState._planLoading());
-    _repository.updatePlan(plan).then((value) {
-      loadPlan();
-    });
+    _repository.updatePlan(plan);
   }
-
-  Future addPlan(Plan plan) async{
-    _planStreamController.sink.add(PlanState._planLoading());
-    await _repository.addPlan(plan).then((value) {
-      loadPlan();
-    });
-  }
-
 }
 
 class PlanState {

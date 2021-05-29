@@ -45,7 +45,7 @@ class ProjectBloc {
 
   Future addProject(Project project) async{
     _projectStreamController.sink.add(ProjectState._projectLoading());
-    await _repository.addProject(project).then((value) {
+    _repository.addProject(project).then((value) {
       loadAllProjects();
     });
   }

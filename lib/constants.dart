@@ -6,3 +6,26 @@ class ConstantColors {
   static const Color disabledColor = Color(0xFF898989);
   static const Color shadowColor = Colors.black;
 }
+
+class ConstantData {
+  static const List<String> appMonths = [
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь',
+  ];
+  static const List<String> appStatus = [
+    'Запросы',
+    'КП',
+    'Тендеры',
+    'Договоры',
+  ];
+}
