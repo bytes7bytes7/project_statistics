@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/stacked_horizontal_bar_chart.dart';
 import 'package:project_statistics/bloc/analysis_chart_bloc.dart';
 import 'package:project_statistics/bloc/bloc.dart';
 import 'package:project_statistics/constants.dart';
 import 'package:project_statistics/models/analysis_chart.dart';
+import 'package:project_statistics/screens/widgets/stacked_horizontal_bar_chart.dart';
 import 'package:project_statistics/screens/widgets/percent_bar.dart';
 import 'global/global_parameters.dart';
 import 'widgets/flat_small_button.dart';
@@ -114,11 +116,34 @@ class ContentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       itemCount: analysisChart.planQuantity.length + 1,
       itemBuilder: (context, i) {
         if (i == 0) {
-          return Container();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Количество',
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              Container(
+                height: 400,
+                width: 700,
+                child: StackedHorizontalBarChart(
+                  realQuantity: analysisChart.realQuantity,
+                  planQuantity: analysisChart.planQuantity,
+                  colors: [
+                    Color(0xFFE49BE2),
+                    Color(0xFFFE7674),
+                    Color(0xFFA3D7F7),
+                    Color(0xFFBCBCFB),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30),
+            ],
+          );
         } else {
           return _AnalysisChartCard(
             primary: (i == analysisChart.planQuantity.length),
@@ -162,7 +187,7 @@ class _AnalysisChartCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
         color: Theme.of(context).focusColor,
         borderRadius: BorderRadius.circular(15),

@@ -28,8 +28,10 @@ class MeasureBeautifier {
   }
 
   String truncateZero(String str) {
-    if (str.substring(str.indexOf('.') + 1) == '0')
-      str = str.substring(0, str.indexOf('.'));
+    if(str.contains('.')) {
+      if (str.substring(str.indexOf('.') + 1) == '0')
+        str = str.substring(0, str.indexOf('.'));
+    }
     return str;
   }
 
