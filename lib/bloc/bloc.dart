@@ -1,3 +1,4 @@
+import 'result_bloc.dart';
 import 'project_bloc.dart';
 import 'plan_bloc.dart';
 import '../repositories/repository.dart';
@@ -9,6 +10,7 @@ class Bloc {
 
   static PlanBloc _planBloc;
   static ProjectBloc _projectBloc;
+  static ResultBloc _resultBloc;
 
   PlanBloc get planBloc {
     if (_planBloc != null) return _planBloc;
@@ -20,5 +22,11 @@ class Bloc {
     if (_projectBloc != null) return _projectBloc;
     _projectBloc = ProjectBloc(Repository.projectRepository);
     return _projectBloc;
+  }
+
+  ResultBloc get resultBloc {
+    if (_resultBloc != null) return _resultBloc;
+    _resultBloc = ResultBloc(Repository.resultRepository);
+    return _resultBloc;
   }
 }

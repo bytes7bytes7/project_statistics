@@ -113,7 +113,7 @@ class __BodyState extends State<_Body> {
               controller: statusController,
             ),
             InputField(
-              label: 'Сумма',
+              label: 'Сумма (руб)',
               controller: priceController,
               textInputType: TextInputType.number,
             ),

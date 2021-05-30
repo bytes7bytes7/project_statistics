@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/bloc/bloc.dart';
+import 'package:project_statistics/bloc/result_bloc.dart';
+import 'package:project_statistics/constants.dart';
+import 'package:project_statistics/models/result.dart';
+import 'package:project_statistics/screens/widgets/flat_small_button.dart';
 
 import '../screens/widgets/input_field.dart';
+import 'widgets/loading_circle.dart';
 import 'widgets/result_info_line.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -25,13 +31,134 @@ class ResultScreen extends StatelessWidget {
   }
 }
 
-class _Body extends StatelessWidget {
+class _Body extends StatefulWidget {
   const _Body({
     Key key,
   }) : super(key: key);
 
   @override
+  __BodyState createState() => __BodyState();
+}
+
+class __BodyState extends State<_Body> {
+  @override
+  void dispose() {
+    Bloc.bloc.resultBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: StreamBuilder(
+        stream: Bloc.bloc.resultBloc.result,
+        initialData: ResultInitState(),
+        builder: (context, snapshot) {
+          if (snapshot.data is ResultInitState) {
+            Bloc.bloc.resultBloc.loadResult('', '');
+            return SizedBox.shrink();
+          } else if (snapshot.data is ResultLoadingState) {
+            return _buildLoading();
+          } else if (snapshot.data is ResultDataState) {
+            ResultDataState state = snapshot.data;
+            return _ContentList(result: state.result);
+          } else {
+            return _buildError();
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildLoading() {
+    return Center(
+      child: LoadingCircle(),
+    );
+  }
+
+  Widget _buildError() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Ошибка',
+            style: Theme.of(context).textTheme.headline1,
+          ),
+          SizedBox(height: 20),
+          FlatSmallButton(
+            title: 'Обновить',
+            onTap: () {
+              Bloc.bloc.resultBloc.loadResult('', '');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ContentList extends StatelessWidget {
+  const _ContentList({
+    Key key,
+    @required this.result,
+  }) : super(key: key);
+
+  final Result result;
+
+  @override
+  Widget build(BuildContext context) {
+    String amount, amountMeasure;
+    MeasureBeautifier()
+        .formatNumber(result.amount, MeasureLevel.unit, 'руб.')
+        .reduce((a, b) {
+      amount = a;
+      amountMeasure = b;
+      return;
+    });
+
+    String quantity, quantityMeasure;
+    MeasureBeautifier()
+        .formatNumber(result.quantity, MeasureLevel.unit, 'шт.')
+        .reduce((a, b) {
+      quantity = a;
+      quantityMeasure = b;
+      return;
+    });
+
+    String plan, planMeasure;
+    MeasureBeautifier()
+        .formatNumber(result.plan, MeasureLevel.thousands, 'руб.')
+        .reduce((a, b) {
+      plan = a;
+      planMeasure = b;
+      return;
+    });
+
+    String percent = result.percent.toString(), percentMeasure = '%';
+
+    String until, untilMeasure;
+    MeasureBeautifier()
+        .formatNumber(result.until, MeasureLevel.unit, 'руб.')
+        .reduce((a, b) {
+      until = a;
+      untilMeasure = b;
+      return;
+    });
+
+    String prize, prizeMeasure;
+    MeasureBeautifier()
+        .formatNumber(result.prize, MeasureLevel.thousands, 'руб.')
+        .reduce((a, b) {
+      prize = a;
+      prizeMeasure = b;
+      return;
+    });
+
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       children: [
@@ -43,36 +170,35 @@ class _Body extends StatelessWidget {
         SizedBox(height: 10),
         ResultInfoLine(
           title: 'Сумма\nзаключенных\nдоговоров',
-          data: '10',
-          measure: 'млн.\nруб.',
+          data: amount,
+          measure: amountMeasure,
         ),
         ResultInfoLine(
           title: 'Количество\nзаключенных\nдоговоров',
-          data: '5',
-          measure: 'шт.',
+          data: quantity,
+          measure: quantityMeasure,
         ),
         ResultInfoLine(
           title: 'План',
-          data: '12',
-          measure: 'млн.\nруб.',
+          data: plan,
+          measure: planMeasure,
         ),
         ResultInfoLine(
           title: 'Процент\nвыполнения',
-          data: '78',
-          measure: '%',
+          data: percent,
+          measure: percentMeasure,
         ),
         ResultInfoLine(
           title: 'Сумма до\nвыполнения',
-          data: '2',
-          measure: 'млн.\nруб.',
+          data: until,
+          measure: untilMeasure,
         ),
         ResultInfoLine(
           title: 'Премия',
-          data: '10',
-          measure: 'тыс.\nруб.',
+          data: prize,
+          measure: prizeMeasure,
         ),
       ],
     );
   }
 }
-

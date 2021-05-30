@@ -234,22 +234,22 @@ class _ContentListState extends State<ContentList> {
           title: 'Сумма',
           children: [
             InputField(
-              label: 'Запросы',
+              label: 'Запросы (тыс руб)',
               controller: amountController_1,
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'КП',
+              label: 'КП (тыс руб)',
               controller: amountController_2,
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'Тендеры',
+              label: 'Тендеры (тыс руб)',
               controller: amountController_3,
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'Договоры',
+              label: 'Договоры (тыс руб)',
               controller: amountController_4,
               textInputType: TextInputType.number,
             ),
@@ -280,7 +280,7 @@ class _ContentListState extends State<ContentList> {
               ],
             ),
             InputField(
-              label: 'Премия',
+              label: 'Премия (тыс руб)',
               controller: prizeController,
               textInputType: TextInputType.number,
             ),
@@ -316,10 +316,10 @@ class _ContentListState extends State<ContentList> {
                   int.parse(quantityController_4.text),
                 ]
                 ..amount = [
-                  double.parse(amountController_1.text),
-                  double.parse(amountController_2.text),
-                  double.parse(amountController_3.text),
-                  double.parse(amountController_4.text),
+                  int.parse(amountController_1.text),
+                  int.parse(amountController_2.text),
+                  int.parse(amountController_3.text),
+                  int.parse(amountController_4.text),
                 ]
                 ..startPeriod = startPeriodController.text
                 ..endPeriod = endPeriodController.text

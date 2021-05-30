@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:project_statistics/constants.dart';
 import 'package:project_statistics/models/plan.dart';
 import 'package:project_statistics/models/project.dart';
+import 'package:project_statistics/models/result.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -117,8 +119,12 @@ class DatabaseHelper {
     if (data.isNotEmpty) {
       Map<String, dynamic> m = Map<String, dynamic>.from(data.first);
       List<String> a = [];
-      m[_quantity] = (m[_quantity].length > 0) ? m[_quantity].split(';').map<int>((e) => int.parse(e)).toList() : a;
-      m[_amount] = (m[_amount].length > 0) ? m[_amount].split(';').map<double>((e) => double.parse(e)).toList() : a;
+      m[_quantity] = (m[_quantity].length > 0)
+          ? m[_quantity].split(';').map<int>((e) => int.parse(e)).toList()
+          : a;
+      m[_amount] = (m[_amount].length > 0)
+          ? m[_amount].split(';').map<int>((e) => int.parse(e)).toList()
+          : a;
       return Plan.fromMap(m);
     } else
       return Plan();
@@ -154,8 +160,8 @@ class DatabaseHelper {
 
   Future<Project> getProject(int id) async {
     final db = await database;
-    List<Map<String, dynamic>> res =
-    await db.query("$_projectTableName", where: "$_id = ?", whereArgs: [id]);
+    List<Map<String, dynamic>> res = await db
+        .query("$_projectTableName", where: "$_id = ?", whereArgs: [id]);
     return res.isNotEmpty ? Project.fromMap(res.first) : Project();
   }
 
@@ -173,6 +179,47 @@ class DatabaseHelper {
   Future deleteAllProjects() async {
     final db = await database;
     db.rawDelete("DELETE * FROM $_projectTableName");
+  }
+
+  // Result methods
+  Future<Result> getResult(String startPeriod, String endPeriod) async {
+    final db = await database;
+    Map<String, dynamic> result = Result().toMap();
+
+    List<Map<String, dynamic>> projects = await db.query("$_projectTableName");
+    List<Map<String, dynamic>> plan =
+        await db.query("$_planTableName", where: "$_id = ?", whereArgs: [1]);
+
+    // сумма договоров
+    result['amount'] = 0.0;
+    // кол-во договоров
+    result['quantity'] = 0;
+    // план
+    result['plan'] = 0.0;
+    // процент
+    result['percent'] = 0;
+    // сумма до
+    result['until'] = 0.0;
+    // премия
+    result['prize'] = 0.0;
+
+    if (projects.isNotEmpty) {
+      projects.forEach((proj) {
+        if (proj['status'] == ConstantData.appStatus[3]) {
+          result['amount'] += proj['price'];
+          result['quantity']++;
+        }
+      });
+    }
+
+    if (plan.isNotEmpty) {
+      plan.first['amount'].split(';').forEach((e) {
+        result['plan'] += int.parse(e);
+      });
+      result['prize'] = plan.first['prize'];
+    }
+
+    return Result.fromMap(result);
   }
 
 // // Order methods

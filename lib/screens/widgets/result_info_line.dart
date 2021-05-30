@@ -9,7 +9,7 @@ class ResultInfoLine extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-  final String data;
+  final dynamic data;
   final String measure;
 
   @override
@@ -26,13 +26,13 @@ class ResultInfoLine extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            data,
+            data.toString(),
             style: Theme.of(context).textTheme.headline1.copyWith(
                   fontSize: 40,
                   color: Theme.of(context).shadowColor,
                 ),
           ),
-          SizedBox(width: 8),
+          SizedBox(width: 4),
           Container(
             width: 55,
             child: Text(
