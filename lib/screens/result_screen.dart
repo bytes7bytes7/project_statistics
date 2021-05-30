@@ -132,7 +132,7 @@ class _ContentList extends StatelessWidget {
 
     String plan, planMeasure;
     MeasureBeautifier()
-        .formatNumber(result.plan, MeasureLevel.thousands, 'руб.')
+        .formatNumber(result.plan, MeasureLevel.millions, 'руб.')
         .reduce((a, b) {
       plan = a;
       planMeasure = b;

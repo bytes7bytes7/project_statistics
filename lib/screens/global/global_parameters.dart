@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_statistics/models/destination.dart';
+import 'package:project_statistics/screens/analysis_chart_screen.dart';
 import 'package:project_statistics/screens/project_list_screen.dart';
 import 'package:project_statistics/screens/result_screen.dart';
 import 'package:project_statistics/screens/start_screen.dart';
@@ -8,6 +9,7 @@ class GlobalParameters {
   static final Map<String, String> appToolTips = {
     'add': 'Добавить',
     'table' : 'Таблица',
+    'filter': 'Фильтр',
   };
   static final ValueNotifier<int> currentPageIndex = ValueNotifier(0);
   static final List<Destination> appDestinations = [
@@ -23,7 +25,7 @@ class GlobalParameters {
     ),
     Destination(
       name: 'chart',
-      screen: Scaffold(),
+      screen: AnalysisChartScreen(),
       icon: Icons.bar_chart,
     ),
     Destination(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:project_statistics/constants.dart';
+import 'package:project_statistics/models/analysis_chart.dart';
 import 'package:project_statistics/models/plan.dart';
 import 'package:project_statistics/models/project.dart';
 import 'package:project_statistics/models/result.dart';
@@ -123,7 +124,7 @@ class DatabaseHelper {
           ? m[_quantity].split(';').map<int>((e) => int.parse(e)).toList()
           : a;
       m[_amount] = (m[_amount].length > 0)
-          ? m[_amount].split(';').map<int>((e) => int.parse(e)).toList()
+          ? m[_amount].split(';').map<double>((e) => double.parse(e)).toList()
           : a;
       return Plan.fromMap(m);
     } else
@@ -203,12 +204,15 @@ class DatabaseHelper {
     // премия
     result['prize'] = 0.0;
 
+    // TODO: implement result['percent']
+
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         if (proj['status'] == ConstantData.appStatus[3]) {
           result['amount'] += proj['price'];
           result['quantity']++;
         }
+        result['until'] -= proj['price'];
       });
     }
 
@@ -216,10 +220,51 @@ class DatabaseHelper {
       plan.first['amount'].split(';').forEach((e) {
         result['plan'] += int.parse(e);
       });
+      result['until'] += result['plan'] * 1000;
       result['prize'] = plan.first['prize'];
     }
 
     return Result.fromMap(result);
+  }
+
+  // AnalysisChart methods
+  Future<AnalysisChart> getAnalysisChart(
+      String startPeriod, String endPeriod) async {
+    final db = await database;
+    Map<String, dynamic> result = AnalysisChart().toMap();
+
+    List<Map<String, dynamic>> projects = await db.query("$_projectTableName");
+    List<Map<String, dynamic>> plan =
+        await db.query("$_planTableName", where: "$_id = ?", whereArgs: [1]);
+
+    result['realQuantity'] =
+        List<int>.generate(ConstantData.appStatus.length, (index) => 0);
+    result['planQuantity'] =
+        List<int>.generate(ConstantData.appStatus.length, (index) => 0);
+    result['realAmount'] =
+        List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
+    result['planAmount'] =
+        List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
+
+    if (projects.isNotEmpty) {
+      projects.forEach((proj) {
+        for (int i = 0; i < ConstantData.appStatus.length; i++) {
+          if (proj['status'] == ConstantData.appStatus[i]) {
+            result['realQuantity'][i]++;
+            result['realAmount'][i] += proj['price'];
+          } else {
+            break;
+          }
+        }
+      });
+    }
+
+    if (plan.isNotEmpty) {
+      result['planAmount'] = plan.first['amount'].split(';').map<double>((e) => double.parse(e)).toList();
+      result['planQuantity'] = plan.first['quantity'].split(';').map<int>((e) => int.parse(e)).toList();
+    }
+
+    return AnalysisChart.fromMap(result);
   }
 
 // // Order methods

@@ -6,6 +6,7 @@ var lightTheme = ThemeData(
   focusColor: ConstantColors.focusColor,
   disabledColor: ConstantColors.disabledColor,
   shadowColor: ConstantColors.shadowColor,
+  errorColor: ConstantColors.errorColor,
   textTheme: TextTheme(
     headline1: TextStyle(
       fontSize: 27,

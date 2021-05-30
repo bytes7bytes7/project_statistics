@@ -1,3 +1,4 @@
+import 'analysis_chart_bloc.dart';
 import 'result_bloc.dart';
 import 'project_bloc.dart';
 import 'plan_bloc.dart';
@@ -11,6 +12,7 @@ class Bloc {
   static PlanBloc _planBloc;
   static ProjectBloc _projectBloc;
   static ResultBloc _resultBloc;
+  static AnalysisChartBloc _analysisChartBloc;
 
   PlanBloc get planBloc {
     if (_planBloc != null) return _planBloc;
@@ -28,5 +30,11 @@ class Bloc {
     if (_resultBloc != null) return _resultBloc;
     _resultBloc = ResultBloc(Repository.resultRepository);
     return _resultBloc;
+  }
+
+  AnalysisChartBloc get analysisChartBloc {
+    if (_analysisChartBloc != null) return _analysisChartBloc;
+    _analysisChartBloc = AnalysisChartBloc(Repository.analysisChartRepository);
+    return _analysisChartBloc;
   }
 }

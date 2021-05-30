@@ -160,26 +160,28 @@ class _ContentListState extends State<ContentList> {
             : '');
     amountController_1 = TextEditingController(
         text: (widget.plan.amount != null)
-            ? widget.plan.amount[0].toString()
+            ? MeasureBeautifier().truncateZero(widget.plan.amount[0].toString())
             : '');
     amountController_2 = TextEditingController(
         text: (widget.plan.amount != null)
-            ? widget.plan.amount[1].toString()
+            ? MeasureBeautifier().truncateZero(widget.plan.amount[1].toString())
             : '');
     amountController_3 = TextEditingController(
         text: (widget.plan.amount != null)
-            ? widget.plan.amount[2].toString()
+            ? MeasureBeautifier().truncateZero(widget.plan.amount[2].toString())
             : '');
     amountController_4 = TextEditingController(
         text: (widget.plan.amount != null)
-            ? widget.plan.amount[3].toString()
+            ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
             : '');
     startPeriodController =
         TextEditingController(text: widget.plan.startPeriod ?? '');
     endPeriodController =
         TextEditingController(text: widget.plan.endPeriod ?? '');
-    prizeController =
-        TextEditingController(text: widget.plan.prize?.toString() ?? '');
+    prizeController = TextEditingController(
+        text: (widget.plan.prize != null)
+            ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
+            : '');
     super.initState();
   }
 
@@ -234,22 +236,22 @@ class _ContentListState extends State<ContentList> {
           title: 'Сумма',
           children: [
             InputField(
-              label: 'Запросы (тыс руб)',
+              label: 'Запросы (млн руб)',
               controller: amountController_1,
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'КП (тыс руб)',
+              label: 'КП (млн руб)',
               controller: amountController_2,
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'Тендеры (тыс руб)',
+              label: 'Тендеры (млн руб)',
               controller: amountController_3,
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'Договоры (тыс руб)',
+              label: 'Договоры (млн руб)',
               controller: amountController_4,
               textInputType: TextInputType.number,
             ),
@@ -316,10 +318,10 @@ class _ContentListState extends State<ContentList> {
                   int.parse(quantityController_4.text),
                 ]
                 ..amount = [
-                  int.parse(amountController_1.text),
-                  int.parse(amountController_2.text),
-                  int.parse(amountController_3.text),
-                  int.parse(amountController_4.text),
+                  double.parse(amountController_1.text),
+                  double.parse(amountController_2.text),
+                  double.parse(amountController_3.text),
+                  double.parse(amountController_4.text),
                 ]
                 ..startPeriod = startPeriodController.text
                 ..endPeriod = endPeriodController.text

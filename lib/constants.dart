@@ -5,6 +5,7 @@ abstract class ConstantColors {
   static const Color focusColor = Colors.white;
   static const Color disabledColor = Color(0xFF898989);
   static const Color shadowColor = Colors.black;
+  static const Color errorColor = Color(0xFFFF0000);
 }
 
 enum MeasureLevel {

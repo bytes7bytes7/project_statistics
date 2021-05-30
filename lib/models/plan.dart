@@ -8,7 +8,7 @@ class Plan {
   });
 
   List<int> quantity;
-  List<int> amount;
+  List<double> amount;
   String startPeriod;
   String endPeriod;
   double prize;
