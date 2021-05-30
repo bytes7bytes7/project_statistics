@@ -115,46 +115,93 @@ class ContentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      itemCount: analysisChart.planQuantity.length + 1,
-      itemBuilder: (context, i) {
-        if (i == 0) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Количество',
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              Container(
-                height: 400,
-                width: 700,
-                child: StackedHorizontalBarChart(
-                  realQuantity: analysisChart.realQuantity,
-                  planQuantity: analysisChart.planQuantity,
-                  colors: [
-                    Color(0xFFE49BE2),
-                    Color(0xFFFE7674),
-                    Color(0xFFA3D7F7),
-                    Color(0xFFBCBCFB),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30),
-            ],
-          );
-        } else {
-          return _AnalysisChartCard(
-            primary: (i == analysisChart.planQuantity.length),
-            title: ConstantData.appStatus[i - 1] + ' (шт.)',
-            subtitle1: 'Реальное кол-во:',
-            subtitle2: 'Плановое кол-во:',
-            real: analysisChart.realQuantity[i - 1],
-            plan: analysisChart.planQuantity[i - 1],
-          );
-        }
-      },
+    return PageView(
+      children: [
+        ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          itemCount: analysisChart.planQuantity.length + 1,
+          itemBuilder: (context, i) {
+            if (i == 0) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Количество',
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 400,
+                    width: 700,
+                    child: StackedHorizontalBarChart(
+                      r: analysisChart.realQuantity,
+                      p: analysisChart.planQuantity,
+                      colors: [
+                        Color(0xFFE49BE2),
+                        Color(0xFFFE7674),
+                        Color(0xFFA3D7F7),
+                        Color(0xFFBCBCFB),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              );
+            } else {
+              return _AnalysisChartCard(
+                primary: (i == analysisChart.planQuantity.length),
+                title: ConstantData.appStatus[i - 1] + ' (шт.)',
+                subtitle1: 'Реальное кол-во:',
+                subtitle2: 'Плановое кол-во:',
+                real: analysisChart.realQuantity[i - 1],
+                plan: analysisChart.planQuantity[i - 1],
+              );
+            }
+          },
+        ),
+        ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          itemCount: analysisChart.planAmount.length + 1,
+          itemBuilder: (context, i) {
+            if (i == 0) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Сумма',
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 400,
+                    width: 700,
+                    child: StackedHorizontalBarChart(
+                      r: analysisChart.realAmount,
+                      p: analysisChart.planAmount,
+                      colors: [
+                        Color(0xFFE49BE2),
+                        Color(0xFFFE7674),
+                        Color(0xFFA3D7F7),
+                        Color(0xFFBCBCFB),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                ],
+              );
+            } else {
+              return _AnalysisChartCard(
+                primary: (i == analysisChart.planAmount.length),
+                title: ConstantData.appStatus[i - 1] + ' (млн. руб.)',
+                subtitle1: 'Реальная сумма:',
+                subtitle2: 'Плановая сумма:',
+                real: analysisChart.realAmount[i - 1],
+                plan: analysisChart.planAmount[i - 1],
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }
@@ -174,8 +221,8 @@ class _AnalysisChartCard extends StatelessWidget {
   final String title;
   final String subtitle1;
   final String subtitle2;
-  final int real;
-  final int plan;
+  final dynamic real;
+  final dynamic plan;
 
   @override
   Widget build(BuildContext context) {

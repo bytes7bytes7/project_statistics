@@ -10,62 +10,64 @@ class _ChartColumn {
   });
 
   final String title;
-  final int value;
+  final dynamic value;
   final Color color;
 }
 
 class StackedHorizontalBarChart extends StatelessWidget {
-  const StackedHorizontalBarChart({
+  StackedHorizontalBarChart({
     Key key,
-    @required this.realQuantity,
-    @required this.planQuantity,
+    @required List<dynamic> r,
+    @required List<dynamic> p,
     @required this.colors,
-  }) : super(key: key);
+  }){
+    List<dynamic> tmp=[];
+    r.forEach((element) {
+      tmp.add(element);
+    });
+    real = tmp;
+    List<dynamic> tmp2=[];
+    p.forEach((element) {
+      tmp2.add(element);
+    });
+    plan = tmp2;
+  }
 
-  final List<int> realQuantity, planQuantity;
-  final List<Color> colors;
+  List<dynamic> real, plan;
+  List<Color> colors;
 
   @override
   Widget build(BuildContext context) {
+    for(int i =0;i<plan.length;i++){
+      plan[i]-=real[i];
+      if(plan[i]<0) plan[i]=0;
+    }
+
     List<_ChartColumn> chartRealData =
-        List<_ChartColumn>.generate(realQuantity.length, (i) {
+        List<_ChartColumn>.generate(real.length, (i) {
       return _ChartColumn(
         title: ConstantData.appStatus[i],
-        value: realQuantity[i],
+        value: real[i],
         color: colors[i],
       );
     });
 
     List<_ChartColumn> chartPlanData =
-        List<_ChartColumn>.generate(planQuantity.length, (i) {
+        List<_ChartColumn>.generate(plan.length, (i) {
       return _ChartColumn(
         title: ConstantData.appStatus[i],
-        value: planQuantity[i],
+        value: plan[i],
         color: colors[i].withOpacity(0.5),
       );
     });
 
-    List<charts.Series<_ChartColumn, String>> chartData =
-        List.generate(chartRealData.length, (i) {
-      return charts.Series<_ChartColumn, String>(
-        id: 'real $i',
-        domainFn: (_, __) => ConstantData.appStatus[i],
-        measureFn: (_, __) => realQuantity[i],
-        data: [chartRealData[i]],
-        seriesColor: charts.Color(
-          r: chartRealData[i].color.red,
-          g: chartRealData[i].color.green,
-          b: chartRealData[i].color.blue,
-          a: chartRealData[i].color.alpha,
-        ),
-      );
-    });
+    List<charts.Series<_ChartColumn, String>> chartData = [];
 
     for (int i = 0; i < chartPlanData.length; i++) {
       chartData.add(charts.Series<_ChartColumn, String>(
         id: 'plan $i',
         domainFn: (_, __) => ConstantData.appStatus[i],
-        measureFn: (_, __) => planQuantity[i],
+        measureFn: (_, __) => plan[i],
         data: [chartPlanData[i]],
         seriesColor: charts.Color(
           r: chartPlanData[i].color.red,
@@ -76,11 +78,37 @@ class StackedHorizontalBarChart extends StatelessWidget {
       ));
     }
 
-    return charts.BarChart(
-      chartData,
-      animate: true,
-      barGroupingType: charts.BarGroupingType.stacked,
-      vertical: false,
+    for (int i = 0; i < chartRealData.length; i++) {
+      chartData.add(charts.Series<_ChartColumn, String>(
+        id: 'real $i',
+        domainFn: (_, __) => ConstantData.appStatus[i],
+        measureFn: (_, __) => real[i],
+        data: [chartRealData[i]],
+        seriesColor: charts.Color(
+          r: chartRealData[i].color.red,
+          g: chartRealData[i].color.green,
+          b: chartRealData[i].color.blue,
+          a: chartRealData[i].color.alpha,
+        ),
+      ));
+    }
+
+    return RotationTransition(
+      turns: AlwaysStoppedAnimation(90 / 360),
+      child: charts.BarChart(
+        chartData,
+        animate: false,
+        barGroupingType: charts.BarGroupingType.stacked,
+        vertical: true,
+        domainAxis: charts.OrdinalAxisSpec(
+          showAxisLine: true,
+          renderSpec: charts.SmallTickRendererSpec(
+            labelAnchor: charts.TickLabelAnchor.centered,
+            tickLengthPx: 0,
+            labelOffsetFromAxisPx: 7,
+          ),
+        ),
+      ),
     );
   }
 }

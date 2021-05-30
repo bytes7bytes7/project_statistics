@@ -36,12 +36,13 @@ class PercentBar extends StatelessWidget {
                     ),
                   ),
                 ),
-              Flexible(
-                flex: 100 - percent,
-                child: SizedBox(
-                  width: double.infinity,
+              if (percent < 100)
+                Flexible(
+                  flex: 100 - percent,
+                  child: SizedBox(
+                    width: double.infinity,
+                  ),
                 ),
-              ),
             ],
           ),
           Positioned(
