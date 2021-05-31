@@ -121,7 +121,6 @@ class ContentList extends StatelessWidget {
     return PageView(
       children: [
         ListView.builder(
-          key: PageStorageKey<String>('quantityController'),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           itemCount: analysisChart.planQuantity.length + 1,
           itemBuilder: (context, i) {
@@ -164,7 +163,7 @@ class ContentList extends StatelessWidget {
           },
         ),
         ListView.builder(
-          key: PageStorageKey<String>('amountController'),
+
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           itemCount: analysisChart.planAmount.length + 1,
           itemBuilder: (context, i) {

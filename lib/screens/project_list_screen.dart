@@ -126,25 +126,34 @@ class __BodyState extends State<_Body> {
 }
 
 class _ContentList extends StatelessWidget {
-  const _ContentList({
+  _ContentList({
     Key key,
     @required this.projects,
   }) : super(key: key);
 
   final List<Project> projects;
+  final ValueNotifier<bool> update = ValueNotifier(true);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      itemCount: projects.length + 1,
-      itemBuilder: (context, i) {
-        if (i == 0)
-          return SortBar();
-        else
-          return _ProjectCard(
-            project: projects[i - 1],
-          );
+    return ValueListenableBuilder(
+      valueListenable: update,
+      builder: (context, value, child) {
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          itemCount: projects.length + 1,
+          itemBuilder: (context, i) {
+            if (i == 0)
+              return SortBar(
+                projects: projects,
+                update: update,
+              );
+            else
+              return _ProjectCard(
+                project: projects[i - 1],
+              );
+          },
+        );
       },
     );
   }

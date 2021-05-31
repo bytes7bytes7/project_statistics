@@ -140,6 +140,20 @@ class MeasureBeautifier {
 }
 
 abstract class ConstantData {
+  static const List<String> appProjectParameterNames = [
+    'Название',
+    'Сумма',
+    'Статус',
+    'Срок',
+  ];
+  static const List<String> appProjectParameterDirection = [
+    'По возрастанию',
+    'По убыванию'
+  ];
+  static const List<String> appProjectSortDirection =[
+    '↑',
+    '↓',
+  ];
   static const List<String> appMonths = [
     'Январь',
     'Февраль',

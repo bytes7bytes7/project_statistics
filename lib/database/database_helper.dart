@@ -252,7 +252,6 @@ class DatabaseHelper {
           if (proj['status'] == ConstantData.appStatus[i]) {
             result['realQuantity'][i]++;
             result['realAmount'][i] += proj['price'];
-          } else {
             break;
           }
         }
