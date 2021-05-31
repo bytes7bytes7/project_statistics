@@ -297,43 +297,51 @@ class __ContentListState extends State<_ContentList> {
         ),
         FlatWideButton(
           title: 'Готово',
-          onTap: () {
-            if (quantityController_1.text.isNotEmpty &&
-                quantityController_2.text.isNotEmpty &&
-                quantityController_3.text.isNotEmpty &&
-                quantityController_4.text.isNotEmpty &&
-                amountController_1.text.isNotEmpty &&
-                amountController_2.text.isNotEmpty &&
-                amountController_3.text.isNotEmpty &&
-                amountController_4.text.isNotEmpty &&
-                startPeriodController.text.isNotEmpty &&
-                endPeriodController.text.isNotEmpty &&
-                prizeController.text.isNotEmpty) {
-              widget.plan
-                ..quantity = [
-                  int.parse(quantityController_1.text),
-                  int.parse(quantityController_2.text),
-                  int.parse(quantityController_3.text),
-                  int.parse(quantityController_4.text),
-                ]
-                ..amount = [
-                  double.parse(amountController_1.text),
-                  double.parse(amountController_2.text),
-                  double.parse(amountController_3.text),
-                  double.parse(amountController_4.text),
-                ]
-                ..startPeriod = startPeriodController.text
-                ..endPeriod = endPeriodController.text
-                ..prize = double.parse(prizeController.text);
-              Bloc.bloc.planBloc.updatePlan(widget.plan);
-              ConstantData.currentPageIndex.value = 1;
-            } else {
+          onTap: () async {
+            bool result = await Permission.planComplete();
+            if (result == true) {
+              if (quantityController_1.text.isNotEmpty &&
+                  quantityController_2.text.isNotEmpty &&
+                  quantityController_3.text.isNotEmpty &&
+                  quantityController_4.text.isNotEmpty &&
+                  amountController_1.text.isNotEmpty &&
+                  amountController_2.text.isNotEmpty &&
+                  amountController_3.text.isNotEmpty &&
+                  amountController_4.text.isNotEmpty &&
+                  startPeriodController.text.isNotEmpty &&
+                  endPeriodController.text.isNotEmpty &&
+                  prizeController.text.isNotEmpty) {
+                widget.plan
+                  ..quantity = [
+                    int.parse(quantityController_1.text),
+                    int.parse(quantityController_2.text),
+                    int.parse(quantityController_3.text),
+                    int.parse(quantityController_4.text),
+                  ]
+                  ..amount = [
+                    double.parse(amountController_1.text),
+                    double.parse(amountController_2.text),
+                    double.parse(amountController_3.text),
+                    double.parse(amountController_4.text),
+                  ]
+                  ..startPeriod = startPeriodController.text
+                  ..endPeriod = endPeriodController.text
+                  ..prize = double.parse(prizeController.text);
+                Bloc.bloc.planBloc.updatePlan(widget.plan);
+                ConstantData.currentPageIndex.value = 1;
+              } else {
+                showInfoSnackBar(
+                  context: context,
+                  info: 'Заполните все поля',
+                  icon: Icons.warning_amber_outlined,
+                );
+              }
+            } else if (result == false)
               showInfoSnackBar(
                 context: context,
                 info: 'Заполните все поля',
                 icon: Icons.warning_amber_outlined,
               );
-            }
           },
         ),
       ],
