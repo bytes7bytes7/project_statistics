@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../bloc/bloc.dart';
 import '../bloc/project_bloc.dart';
+import '../constants.dart';
 import '../models/project.dart';
-import '../screens/global/global_parameters.dart';
 import '../screens/project_info_screen.dart';
 import '../screens/widgets/flat_small_button.dart';
 import '../screens/widgets/sort_bar.dart';
@@ -26,7 +26,7 @@ class ProjectListScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.view_comfortable),
             onPressed: () {},
-            tooltip: GlobalParameters.appToolTips['table'],
+            tooltip: ConstantData.appToolTips['table'],
           ),
           actions: [
             IconButton(
@@ -42,7 +42,7 @@ class ProjectListScreen extends StatelessWidget {
                   }),
                 );
               },
-              tooltip: GlobalParameters.appToolTips['add'],
+              tooltip: ConstantData.appToolTips['add'],
             ),
           ],
         ),
@@ -82,7 +82,7 @@ class __BodyState extends State<_Body> {
         } else if (snapshot.data is ProjectDataState) {
           ProjectDataState state = snapshot.data;
           if (state.projects.length > 0)
-            return ContentList(projects: state.projects);
+            return _ContentList(projects: state.projects);
           else
             return Center(
               child: Text(
@@ -125,8 +125,8 @@ class __BodyState extends State<_Body> {
   }
 }
 
-class ContentList extends StatelessWidget {
-  const ContentList({
+class _ContentList extends StatelessWidget {
+  const _ContentList({
     Key key,
     @required this.projects,
   }) : super(key: key);

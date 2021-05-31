@@ -7,7 +7,6 @@ import 'package:project_statistics/constants.dart';
 import 'package:project_statistics/models/analysis_chart.dart';
 import 'package:project_statistics/screens/widgets/stacked_horizontal_bar_chart.dart';
 import 'package:project_statistics/screens/widgets/percent_bar.dart';
-import 'global/global_parameters.dart';
 import 'widgets/flat_small_button.dart';
 import 'widgets/loading_circle.dart';
 
@@ -30,7 +29,7 @@ class AnalysisChartScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.filter_alt_outlined),
               onPressed: () {},
-              tooltip: GlobalParameters.appToolTips['filter'],
+              tooltip: ConstantData.appToolTips['filter'],
             ),
           ],
         ),
@@ -69,6 +68,9 @@ class __BodyState extends State<_Body> {
           return _buildLoading();
         } else if (snapshot.data is AnalysisChartDataState) {
           AnalysisChartDataState state = snapshot.data;
+          for(int i =0; i<state.analysisChart.realAmount.length;i++){
+            state.analysisChart.realAmount[i]/=1000000;
+          }
           return ContentList(analysisChart: state.analysisChart);
         } else {
           return _buildError();
@@ -115,9 +117,11 @@ class ContentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return PageView(
       children: [
         ListView.builder(
+          key: PageStorageKey<String>('quantityController'),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           itemCount: analysisChart.planQuantity.length + 1,
           itemBuilder: (context, i) {
@@ -131,8 +135,8 @@ class ContentList extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height: 400,
-                    width: 700,
+                    height: (size.height < size.width) ? size.height : size.width,
+                    width: double.infinity,
                     child: StackedHorizontalBarChart(
                       r: analysisChart.realQuantity,
                       p: analysisChart.planQuantity,
@@ -160,6 +164,7 @@ class ContentList extends StatelessWidget {
           },
         ),
         ListView.builder(
+          key: PageStorageKey<String>('amountController'),
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           itemCount: analysisChart.planAmount.length + 1,
           itemBuilder: (context, i) {

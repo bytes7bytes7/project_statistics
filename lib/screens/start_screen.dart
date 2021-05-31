@@ -7,7 +7,6 @@ import 'package:project_statistics/screens/widgets/choose_field.dart';
 import 'package:project_statistics/screens/widgets/flat_small_button.dart';
 import 'package:project_statistics/screens/widgets/show_info_snack_bar.dart';
 import '../constants.dart';
-import '../screens/global/global_parameters.dart';
 import '../screens/widgets/flat_wide_button.dart';
 import '../screens/widgets/input_field.dart';
 import '../screens/widgets/outlined_wide_button.dart';
@@ -71,7 +70,7 @@ class __BodyState extends State<_Body> {
           } else if (snapshot.data is PlanDataState) {
             PlanDataState state = snapshot.data;
             if (state.plan != null)
-              return ContentList(plan: state.plan);
+              return _ContentList(plan: state.plan);
             else
               return Center(
                 child: Text(
@@ -115,8 +114,8 @@ class __BodyState extends State<_Body> {
   }
 }
 
-class ContentList extends StatefulWidget {
-  const ContentList({
+class _ContentList extends StatefulWidget {
+  const _ContentList({
     Key key,
     @required this.plan,
   }) : super(key: key);
@@ -124,10 +123,10 @@ class ContentList extends StatefulWidget {
   final Plan plan;
 
   @override
-  _ContentListState createState() => _ContentListState();
+  __ContentListState createState() => __ContentListState();
 }
 
-class _ContentListState extends State<ContentList> {
+class __ContentListState extends State<_ContentList> {
   TextEditingController quantityController_1;
   TextEditingController quantityController_2;
   TextEditingController quantityController_3;
@@ -327,7 +326,7 @@ class _ContentListState extends State<ContentList> {
                 ..endPeriod = endPeriodController.text
                 ..prize = double.parse(prizeController.text);
               Bloc.bloc.planBloc.updatePlan(widget.plan);
-              GlobalParameters.currentPageIndex.value = 1;
+              ConstantData.currentPageIndex.value = 1;
             } else {
               showInfoSnackBar(
                 context: context,

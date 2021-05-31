@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'models/destination.dart';
+import 'screens/analysis_chart_screen.dart';
+import 'screens/project_list_screen.dart';
+import 'screens/result_screen.dart';
+import 'screens/start_screen.dart';
+
 abstract class ConstantColors {
   static const Color primaryColor = Color(0xFF1B97F3);
   static const Color focusColor = Colors.white;
@@ -78,5 +84,38 @@ abstract class ConstantData {
     'КП',
     'Тендеры',
     'Договоры',
+  ];
+  static final Map<String, String> appToolTips = {
+    'add': 'Добавить',
+    'table' : 'Таблица',
+    'filter': 'Фильтр',
+  };
+  static final ValueNotifier<int> currentPageIndex = ValueNotifier(0);
+  static final List<Destination> appDestinations = [
+    Destination(
+      name: 'start',
+      screen: StartScreen(),
+      icon: Icons.not_started_outlined,
+    ),
+    Destination(
+      name: 'project_list',
+      screen: ProjectListScreen(),
+      icon: Icons.table_chart_outlined,
+    ),
+    Destination(
+      name: 'chart',
+      screen: AnalysisChartScreen(),
+      icon: Icons.bar_chart,
+    ),
+    Destination(
+      name: 'result',
+      screen: ResultScreen(),
+      icon: Icons.list_alt_outlined,
+    ),
+    Destination(
+      name: 'something',
+      screen: Scaffold(),
+      icon: Icons.help_outline_outlined,
+    ),
   ];
 }

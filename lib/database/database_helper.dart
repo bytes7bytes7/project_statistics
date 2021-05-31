@@ -218,9 +218,9 @@ class DatabaseHelper {
 
     if (plan.isNotEmpty) {
       plan.first['amount'].split(';').forEach((e) {
-        result['plan'] += int.parse(double.parse(e).toStringAsFixed(0));
+        result['plan'] += double.parse(e);
       });
-      result['until'] += result['plan'] * 1000;
+      result['until'] += result['plan'] * 1000000;
       result['prize'] = plan.first['prize'];
     }
 
