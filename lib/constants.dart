@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'database/database_helper.dart';
 import 'models/destination.dart';
@@ -10,71 +7,78 @@ import 'screens/analysis_chart_screen.dart';
 import 'screens/project_list_screen.dart';
 import 'screens/result_screen.dart';
 import 'screens/start_screen.dart';
-import 'package:http/http.dart' as http;
 
 abstract class Permission {
-  static initApp() async {
-    writeFile('1');
+  // static String filename = '/permission.txt';
+
+  // static initApp() async {
+  //   final path = await _localPath + filename;
+  //   if (!(await File(path).exists())) {
+  //     writeFile('1');
+  //   }
+  // }
+
+  static Future planComplete() async {
+    // bool permission = await checkPermission();
+    // if (permission) {
+    //   Plan _plan = await DatabaseHelper.db.getPlan();
+    //   if (_plan.prize == null) return false;
+    //   return true;
+    // } else {
+    //   return null;
+    // }
+    Plan _plan = await DatabaseHelper.db.getPlan();
+    if (_plan.prize == null) return false;
+    return true;
   }
 
-  static Future<bool> planComplete() async {
-    bool permission = await checkPermission();
-    if (permission) {
-      Plan _plan = await DatabaseHelper.db.getPlan();
-      if (_plan.prize == null) return false;
-      return true;
-    } else {
-      return null;
-    }
-  }
+  // static Future checkPermission() async {
+  //   String uri = 'https://github.com/bytes7bytes7/project_statistics#readme';
+  //   try {
+  //     var response = await http.get(Uri.parse(uri));
+  //     if (response.statusCode == 200) {
+  //       if (response.body.contains('Use it for free.')) {
+  //         return true;
+  //       } else {
+  //         writeFile('0');
+  //         return false;
+  //       }
+  //     }
+  //   } catch (error) {
+  //     return await readFile().then((str) {
+  //       if (str == '1')
+  //         return true;
+  //       else
+  //         return false;
+  //     });
+  //   }
+  // }
 
-  static Future<bool> checkPermission() async {
-    String uri = 'https://github.com/bytes7bytes7/project_statistics#readme';
-    return http.get(Uri.parse(uri)).then((response) {
-      if (response.statusCode == 200) {
-        if (response.body.contains('Use it for free.')) {
-          return true;
-        } else {
-          writeFile('0');
-          return false;
-        }
-      }
-    }).catchError((error) async {
-      return await readFile().then((str) {
-        if (str == '1')
-          return true;
-        else
-          return false;
-      });
-    });
-  }
-
-  static Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path;
-  }
-
-  static Future<File> localFile() async {
-    String filename = '/permission.txt';
-    final path = await _localPath + filename;
-    return File(path);
-  }
-
-  static Future<File> writeFile(String data) async {
-    final file = await localFile();
-    await file.writeAsString(data);
-    return file;
-  }
-
-  static Future<String> readFile() async {
-    try {
-      final file = await localFile();
-      String str = await file.readAsString();
-      return str;
-    } catch (e) {
-      return '1';
-    }
-  }
+  // static Future<String> get _localPath async {
+  //   final directory = await getApplicationDocumentsDirectory();
+  //   return directory.path;
+  // }
+  //
+  // static Future<File> localFile() async {
+  //   final path = await _localPath + filename;
+  //   return File(path);
+  // }
+  //
+  // static Future<File> writeFile(String data) async {
+  //   final file = await localFile();
+  //   await file.writeAsString(data);
+  //   return file;
+  // }
+  //
+  // static Future<String> readFile() async {
+  //   try {
+  //     final file = await localFile();
+  //     String str = await file.readAsString();
+  //     return str;
+  //   } catch (e) {
+  //     return '1';
+  //   }
+  // }
 }
 
 abstract class ConstantColors {
