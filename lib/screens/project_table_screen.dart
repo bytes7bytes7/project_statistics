@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/screens/global/global_parameters.dart';
-import '../bloc/bloc.dart';
-import '../bloc/project_bloc.dart';
+import 'package:project_statistics/bloc/bloc.dart';
+import 'package:project_statistics/bloc/project_bloc.dart';
+import 'package:project_statistics/models/project.dart';
 import '../constants.dart';
-import '../models/project.dart';
-import '../screens/project_info_screen.dart';
-import '../screens/widgets/flat_small_button.dart';
-import '../screens/widgets/sort_bar.dart';
+import 'global/global_parameters.dart';
+import 'project_info_screen.dart';
+import 'widgets/flat_small_button.dart';
 import 'widgets/loading_circle.dart';
 
-class ProjectListScreen extends StatelessWidget {
+class ProjectTableScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,13 +24,11 @@ class ProjectListScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.headline1,
           ),
           leading: IconButton(
-            icon: const Icon(Icons.view_comfortable),
+            icon: const Icon(Icons.list),
             onPressed: () {
-
-              GlobalParameters.currentPageIndex.value=-1;
-
+              GlobalParameters.currentPageIndex.value = 1;
             },
-            tooltip: ConstantData.appToolTips['table'],
+            tooltip: ConstantData.appToolTips['list'],
           ),
           actions: [
             IconButton(
@@ -87,7 +84,7 @@ class __BodyState extends State<_Body> {
         } else if (snapshot.data is ProjectDataState) {
           ProjectDataState state = snapshot.data;
           if (state.projects.length > 0)
-            return _ContentList(projects: state.projects);
+            return _ContentTable(projects: state.projects);
           else
             return Center(
               child: Text(
@@ -130,8 +127,8 @@ class __BodyState extends State<_Body> {
   }
 }
 
-class _ContentList extends StatelessWidget {
-  _ContentList({
+class _ContentTable extends StatelessWidget {
+  _ContentTable({
     Key key,
     @required this.projects,
   }) : super(key: key);
@@ -144,20 +141,88 @@ class _ContentList extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: update,
       builder: (context, value, child) {
-        return ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          itemCount: projects.length + 1,
-          itemBuilder: (context, i) {
-            if (i == 0)
-              return SortBar(
-                projects: projects,
-                update: update,
-              );
-            else
-              return _ProjectCard(
-                project: projects[i - 1],
-              );
-          },
+        return Container(
+          margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
+          child: SingleChildScrollView(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Flexible(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                        projects.length + 1,
+                        (rowIndex) {
+                          return Row(
+                            children: List.generate(
+                                ConstantData.appProjectParameterNames.length,
+                                (columnIndex) {
+                              String text;
+                              Function onTap;
+                              if (rowIndex == 0) {
+                                text = ConstantData
+                                    .appProjectParameterNames[columnIndex];
+                                onTap = () {
+                                  print('head');
+                                };
+                              } else {
+                                if(columnIndex==0){
+                                  text = projects[rowIndex-1].title;
+                                }else if(columnIndex==1){
+                                  text = projects[rowIndex-1].price.toString();
+                                }else if(columnIndex==2){
+                                  text = '${projects[rowIndex-1].startPeriod} - ${projects[rowIndex-1].endPeriod}';
+                                }else{
+                                  text = projects[rowIndex-1].status;
+                                }
+                                onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return ProjectInfoScreen(
+                                        str: 'Проект',
+                                        project: projects[rowIndex-1],
+                                      );
+                                    }),
+                                  );
+                                };
+                              }
+                              return Material(
+                                child: InkWell(
+                                  onTap: onTap,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.all(0),
+                                    width: 140.0,
+                                    height: 40.0,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).focusColor,
+                                      border: Border.all(
+                                        color: Theme.of(context)
+                                            .shadowColor
+                                            .withOpacity(0.2),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      text,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         );
       },
     );

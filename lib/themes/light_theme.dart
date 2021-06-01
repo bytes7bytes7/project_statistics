@@ -28,6 +28,11 @@ var lightTheme = ThemeData(
       fontWeight: FontWeight.w400,
       color: ConstantColors.shadowColor,
     ),
+    bodyText2: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w400,
+      color: ConstantColors.shadowColor,
+    ),
     subtitle1: TextStyle(
       fontSize: 21,
       fontWeight: FontWeight.w400,

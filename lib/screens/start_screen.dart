@@ -3,6 +3,7 @@ import 'package:project_statistics/bloc/bloc.dart';
 import 'package:project_statistics/bloc/plan_bloc.dart';
 import 'package:project_statistics/database/database_helper.dart';
 import 'package:project_statistics/models/plan.dart';
+import 'package:project_statistics/screens/global/global_parameters.dart';
 import 'package:project_statistics/screens/widgets/choose_field.dart';
 import 'package:project_statistics/screens/widgets/flat_small_button.dart';
 import 'package:project_statistics/screens/widgets/show_info_snack_bar.dart';
@@ -174,9 +175,8 @@ class __ContentListState extends State<_ContentList> {
             ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
             : '');
     startPeriodController =
-        TextEditingController(text: widget.plan.startPeriod ?? '');
-    endPeriodController =
-        TextEditingController(text: widget.plan.endPeriod ?? '');
+        TextEditingController(text: widget.plan.startPeriod);
+    endPeriodController = TextEditingController(text: widget.plan.endPeriod);
     prizeController = TextEditingController(
         text: (widget.plan.prize != null)
             ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
@@ -187,6 +187,7 @@ class __ContentListState extends State<_ContentList> {
   @override
   void dispose() {
     Bloc.bloc.planBloc.dispose();
+
     quantityController_1.dispose();
     quantityController_2.dispose();
     quantityController_3.dispose();
@@ -213,21 +214,41 @@ class __ContentListState extends State<_ContentList> {
               label: 'Запросы',
               controller: quantityController_1,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                  GlobalParameters.newPlan.quantity[0] =
+                      int.parse(quantityController_1.text);
+              },
             ),
             InputField(
               label: 'КП',
               controller: quantityController_2,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.quantity[1] =
+                    int.parse(quantityController_2.text);
+              },
             ),
             InputField(
               label: 'Тендеры',
               controller: quantityController_3,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.quantity[2] =
+                    int.parse(quantityController_3.text);
+              },
             ),
             InputField(
               label: 'Договоры',
               controller: quantityController_4,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.quantity[3] =
+                    int.parse(quantityController_4.text);
+              },
             ),
           ],
         ),
@@ -238,21 +259,41 @@ class __ContentListState extends State<_ContentList> {
               label: 'Запросы (млн руб)',
               controller: amountController_1,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.amount[0] =
+                    double.parse(amountController_1.text);
+              },
             ),
             InputField(
               label: 'КП (млн руб)',
               controller: amountController_2,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.amount[1] =
+                    double.parse(amountController_2.text);
+              },
             ),
             InputField(
               label: 'Тендеры (млн руб)',
               controller: amountController_3,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.amount[2] =
+                    double.parse(amountController_3.text);
+              },
             ),
             InputField(
               label: 'Договоры (млн руб)',
               controller: amountController_4,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.amount[3] =
+                    double.parse(amountController_4.text);
+              },
             ),
           ],
         ),
@@ -284,6 +325,11 @@ class __ContentListState extends State<_ContentList> {
               label: 'Премия (тыс руб)',
               controller: prizeController,
               textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                GlobalParameters.newPlan.prize =
+                    double.parse(prizeController.text);
+              },
             ),
           ],
         ),
@@ -326,7 +372,7 @@ class __ContentListState extends State<_ContentList> {
                 ..endPeriod = endPeriodController.text
                 ..prize = double.parse(prizeController.text);
               Bloc.bloc.planBloc.updatePlan(widget.plan);
-              ConstantData.currentPageIndex.value = 1;
+              GlobalParameters.currentPageIndex.value = 1;
             } else {
               showInfoSnackBar(
                 context: context,

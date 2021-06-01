@@ -179,9 +179,9 @@ abstract class ConstantData {
   static final Map<String, String> appToolTips = {
     'add': 'Добавить',
     'table': 'Таблица',
+    'list': 'Список',
     'filter': 'Фильтр',
   };
-  static final ValueNotifier<int> currentPageIndex = ValueNotifier(0);
   static final List<Destination> appDestinations = [
     Destination(
       name: 'start',

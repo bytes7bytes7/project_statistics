@@ -13,7 +13,7 @@ class ProjectBloc {
 
   Stream<ProjectState> get project {
     if (_projectStreamController == null || _projectStreamController.isClosed)
-      _projectStreamController = StreamController<ProjectState>();
+      _projectStreamController = StreamController<ProjectState>.broadcast();
     return _projectStreamController.stream;
   }
 
@@ -25,7 +25,7 @@ class ProjectBloc {
     _projectStreamController.sink.add(ProjectState._projectLoading());
     _repository.getAllProjects().then((projectList) {
       ProjectSortService.sortProjectsBy(projectList);
-      if (!_projectStreamController.isClosed)
+      if(!_projectStreamController.isClosed)
         _projectStreamController.sink.add(ProjectState._projectData(projectList));
     });
   }

@@ -66,13 +66,6 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             color: Theme.of(context).focusColor,
           ),
           onPressed: () {
-            print(titleController.text != widget.project.title);
-            print(statusController.text != widget.project.status);
-            print(priceController.text !=
-                MeasureBeautifier()
-                    .truncateZero(widget.project.price.toString()));
-            print(startPeriodController.text != widget.project.startPeriod);
-            print(endPeriodController.text != widget.project.endPeriod);
             if (titleController.text != widget.project.title ||
                 statusController.text != widget.project.status ||
                 priceController.text !=
@@ -223,6 +216,12 @@ class __BodyState extends State<_Body> {
                     context: context,
                     info: 'Сохранено',
                     icon: Icons.done_all_outlined,
+                  );
+                } else if (double.parse(widget.priceController.text) < 0) {
+                  showInfoSnackBar(
+                    context: context,
+                    info: 'Сумма отрицательна',
+                    icon: Icons.warning_amber_outlined,
                   );
                 } else {
                   showInfoSnackBar(

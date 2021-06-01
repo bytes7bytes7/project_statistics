@@ -5,11 +5,13 @@ class InputField extends StatelessWidget {
     Key key,
     @required this.label,
     @required this.controller,
-    this.textInputType=TextInputType.text,
+    this.update,
+    this.textInputType = TextInputType.text,
   }) : super(key: key);
 
   final String label;
   final TextEditingController controller;
+  final Function update;
   final TextInputType textInputType;
 
   @override
@@ -20,6 +22,10 @@ class InputField extends StatelessWidget {
         controller: controller,
         style: Theme.of(context).textTheme.bodyText1,
         keyboardType: textInputType,
+        // onChanged: (value) {
+        //   if (value == '') value = null;
+        //   update(value);
+        // },
         decoration: InputDecoration(
           labelText: label,
           labelStyle: Theme.of(context).textTheme.subtitle1,
