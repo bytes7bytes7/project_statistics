@@ -29,7 +29,7 @@ var lightTheme = ThemeData(
       color: ConstantColors.shadowColor,
     ),
     bodyText2: TextStyle(
-      fontSize: 18,
+      fontSize: 19,
       fontWeight: FontWeight.w400,
       color: ConstantColors.shadowColor,
     ),

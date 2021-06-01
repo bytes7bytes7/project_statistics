@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_statistics/bloc/bloc.dart';
 import 'package:project_statistics/bloc/project_bloc.dart';
 import 'package:project_statistics/models/project.dart';
+import 'package:project_statistics/services/project_sort_service.dart';
 import '../constants.dart';
 import 'global/global_parameters.dart';
 import 'project_info_screen.dart';
@@ -157,63 +158,90 @@ class _ContentTable extends StatelessWidget {
                         (rowIndex) {
                           return Row(
                             children: List.generate(
-                                ConstantData.appProjectParameterNames.length,
-                                (columnIndex) {
-                              String text;
-                              Function onTap;
-                              if (rowIndex == 0) {
-                                text = ConstantData
-                                    .appProjectParameterNames[columnIndex];
-                                onTap = () {
-                                  print('head');
-                                };
-                              } else {
-                                if(columnIndex==0){
-                                  text = projects[rowIndex-1].title;
-                                }else if(columnIndex==1){
-                                  text = projects[rowIndex-1].price.toString();
-                                }else if(columnIndex==2){
-                                  text = '${projects[rowIndex-1].startPeriod} - ${projects[rowIndex-1].endPeriod}';
-                                }else{
-                                  text = projects[rowIndex-1].status;
+                              ConstantData.appProjectParameterNames.length,
+                              (columnIndex) {
+                                String text;
+                                Function onTap;
+                                if (rowIndex == 0) {
+                                  text = ConstantData
+                                      .appProjectParameterNames[columnIndex];
+                                  if (columnIndex ==
+                                      ConstantData.appProjectParameterNames
+                                          .indexOf(GlobalParameters
+                                              .projectSortParamName)) {
+                                    text += ' ' +
+                                        ConstantData.appProjectSortDirection[
+                                            ConstantData
+                                                .appProjectParameterDirection
+                                                .indexOf(GlobalParameters
+                                                    .projectSortParamDirection)];
+                                  }
+                                  onTap = () {
+                                    if (columnIndex ==
+                                        ConstantData.appProjectParameterNames
+                                            .indexOf(GlobalParameters
+                                                .projectSortParamName)) {
+                                      GlobalParameters.projectSortParamDirection = ConstantData.appProjectParameterDirection[(ConstantData.appProjectParameterDirection.indexOf(GlobalParameters.projectSortParamDirection)-1).abs()];
+                                    } else {
+                                      GlobalParameters.projectSortParamName =
+                                          text;
+                                    }
+                                    ProjectSortService.sortProjectsBy(projects);
+                                    update.value = !update.value;
+                                  };
+                                } else {
+                                  if (columnIndex == 0) {
+                                    text = projects[rowIndex - 1].title;
+                                  } else if (columnIndex == 1) {
+                                    text =
+                                        projects[rowIndex - 1].price.toString();
+                                  } else if (columnIndex == 2) {
+                                    text = projects[rowIndex - 1].status;
+                                  } else {
+                                    text =
+                                    '${projects[rowIndex - 1].startPeriod} - ${projects[rowIndex - 1].endPeriod}';
+                                  }
+                                  onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return ProjectInfoScreen(
+                                            str: 'Проект',
+                                            project: projects[rowIndex - 1],
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  };
                                 }
-                                onTap = () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return ProjectInfoScreen(
-                                        str: 'Проект',
-                                        project: projects[rowIndex-1],
-                                      );
-                                    }),
-                                  );
-                                };
-                              }
-                              return Material(
-                                child: InkWell(
-                                  onTap: onTap,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.all(0),
-                                    width: 140.0,
-                                    height: 40.0,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).focusColor,
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .shadowColor
-                                            .withOpacity(0.2),
+                                return Material(
+                                  child: InkWell(
+                                    onTap: onTap,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.all(0),
+                                      width: 140.0,
+                                      height: 40.0,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).focusColor,
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .shadowColor
+                                              .withOpacity(0.2),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        text,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
                                       ),
                                     ),
-                                    child: Text(
-                                      text,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2,
-                                    ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                              },
+                            ),
                           );
                         },
                       ),
