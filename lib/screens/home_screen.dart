@@ -32,6 +32,7 @@ class HomeScreen extends StatelessWidget {
               return BottomNavigationBarItem(
                 icon: Icon(
                   destination.icon,
+                  size: 22,
                   color: (ConstantData
                               .appDestinations[
                                   ConstantData.currentPageIndex.value]

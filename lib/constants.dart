@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/custom_icons/navigation_bar_icons.dart';
 
 import 'database/database_helper.dart';
 import 'models/destination.dart';
@@ -7,6 +8,7 @@ import 'screens/analysis_chart_screen.dart';
 import 'screens/project_list_screen.dart';
 import 'screens/result_screen.dart';
 import 'screens/start_screen.dart';
+import 'custom_icons/navigation_bar_icons.dart';
 
 abstract class Permission {
   // static String filename = '/permission.txt';
@@ -184,27 +186,27 @@ abstract class ConstantData {
     Destination(
       name: 'start',
       screen: StartScreen(),
-      icon: Icons.not_started_outlined,
+      icon: NavigationBarIcons.play_circled,
     ),
     Destination(
       name: 'project_list',
       screen: ProjectListScreen(),
-      icon: Icons.table_chart_outlined,
+      icon: NavigationBarIcons.clipboard_list,
     ),
     Destination(
       name: 'chart',
       screen: AnalysisChartScreen(),
-      icon: Icons.bar_chart,
+      icon: NavigationBarIcons.chart_bar,
     ),
     Destination(
       name: 'result',
       screen: ResultScreen(),
-      icon: Icons.list_alt_outlined,
+      icon: NavigationBarIcons.checklist,
     ),
     Destination(
       name: 'something',
       screen: Scaffold(),
-      icon: Icons.help_outline_outlined,
+      icon: NavigationBarIcons.question_circle,
     ),
   ];
 }

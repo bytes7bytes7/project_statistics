@@ -32,7 +32,9 @@ dependencies:
   path_provider: ^2.0.2
   charts_common: ^0.9.0
   charts_flutter: ^0.9.0
-  http: ^0.13.3
+  excel: ^1.1.5
+  file_picker: ^3.0.2+2
+  permission_handler: ^8.0.0+2
 
 dev_dependencies:
   flutter_test:
@@ -79,3 +81,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: NavigationBarIcons
+      fonts:
+        - asset: fonts/navigation_bar_icons.ttf

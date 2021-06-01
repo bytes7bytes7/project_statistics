@@ -27,29 +27,32 @@ class ChooseField extends StatelessWidget {
               style: Theme.of(context).textTheme.headline2,
             ),
           ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10,vertical: 14),
           content: SingleChildScrollView(
             child: ListBody(
               children: group.map<Widget>((e) {
-                return ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  leading: Radio(
-                    value: e,
-                    groupValue: controller.text,
-                    onChanged: (value) {
-                      controller.text = e;
-                      Navigator.pop(context);
-                    },
-                  ),
-                  title: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
+                return Card(
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: Radio(
+                      value: e,
+                      groupValue: controller.text,
+                      onChanged: (value) {
                         controller.text = e;
                         Navigator.pop(context);
                       },
-                      child: Text(
-                        e,
-                        style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    title: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          controller.text = e;
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          e,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                     ),
                   ),
