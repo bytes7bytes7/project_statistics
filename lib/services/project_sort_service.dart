@@ -42,6 +42,15 @@ abstract class ProjectSortService {
               .sort((a, b) => ConstantData.appMonths.indexOf(b.startPeriod).compareTo(ConstantData.appMonths.indexOf(a.startPeriod)));
         }
         break;
+      case 4:
+        if(ConstantData.appProjectParameterDirection.indexOf(GlobalParameters.projectSortParamDirection) == 0){
+          projects
+              .sort((a, b) => a.complete.toLowerCase().compareTo(b.complete.toLowerCase()));
+        }else{
+          projects
+              .sort((a, b) => b.complete.toLowerCase().compareTo(a.complete.toLowerCase()));
+        }
+        break;
       default:
         throw Exception('Implement it!!! Because this type of sort is not implemented yet!');
     }

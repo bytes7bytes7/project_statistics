@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../bloc/bloc.dart';
-import '../bloc/project_bloc.dart';
+import '../widgets/bookmark_clipper.dart';
 import '../widgets/flat_small_button.dart';
 import '../widgets/loading_circle.dart';
+import '../bloc/bloc.dart';
+import '../bloc/project_bloc.dart';
 import '../models/project.dart';
 import '../services/project_sort_service.dart';
 import '../constants.dart';
@@ -200,9 +201,11 @@ class _ContentTable extends StatelessWidget {
                                         projects[rowIndex - 1].price.toString();
                                   } else if (columnIndex == 2) {
                                     text = projects[rowIndex - 1].status;
-                                  } else {
+                                  } else if (columnIndex == 3) {
                                     text =
                                         '${projects[rowIndex - 1].startPeriod} - ${projects[rowIndex - 1].endPeriod}';
+                                  } else {
+                                    text = projects[rowIndex - 1].complete;
                                   }
                                   onTap = () {
                                     Navigator.push(
@@ -221,6 +224,9 @@ class _ContentTable extends StatelessWidget {
                                 return _ProjectCell(
                                   text: text,
                                   onTap: onTap,
+                                  complete: (rowIndex > 0)
+                                      ? projects[rowIndex - 1].complete
+                                      : null,
                                 );
                               },
                             ),
@@ -244,13 +250,66 @@ class _ProjectCell extends StatelessWidget {
     Key key,
     @required this.text,
     @required this.onTap,
+    @required this.complete,
   }) : super(key: key);
 
   final String text;
   final Function onTap;
+  final String complete;
 
   @override
   Widget build(BuildContext context) {
+    // Size size = Size(170, 40);
+    // return Material(
+    //   child: InkWell(
+    //     onTap: onTap,
+    //     child: Container(
+    //       margin: EdgeInsets.all(0),
+    //       height: size.height,
+    //       width: size.width,
+    //       child: Stack(
+    //         children: [
+    //           Container(
+    //             alignment: Alignment.center,
+    //             padding: const EdgeInsets.symmetric(horizontal: 4),
+    //             height: size.height,
+    //             width: double.infinity,
+    //             decoration: BoxDecoration(
+    //               color: Theme.of(context).focusColor,
+    //               border: Border.all(
+    //                 color: Theme.of(context).shadowColor.withOpacity(0.2),
+    //               ),
+    //             ),
+    //             child: Text(
+    //               text,
+    //               style: Theme.of(context).textTheme.bodyText2,
+    //               overflow: TextOverflow.ellipsis,
+    //             ),
+    //           ),
+    //           Positioned(
+    //             child: ClipPath(
+    //               child: Container(
+    //                 height: size.height,
+    //                 color: (complete == null)
+    //                     ? Colors.transparent
+    //                     : (complete == ConstantData.projectCompleteStatuses[0])
+    //                         ? Colors.transparent
+    //                         : (complete ==
+    //                                 ConstantData.projectCompleteStatuses[1])
+    //                             ? Theme.of(context).primaryColor
+    //                             : Theme.of(context).errorColor,
+    //               ),
+    //               clipper: BookmarkClipper(
+    //                 ratio: 0.07,
+    //                 offset: 5,
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
     return Material(
       child: InkWell(
         onTap: onTap,
@@ -261,7 +320,11 @@ class _ProjectCell extends StatelessWidget {
           width: 170.0,
           height: 40.0,
           decoration: BoxDecoration(
-            color: Theme.of(context).focusColor,
+            color: (complete == ConstantData.projectCompleteStatuses[1])
+                ? Theme.of(context).primaryColor.withOpacity(0.4)
+                : (complete == ConstantData.projectCompleteStatuses[2])
+                    ? Theme.of(context).errorColor.withOpacity(0.4)
+                    : Theme.of(context).focusColor,
             border: Border.all(
               color: Theme.of(context).shadowColor.withOpacity(0.2),
             ),

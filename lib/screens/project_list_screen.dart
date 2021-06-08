@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/bookmark_clipper.dart';
 import '../widgets/flat_small_button.dart';
 import '../widgets/sort_bar.dart';
 import '../widgets/loading_circle.dart';
@@ -243,41 +244,20 @@ class _ProjectCard extends StatelessWidget {
                 height: size.height,
                 color: (project.complete ==
                         ConstantData.projectCompleteStatuses[0])
-                    ? Theme.of(context).focusColor
+                    ? Colors.transparent
                     : (project.complete ==
                             ConstantData.projectCompleteStatuses[1])
                         ? Theme.of(context).primaryColor
                         : Theme.of(context).errorColor,
               ),
-              clipper: BookmarkClipper(),
+              clipper: BookmarkClipper(
+                ratio: 0.07,
+                offset: 10,
+              ),
             ),
           ),
         ],
       ),
     );
-  }
-}
-
-class BookmarkClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    double offset = 10;
-    double ratio = 0.07;
-    Path path = Path();
-    path.moveTo(0, size.width * ratio);
-    path.lineTo(size.width * ratio, 0);
-    path.lineTo(size.width * ratio + offset, 0);
-    path.lineTo(0, size.width * ratio + offset);
-    path.lineTo(0, size.height * ratio);
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    /*
-    Return true if you need to change orientation
-     */
-    return true;
   }
 }

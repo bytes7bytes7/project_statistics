@@ -76,6 +76,7 @@ abstract class ConstantData {
     'Сумма',
     'Статус',
     'Срок',
+    'Завершенность',
   ];
   static const List<String> appProjectParameterDirection = [
     'По возрастанию',
