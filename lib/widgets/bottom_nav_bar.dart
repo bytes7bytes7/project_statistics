@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../database/database_helper.dart';
+import '../models/plan.dart';
 import '../bloc/bloc.dart';
 import '../constants.dart';
 import '../global/global_parameters.dart';
@@ -11,6 +13,12 @@ class BottomNavBar extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
+  Future planComplete() async {
+    Plan _plan = await DatabaseHelper.db.getPlan();
+    if (_plan.prize == null) return false;
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -20,7 +28,7 @@ class BottomNavBar extends StatelessWidget {
       showSelectedLabels: false,
       showUnselectedLabels: false,
       onTap: (int index) async {
-        bool result = await Permission.planComplete();
+        bool result = await planComplete();
         bool equal = true;
         // Plan originalPlan = await GlobalParameters.originalPlan;
         // Plan newPlan = GlobalParameters.newPlan;

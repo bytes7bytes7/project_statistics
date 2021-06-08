@@ -9,20 +9,27 @@ void showInfoSnackBar({
     SnackBar(
       backgroundColor: Theme.of(context).primaryColor.withOpacity(0.8),
       duration: const Duration(seconds: 1),
-      content: Row(
-        children: [
-          Text(
-            info,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  color: Theme.of(context).focusColor,
-                ),
-          ),
-          Spacer(),
-          Icon(
-            icon,
-            color: Theme.of(context).focusColor,
-          ),
-        ],
+      content: Container(
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                info,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(color: Theme.of(context).focusColor),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Icon(
+              icon,
+              color: Theme.of(context).focusColor,
+            ),
+          ],
+        ),
       ),
     ),
   );

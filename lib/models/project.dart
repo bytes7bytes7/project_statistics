@@ -15,6 +15,11 @@ class Project {
   String startPeriod;
   String endPeriod;
 
+  @override
+  String toString(){
+    return 'Project(id: $id, title: $title, status: $status, price: $price, startPeriod: $startPeriod, endPeriod: $endPeriod)';
+  }
+
   Project.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     title = map['title'];

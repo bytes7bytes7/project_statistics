@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/services/excel_helper.dart';
 
 import '../widgets/choose_field.dart';
 import '../widgets/flat_small_button.dart';
@@ -14,7 +15,6 @@ import '../database/database_helper.dart';
 import '../models/plan.dart';
 import '../constants.dart';
 import '../global/global_parameters.dart';
-
 
 class StartScreen extends StatelessWidget {
   @override
@@ -189,7 +189,6 @@ class __ContentListState extends State<_ContentList> {
   @override
   void dispose() {
     Bloc.bloc.planBloc.dispose();
-
     quantityController_1.dispose();
     quantityController_2.dispose();
     quantityController_3.dispose();
@@ -202,6 +201,46 @@ class __ContentListState extends State<_ContentList> {
     endPeriodController.dispose();
     prizeController.dispose();
     super.dispose();
+  }
+
+  Future<bool> save() async {
+    if (quantityController_1.text.isNotEmpty &&
+        quantityController_2.text.isNotEmpty &&
+        quantityController_3.text.isNotEmpty &&
+        quantityController_4.text.isNotEmpty &&
+        amountController_1.text.isNotEmpty &&
+        amountController_2.text.isNotEmpty &&
+        amountController_3.text.isNotEmpty &&
+        amountController_4.text.isNotEmpty &&
+        startPeriodController.text.isNotEmpty &&
+        endPeriodController.text.isNotEmpty &&
+        prizeController.text.isNotEmpty) {
+      widget.plan
+        ..quantity = [
+          int.parse(quantityController_1.text),
+          int.parse(quantityController_2.text),
+          int.parse(quantityController_3.text),
+          int.parse(quantityController_4.text),
+        ]
+        ..amount = [
+          double.parse(amountController_1.text),
+          double.parse(amountController_2.text),
+          double.parse(amountController_3.text),
+          double.parse(amountController_4.text),
+        ]
+        ..startPeriod = startPeriodController.text
+        ..endPeriod = endPeriodController.text
+        ..prize = double.parse(prizeController.text);
+      Bloc.bloc.planBloc.updatePlan(widget.plan);
+      return true;
+    } else {
+      showInfoSnackBar(
+        context: context,
+        info: 'Заполните все поля',
+        icon: Icons.warning_amber_outlined,
+      );
+      return false;
+    }
   }
 
   @override
@@ -228,8 +267,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.quantity[1] =
-                    int.parse(quantityController_2.text);
+                  GlobalParameters.newPlan.quantity[1] =
+                      int.parse(quantityController_2.text);
               },
             ),
             InputField(
@@ -238,8 +277,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.quantity[2] =
-                    int.parse(quantityController_3.text);
+                  GlobalParameters.newPlan.quantity[2] =
+                      int.parse(quantityController_3.text);
               },
             ),
             InputField(
@@ -248,8 +287,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.quantity[3] =
-                    int.parse(quantityController_4.text);
+                  GlobalParameters.newPlan.quantity[3] =
+                      int.parse(quantityController_4.text);
               },
             ),
           ],
@@ -263,8 +302,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.amount[0] =
-                    double.parse(amountController_1.text);
+                  GlobalParameters.newPlan.amount[0] =
+                      double.parse(amountController_1.text);
               },
             ),
             InputField(
@@ -273,8 +312,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.amount[1] =
-                    double.parse(amountController_2.text);
+                  GlobalParameters.newPlan.amount[1] =
+                      double.parse(amountController_2.text);
               },
             ),
             InputField(
@@ -283,8 +322,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.amount[2] =
-                    double.parse(amountController_3.text);
+                  GlobalParameters.newPlan.amount[2] =
+                      double.parse(amountController_3.text);
               },
             ),
             InputField(
@@ -293,8 +332,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.amount[3] =
-                    double.parse(amountController_4.text);
+                  GlobalParameters.newPlan.amount[3] =
+                      double.parse(amountController_4.text);
               },
             ),
           ],
@@ -329,8 +368,8 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
-                GlobalParameters.newPlan.prize =
-                    double.parse(prizeController.text);
+                  GlobalParameters.newPlan.prize =
+                      double.parse(prizeController.text);
               },
             ),
           ],
@@ -341,47 +380,18 @@ class __ContentListState extends State<_ContentList> {
         ),
         OutlinedWideButton(
           title: 'Экспорт',
-          onTap: () {},
+          onTap: () async{
+            // TODO: check if plan exists before export data
+            if(await save()){
+              ExcelHelper.exportToExcel(context, 'filename');
+            }
+          },
         ),
         FlatWideButton(
           title: 'Готово',
-          onTap: () async {
-            if (quantityController_1.text.isNotEmpty &&
-                quantityController_2.text.isNotEmpty &&
-                quantityController_3.text.isNotEmpty &&
-                quantityController_4.text.isNotEmpty &&
-                amountController_1.text.isNotEmpty &&
-                amountController_2.text.isNotEmpty &&
-                amountController_3.text.isNotEmpty &&
-                amountController_4.text.isNotEmpty &&
-                startPeriodController.text.isNotEmpty &&
-                endPeriodController.text.isNotEmpty &&
-                prizeController.text.isNotEmpty) {
-              widget.plan
-                ..quantity = [
-                  int.parse(quantityController_1.text),
-                  int.parse(quantityController_2.text),
-                  int.parse(quantityController_3.text),
-                  int.parse(quantityController_4.text),
-                ]
-                ..amount = [
-                  double.parse(amountController_1.text),
-                  double.parse(amountController_2.text),
-                  double.parse(amountController_3.text),
-                  double.parse(amountController_4.text),
-                ]
-                ..startPeriod = startPeriodController.text
-                ..endPeriod = endPeriodController.text
-                ..prize = double.parse(prizeController.text);
-              Bloc.bloc.planBloc.updatePlan(widget.plan);
-              GlobalParameters.currentPageIndex.value = 1;
-            } else {
-              showInfoSnackBar(
-                context: context,
-                info: 'Заполните все поля',
-                icon: Icons.warning_amber_outlined,
-              );
-            }
+          onTap: () {
+            save();
+            GlobalParameters.currentPageIndex.value = 1;
           },
         ),
       ],

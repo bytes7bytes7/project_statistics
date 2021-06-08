@@ -218,7 +218,7 @@ class __BodyState extends State<_Body> {
                     info: 'Сохранено',
                     icon: Icons.done_all_outlined,
                   );
-                } else if (double.parse(widget.priceController.text) < 0) {
+                } else if (widget.priceController.text.isNotEmpty && double.parse(widget.priceController.text) < 0) {
                   showInfoSnackBar(
                     context: context,
                     info: 'Сумма отрицательна',

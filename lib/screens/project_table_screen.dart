@@ -224,30 +224,9 @@ class _ContentTable extends StatelessWidget {
                                     );
                                   };
                                 }
-                                return Material(
-                                  child: InkWell(
-                                    onTap: onTap,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.all(0),
-                                      width: 140.0,
-                                      height: 40.0,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).focusColor,
-                                        border: Border.all(
-                                          color: Theme.of(context)
-                                              .shadowColor
-                                              .withOpacity(0.2),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        text,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2,
-                                      ),
-                                    ),
-                                  ),
+                                return _ProjectCell(
+                                  text: text,
+                                  onTap: onTap,
                                 );
                               },
                             ),
@@ -266,68 +245,36 @@ class _ContentTable extends StatelessWidget {
   }
 }
 
-class _ProjectCard extends StatelessWidget {
-  const _ProjectCard({
+class _ProjectCell extends StatelessWidget {
+  const _ProjectCell({
     Key key,
-    @required this.project,
+    @required this.text,
+    @required this.onTap,
   }) : super(key: key);
 
-  final Project project;
+  final String text;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 10,
-          primary: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.all(0),
+          width: 140.0,
+          height: 40.0,
+          decoration: BoxDecoration(
+            color: Theme.of(context).focusColor,
+            border: Border.all(
+              color: Theme.of(context).shadowColor.withOpacity(0.2),
+            ),
           ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return ProjectInfoScreen(
-                str: 'Проект',
-                project: project,
-              );
-            }),
-          );
-        },
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  project.title,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                Spacer(),
-                Text(
-                  '${project.price} ₽',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  project.status,
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-                Spacer(),
-                Text(
-                  '${project.startPeriod} - ${project.endPeriod}',
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-              ],
-            ),
-          ],
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
         ),
       ),
     );
