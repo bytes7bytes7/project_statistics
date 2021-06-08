@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/models/project.dart';
-import 'package:project_statistics/screens/global/global_parameters.dart';
-import 'package:project_statistics/screens/widgets/flat_wide_button.dart';
-import 'package:project_statistics/services/project_sort_service.dart';
+
+import '../constants.dart';
+import '../models/project.dart';
+import '../global/global_parameters.dart';
+import '../services/project_sort_service.dart';
+import 'flat_wide_button.dart';
 
 class SortBar extends StatelessWidget {
   SortBar({

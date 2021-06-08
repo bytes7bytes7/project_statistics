@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/database/database_helper.dart';
-import 'package:project_statistics/models/plan.dart';
+
+import '../constants.dart';
+import '../database/database_helper.dart';
+import '../models/plan.dart';
 
 class GlobalParameters {
   static final ValueNotifier<int> currentPageIndex = ValueNotifier(0);

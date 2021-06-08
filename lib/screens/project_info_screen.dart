@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/bloc/bloc.dart';
-import 'package:project_statistics/screens/widgets/choose_field.dart';
-import 'package:project_statistics/screens/widgets/show_info_snack_bar.dart';
+
+import '../widgets/choose_field.dart';
+import '../widgets/show_info_snack_bar.dart';
+import '../widgets/flat_wide_button.dart';
+import '../widgets/input_field.dart';
+import '../widgets/outlined_wide_button.dart';
+import '../widgets/show_no_yes_dialog.dart';
+import '../bloc/bloc.dart';
 import '../constants.dart';
 import '../models/project.dart';
-import '../screens/widgets/flat_wide_button.dart';
-import '../screens/widgets/input_field.dart';
-import '../screens/widgets/outlined_wide_button.dart';
-import 'widgets/show_no_yes_dialog.dart';
 
 class ProjectInfoScreen extends StatefulWidget {
   ProjectInfoScreen({

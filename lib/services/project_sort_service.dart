@@ -1,6 +1,6 @@
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/models/project.dart';
-import 'package:project_statistics/screens/global/global_parameters.dart';
+import '../constants.dart';
+import '../models/project.dart';
+import '../global/global_parameters.dart';
 
 abstract class ProjectSortService {
   static sortProjectsBy(List<Project> projects) {

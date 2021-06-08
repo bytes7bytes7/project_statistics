@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:path/path.dart';
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/models/analysis_chart.dart';
-import 'package:project_statistics/models/plan.dart';
-import 'package:project_statistics/models/project.dart';
-import 'package:project_statistics/models/result.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../constants.dart';
+import '../models/analysis_chart.dart';
+import '../models/plan.dart';
+import '../models/project.dart';
+import '../models/result.dart';
 
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();

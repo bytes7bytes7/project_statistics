@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/bloc/bloc.dart';
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/screens/global/global_parameters.dart';
-import 'package:project_statistics/screens/widgets/show_no_yes_dialog.dart';
+
+import '../bloc/bloc.dart';
+import '../constants.dart';
+import '../global/global_parameters.dart';
+import 'show_no_yes_dialog.dart';
 import 'show_info_snack_bar.dart';
 
 class BottomNavBar extends StatelessWidget {

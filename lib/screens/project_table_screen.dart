@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/bloc/bloc.dart';
-import 'package:project_statistics/bloc/project_bloc.dart';
-import 'package:project_statistics/models/project.dart';
-import 'package:project_statistics/services/project_sort_service.dart';
+
+import '../bloc/bloc.dart';
+import '../bloc/project_bloc.dart';
+import '../widgets/flat_small_button.dart';
+import '../widgets/loading_circle.dart';
+import '../models/project.dart';
+import '../services/project_sort_service.dart';
 import '../constants.dart';
-import 'global/global_parameters.dart';
+import '../global/global_parameters.dart';
 import 'project_info_screen.dart';
-import 'widgets/flat_small_button.dart';
-import 'widgets/loading_circle.dart';
 
 class ProjectTableScreen extends StatelessWidget {
   @override
@@ -181,7 +182,15 @@ class _ContentTable extends StatelessWidget {
                                         ConstantData.appProjectParameterNames
                                             .indexOf(GlobalParameters
                                                 .projectSortParamName)) {
-                                      GlobalParameters.projectSortParamDirection = ConstantData.appProjectParameterDirection[(ConstantData.appProjectParameterDirection.indexOf(GlobalParameters.projectSortParamDirection)-1).abs()];
+                                      GlobalParameters
+                                          .projectSortParamDirection = ConstantData
+                                              .appProjectParameterDirection[
+                                          (ConstantData
+                                                      .appProjectParameterDirection
+                                                      .indexOf(GlobalParameters
+                                                          .projectSortParamDirection) -
+                                                  1)
+                                              .abs()];
                                     } else {
                                       GlobalParameters.projectSortParamName =
                                           text;
@@ -199,7 +208,7 @@ class _ContentTable extends StatelessWidget {
                                     text = projects[rowIndex - 1].status;
                                   } else {
                                     text =
-                                    '${projects[rowIndex - 1].startPeriod} - ${projects[rowIndex - 1].endPeriod}';
+                                        '${projects[rowIndex - 1].startPeriod} - ${projects[rowIndex - 1].endPeriod}';
                                   }
                                   onTap = () {
                                     Navigator.push(

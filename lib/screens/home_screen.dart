@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/screens/project_table_screen.dart';
-import 'widgets/bottom_nav_bar.dart';
-import 'global/global_parameters.dart';
+
+import '../constants.dart';
+import '../widgets/bottom_nav_bar.dart';
+import '../global/global_parameters.dart';
+import 'project_table_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override

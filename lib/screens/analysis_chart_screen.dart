@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/stacked_horizontal_bar_chart.dart';
-import 'package:project_statistics/bloc/analysis_chart_bloc.dart';
-import 'package:project_statistics/bloc/bloc.dart';
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/models/analysis_chart.dart';
-import 'package:project_statistics/screens/widgets/stacked_horizontal_bar_chart.dart';
-import 'package:project_statistics/screens/widgets/percent_bar.dart';
-import 'widgets/flat_small_button.dart';
-import 'widgets/loading_circle.dart';
+import '../widgets/stacked_horizontal_bar_chart.dart';
+import '../widgets/percent_bar.dart';
+import '../widgets/flat_small_button.dart';
+import '../widgets/loading_circle.dart';
+import '../bloc/analysis_chart_bloc.dart';
+import '../bloc/bloc.dart';
+import '../constants.dart';
+import '../models/analysis_chart.dart';
 
 class AnalysisChartScreen extends StatelessWidget {
   @override

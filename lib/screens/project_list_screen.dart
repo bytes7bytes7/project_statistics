@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/screens/global/global_parameters.dart';
+
+import '../widgets/flat_small_button.dart';
+import '../widgets/sort_bar.dart';
+import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/project_bloc.dart';
 import '../constants.dart';
 import '../models/project.dart';
-import '../screens/project_info_screen.dart';
-import '../screens/widgets/flat_small_button.dart';
-import '../screens/widgets/sort_bar.dart';
-import 'widgets/loading_circle.dart';
+import '../global/global_parameters.dart';
+import 'project_info_screen.dart';
 
 class ProjectListScreen extends StatelessWidget {
   @override

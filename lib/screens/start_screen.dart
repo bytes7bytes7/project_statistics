@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/bloc/bloc.dart';
-import 'package:project_statistics/bloc/plan_bloc.dart';
-import 'package:project_statistics/database/database_helper.dart';
-import 'package:project_statistics/models/plan.dart';
-import 'package:project_statistics/screens/global/global_parameters.dart';
-import 'package:project_statistics/screens/widgets/choose_field.dart';
-import 'package:project_statistics/screens/widgets/flat_small_button.dart';
-import 'package:project_statistics/screens/widgets/show_info_snack_bar.dart';
+
+import '../widgets/choose_field.dart';
+import '../widgets/flat_small_button.dart';
+import '../widgets/show_info_snack_bar.dart';
+import '../widgets/flat_wide_button.dart';
+import '../widgets/input_field.dart';
+import '../widgets/outlined_wide_button.dart';
+import '../widgets/plan_card.dart';
+import '../widgets/loading_circle.dart';
+import '../bloc/bloc.dart';
+import '../bloc/plan_bloc.dart';
+import '../database/database_helper.dart';
+import '../models/plan.dart';
 import '../constants.dart';
-import '../screens/widgets/flat_wide_button.dart';
-import '../screens/widgets/input_field.dart';
-import '../screens/widgets/outlined_wide_button.dart';
-import '../screens/widgets/plan_card.dart';
-import 'widgets/loading_circle.dart';
+import '../global/global_parameters.dart';
+
 
 class StartScreen extends StatelessWidget {
   @override

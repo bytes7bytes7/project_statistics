@@ -1,5 +1,4 @@
-import 'package:project_statistics/database/database_helper.dart';
-
+import '../database/database_helper.dart';
 import '../models/project.dart';
 
 class ProjectRepository {

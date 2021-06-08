@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:project_statistics/services/project_sort_service.dart';
-
 import '../models/project.dart';
 import '../repositories/project_repository.dart';
+import '../services/project_sort_service.dart';
 
 class ProjectBloc {
   ProjectBloc(this._repository);

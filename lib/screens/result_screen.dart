@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/bloc/bloc.dart';
-import 'package:project_statistics/bloc/result_bloc.dart';
-import 'package:project_statistics/constants.dart';
-import 'package:project_statistics/models/result.dart';
-import 'package:project_statistics/screens/widgets/flat_small_button.dart';
 
-import '../screens/widgets/input_field.dart';
-import 'widgets/loading_circle.dart';
-import 'widgets/result_info_line.dart';
+import '../widgets/flat_small_button.dart';
+import '../widgets/input_field.dart';
+import '../widgets/loading_circle.dart';
+import '../widgets/result_info_line.dart';
+import '../bloc/bloc.dart';
+import '../bloc/result_bloc.dart';
+import '../constants.dart';
+import '../models/result.dart';
 
 class ResultScreen extends StatelessWidget {
   @override
