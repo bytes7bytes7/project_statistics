@@ -44,7 +44,9 @@ class MeasureBeautifier {
 
   List<String> formatNumber(
       dynamic number, MeasureLevel level, String measure) {
-    String result = number.toString();
+    bool negative = number <0;
+    String result = number.abs().toString();
+    number = number.abs();
     MeasureBeautifier resultMeasure = MeasureBeautifier(level);
     if (number is int || number is double) {
       if (number >= 1000000 && level == MeasureLevel.unit) {
@@ -61,6 +63,9 @@ class MeasureBeautifier {
       }
     }
     result = truncateZero(result);
+    if(negative){
+      result = '-'+result;
+    }
     return [result, resultMeasure.toString() + measure];
   }
 }

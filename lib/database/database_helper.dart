@@ -72,7 +72,7 @@ class DatabaseHelper {
   // Plan methods
   Future addPlan(Plan plan) async {
     final db = await database;
-    plan.id=1;
+    plan.id = 1;
     await db.rawInsert(
       "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.id}, ${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?,?)",
       [
@@ -241,16 +241,20 @@ class DatabaseHelper {
           result['amount'] += proj['price'];
           result['quantity']++;
         }
-        result['until'] -= proj['price'];
       });
     }
 
     if (plan.isNotEmpty) {
-      plan.first['amount'].split(';').forEach((e) {
-        result['plan'] += double.parse(e);
-      });
-      result['until'] += result['plan'] * 1000000;
-      result['prize'] = plan.first['prize'];
+      result['plan'] += double.parse(plan.first['amount'].split(';')[3]);
+      result['until'] = result['plan'] * 1000000 - result['amount'];
+      if (result['until'] <= 0) {
+        result['prize'] = plan.first['prize'];
+      }
+    }
+
+    if (result['plan'] != 0) {
+      result['percent'] =
+          (100* result['amount'] / (result['plan'] * 1000000)).round();
     }
 
     return Result.fromMap(result);
