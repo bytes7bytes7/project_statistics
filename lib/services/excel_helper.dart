@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
 
+import '../bloc/bloc.dart';
 import '../models/project.dart';
 import '../models/plan.dart';
 import '../widgets/show_info_snack_bar.dart';
@@ -206,7 +207,6 @@ abstract class ExcelHelper {
               continue;
             }
           }
-
           Map<String, dynamic> map =
               Map<String, dynamic>.fromIterables(headerRow, values);
           plan = Plan.fromMap(map);
@@ -254,17 +254,11 @@ abstract class ExcelHelper {
           }
         }
       }
-      // for (var c in clients) {
-      //   print(c.toMap());
-      // }
-      // for (var f in fabrics) {
-      //   print(f.toMap());
-      // }
-      // for (var o in orders) {
-      //   print(o.toMap());
-      // }
-      // print(settings.toMap());
-      //Bloc.bloc.settingsBloc.importExcel(clients, fabrics, orders, settings);
+      print(plan);
+      for (var p in projects) {
+        print(p);
+      }
+      Bloc.bloc.planBloc.importExcel(plan, projects);
       showInfoSnackBar(
         context: context,
         info: 'Импорт завершен',

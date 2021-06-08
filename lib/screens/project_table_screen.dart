@@ -66,12 +66,6 @@ class _Body extends StatefulWidget {
 }
 
 class __BodyState extends State<_Body> {
-  // @override
-  // void dispose() {
-  //   Bloc.bloc.projectBloc.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -263,7 +257,7 @@ class _ProjectCell extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           margin: EdgeInsets.all(0),
-          width: 140.0,
+          width: 170.0,
           height: 40.0,
           decoration: BoxDecoration(
             color: Theme.of(context).focusColor,

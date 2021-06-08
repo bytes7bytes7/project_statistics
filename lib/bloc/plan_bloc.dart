@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../models/project.dart';
 import '../models/plan.dart';
 import '../repositories/plan_repository.dart';
 
@@ -11,7 +12,7 @@ class PlanBloc {
 
   Stream<PlanState> get plan {
     if (_planStreamController == null || _planStreamController.isClosed)
-      _planStreamController = StreamController<PlanState>();
+      _planStreamController = StreamController<PlanState>.broadcast();
     return _planStreamController.stream;
   }
 
@@ -36,6 +37,13 @@ class PlanBloc {
 
   void updatePlan(Plan plan) async{
     _repository.updatePlan(plan);
+  }
+
+  void importExcel(Plan plan, List<Project> projects)async{
+    _planStreamController.sink.add(PlanState._planLoading());
+    await _repository.importExcel(plan, projects).then((value) {
+      loadPlan();
+    });
   }
 }
 

@@ -188,7 +188,6 @@ class __ContentListState extends State<_ContentList> {
 
   @override
   void dispose() {
-    Bloc.bloc.planBloc.dispose();
     quantityController_1.dispose();
     quantityController_2.dispose();
     quantityController_3.dispose();
@@ -376,12 +375,13 @@ class __ContentListState extends State<_ContentList> {
         ),
         OutlinedWideButton(
           title: 'Импорт',
-          onTap: () {},
+          onTap: () {
+            ExcelHelper.importFromExcel(context);
+          },
         ),
         OutlinedWideButton(
           title: 'Экспорт',
           onTap: () async{
-            // TODO: check if plan exists before export data
             if(await save()){
               ExcelHelper.exportToExcel(context, 'filename');
             }

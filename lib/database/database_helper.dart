@@ -70,10 +70,7 @@ class DatabaseHelper {
   Future addPlan(Plan plan) async {
     final db = await database;
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData
-          .quantity}, ${ConstDBData.amount}, ${ConstDBData
-          .startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData
-          .prize}) VALUES (?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.prize}) VALUES (?,?,?,?,?)",
       [
         plan.quantity?.join(';'),
         plan.amount?.join(';'),
@@ -87,15 +84,13 @@ class DatabaseHelper {
   Future updatePlan(Plan plan) async {
     final db = await database;
     var map = plan.toMap();
-    List<Map<String, dynamic>> data =
-    await db.query(
-        "${ConstDBData.planTableName}", where: "${ConstDBData.id} = ?",
+    List<Map<String, dynamic>> data = await db.query(
+        "${ConstDBData.planTableName}",
+        where: "${ConstDBData.id} = ?",
         whereArgs: [1]);
     if (data.isNotEmpty) {
-      await db
-          .update(
-          "${ConstDBData.planTableName}", map, where: "${ConstDBData.id} = ?",
-          whereArgs: [1]);
+      await db.update("${ConstDBData.planTableName}", map,
+          where: "${ConstDBData.id} = ?", whereArgs: [1]);
     } else {
       await addPlan(plan);
     }
@@ -103,22 +98,24 @@ class DatabaseHelper {
 
   Future<Plan> getPlan() async {
     final db = await database;
-    List<Map<String, dynamic>> data =
-    await db.query(
-        "${ConstDBData.planTableName}", where: "${ConstDBData.id} = ?",
+    List<Map<String, dynamic>> data = await db.query(
+        "${ConstDBData.planTableName}",
+        where: "${ConstDBData.id} = ?",
         whereArgs: [1]);
     if (data.isNotEmpty) {
       Map<String, dynamic> m = Map<String, dynamic>.from(data.first);
       List<String> a = [];
       m[ConstDBData.quantity] = (m[ConstDBData.quantity].length > 0)
-          ? m[ConstDBData.quantity].split(';')
-          .map<int>((e) => int.parse(e))
-          .toList()
+          ? m[ConstDBData.quantity]
+              .split(';')
+              .map<int>((e) => int.parse(e))
+              .toList()
           : a;
       m[ConstDBData.amount] = (m[ConstDBData.amount].length > 0)
-          ? m[ConstDBData.amount].split(';')
-          .map<double>((e) => double.parse(e))
-          .toList()
+          ? m[ConstDBData.amount]
+              .split(';')
+              .map<double>((e) => double.parse(e))
+              .toList()
           : a;
       return Plan.fromMap(m);
     } else
@@ -127,8 +124,8 @@ class DatabaseHelper {
 
   Future deletePlan() async {
     final db = await database;
-    db.delete("${ConstDBData.planTableName}", where: "${ConstDBData.id} = ?",
-        whereArgs: [1]);
+    db.delete("${ConstDBData.planTableName}",
+        where: "${ConstDBData.id} = ?", whereArgs: [1]);
   }
 
   // Project methods
@@ -136,10 +133,7 @@ class DatabaseHelper {
     final db = await database;
     project.id = await _getMaxId(db, ConstDBData.projectTableName);
     await db.rawInsert(
-        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData
-            .id},${ConstDBData.title},${ConstDBData.status},${ConstDBData
-            .price}, ${ConstDBData.startPeriod}, ${ConstDBData
-            .endPeriod}) VALUES (?,?,?,?,?,?)",
+        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}) VALUES (?,?,?,?,?,?)",
         [
           project.id,
           project.title,
@@ -148,6 +142,26 @@ class DatabaseHelper {
           project.startPeriod,
           project.endPeriod,
         ]);
+  }
+
+  Future addAllProjects(List<Project> projects) async {
+    final db = await database;
+    int id = await _getMaxId(db, ConstDBData.projectTableName);
+    for (Project project in projects) {
+      project.id = id;
+      await db.rawInsert(
+        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}) VALUES (?,?,?,?,?,?)",
+        [
+          project.id,
+          project.title,
+          project.status,
+          project.price,
+          project.startPeriod,
+          project.endPeriod,
+        ],
+      );
+      id++;
+    }
   }
 
   Future updateProject(Project project) async {
@@ -159,29 +173,29 @@ class DatabaseHelper {
 
   Future<Project> getProject(int id) async {
     final db = await database;
-    List<Map<String, dynamic>> res = await db
-        .query(
-        "${ConstDBData.projectTableName}", where: "${ConstDBData.id} = ?",
+    List<Map<String, dynamic>> res = await db.query(
+        "${ConstDBData.projectTableName}",
+        where: "${ConstDBData.id} = ?",
         whereArgs: [id]);
     return res.isNotEmpty ? Project.fromMap(res.first) : Project();
   }
 
   Future<List<Project>> getAllProjects() async {
     final db = await database;
-    List<Map<String, dynamic>> res = await db.query(
-        "${ConstDBData.projectTableName}");
+    List<Map<String, dynamic>> res =
+        await db.query("${ConstDBData.projectTableName}");
     return res.isNotEmpty ? res.map((c) => Project.fromMap(c)).toList() : [];
   }
 
   Future deleteProject(int id) async {
     final db = await database;
-    db.delete("${ConstDBData.projectTableName}", where: "${ConstDBData.id} = ?",
-        whereArgs: [id]);
+    db.delete("${ConstDBData.projectTableName}",
+        where: "${ConstDBData.id} = ?", whereArgs: [id]);
   }
 
   Future deleteAllProjects() async {
     final db = await database;
-    db.rawDelete("DELETE * FROM ${ConstDBData.projectTableName}");
+    db.rawDelete("DELETE FROM ${ConstDBData.projectTableName}");
   }
 
   // Result methods
@@ -189,11 +203,11 @@ class DatabaseHelper {
     final db = await database;
     Map<String, dynamic> result = Result().toMap();
 
-    List<Map<String, dynamic>> projects = await db.query(
-        "${ConstDBData.projectTableName}");
-    List<Map<String, dynamic>> plan =
-    await db.query(
-        "${ConstDBData.planTableName}", where: "${ConstDBData.id} = ?",
+    List<Map<String, dynamic>> projects =
+        await db.query("${ConstDBData.projectTableName}");
+    List<Map<String, dynamic>> plan = await db.query(
+        "${ConstDBData.planTableName}",
+        where: "${ConstDBData.id} = ?",
         whereArgs: [1]);
 
     // сумма договоров
@@ -233,26 +247,26 @@ class DatabaseHelper {
   }
 
   // AnalysisChart methods
-  Future<AnalysisChart> getAnalysisChart(String startPeriod,
-      String endPeriod) async {
+  Future<AnalysisChart> getAnalysisChart(
+      String startPeriod, String endPeriod) async {
     final db = await database;
     Map<String, dynamic> result = AnalysisChart().toMap();
 
-    List<Map<String, dynamic>> projects = await db.query(
-        "${ConstDBData.projectTableName}");
-    List<Map<String, dynamic>> plan =
-    await db.query(
-        "${ConstDBData.planTableName}", where: "${ConstDBData.id} = ?",
+    List<Map<String, dynamic>> projects =
+        await db.query("${ConstDBData.projectTableName}");
+    List<Map<String, dynamic>> plan = await db.query(
+        "${ConstDBData.planTableName}",
+        where: "${ConstDBData.id} = ?",
         whereArgs: [1]);
 
     result['realQuantity'] =
-    List<int>.generate(ConstantData.appStatus.length, (index) => 0);
+        List<int>.generate(ConstantData.appStatus.length, (index) => 0);
     result['planQuantity'] =
-    List<int>.generate(ConstantData.appStatus.length, (index) => 0);
+        List<int>.generate(ConstantData.appStatus.length, (index) => 0);
     result['realAmount'] =
-    List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
+        List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
     result['planAmount'] =
-    List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
+        List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
 
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
@@ -267,10 +281,12 @@ class DatabaseHelper {
     }
 
     if (plan.isNotEmpty) {
-      result['planAmount'] = plan.first['amount'].split(';')
+      result['planAmount'] = plan.first['amount']
+          .split(';')
           .map<double>((e) => double.parse(e))
           .toList();
-      result['planQuantity'] = plan.first['quantity'].split(';')
+      result['planQuantity'] = plan.first['quantity']
+          .split(';')
           .map<int>((e) => int.parse(e))
           .toList();
     }
