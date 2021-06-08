@@ -5,6 +5,8 @@ class Plan {
     this.startPeriod,
     this.endPeriod,
     this.prize,
+    this.percent,
+    this.ratio,
   });
 
   List<int> quantity;
@@ -12,10 +14,12 @@ class Plan {
   String startPeriod;
   String endPeriod;
   double prize;
+  double percent;
+  double ratio;
 
   @override
-  String toString(){
-    return "Plan(quantity: $quantity, amount: $amount, startPeriod: $startPeriod, endPeriod: $endPeriod, prize: $prize)";
+  String toString() {
+    return "Plan(quantity: $quantity, amount: $amount, startPeriod: $startPeriod, endPeriod: $endPeriod, prize: $prize, percent: $percent, ratio: $ratio)";
   }
 
   @override
@@ -24,23 +28,24 @@ class Plan {
   @override
   bool operator ==(other) {
     for (int i = 0; i < quantity.length; i++) {
-      print('quantity');
       if (quantity[i] != other.quantity[i]) return false;
     }
     for (int i = 0; i < amount.length; i++) {
-      print('amount');
       if (amount[i] != other.amount[i]) return false;
     }
     if (startPeriod != other.startPeriod) {
-      print('startPeriod');
       return false;
     }
     if (endPeriod != other.endPeriod) {
-      print('endPeriod');
       return false;
     }
     if (prize != other.prize) {
-      print('prize');
+      return false;
+    }
+    if (percent != other.percent) {
+      return false;
+    }
+    if (ratio != other.ratio) {
       return false;
     }
     return true;
@@ -52,6 +57,8 @@ class Plan {
     startPeriod = map['startPeriod'];
     endPeriod = map['endPeriod'];
     prize = map['prize'];
+    percent = map['percent'];
+    ratio = map['ratio'];
   }
 
   Map<String, dynamic> toMap() {
@@ -62,6 +69,8 @@ class Plan {
       'startPeriod': startPeriod,
       'endPeriod': endPeriod,
       'prize': prize,
+      'percent': percent,
+      'ratio': ratio,
     };
   }
 }

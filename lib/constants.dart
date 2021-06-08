@@ -151,6 +151,8 @@ abstract class ConstDBData {
   static const String startPeriod = 'startPeriod';
   static const String endPeriod = 'endPeriod';
   static const String prize = 'prize';
+  static const String percent = 'percent';
+  static const String ratio = 'ratio';
 
   // Special columns for project
   static const String title = 'title';

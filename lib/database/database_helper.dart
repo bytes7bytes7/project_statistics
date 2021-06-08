@@ -38,7 +38,9 @@ class DatabaseHelper {
         ${ConstDBData.amount} TEXT,
         ${ConstDBData.startPeriod} TEXT,
         ${ConstDBData.endPeriod} TEXT,
-        ${ConstDBData.prize} REAL
+        ${ConstDBData.prize} REAL,
+        ${ConstDBData.percent} REAL,
+        ${ConstDBData.ratio} REAL
       )
     ''');
     await db.execute('''
@@ -70,13 +72,15 @@ class DatabaseHelper {
   Future addPlan(Plan plan) async {
     final db = await database;
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.prize}) VALUES (?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?)",
       [
         plan.quantity?.join(';'),
         plan.amount?.join(';'),
         plan.startPeriod,
         plan.endPeriod,
         plan.prize,
+        plan.percent,
+        plan.ratio,
       ],
     );
   }

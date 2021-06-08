@@ -141,6 +141,8 @@ class __ContentListState extends State<_ContentList> {
   TextEditingController startPeriodController;
   TextEditingController endPeriodController;
   TextEditingController prizeController;
+  TextEditingController percentController;
+  TextEditingController ratioController;
 
   @override
   void initState() {
@@ -183,6 +185,14 @@ class __ContentListState extends State<_ContentList> {
         text: (widget.plan.prize != null)
             ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
             : '');
+    percentController = TextEditingController(
+        text: (widget.plan.percent != null)
+            ? MeasureBeautifier().truncateZero(widget.plan.percent.toString())
+            : '');
+    ratioController = TextEditingController(
+        text: (widget.plan.ratio != null)
+            ? MeasureBeautifier().truncateZero(widget.plan.ratio.toString())
+            : '');
     super.initState();
   }
 
@@ -199,6 +209,8 @@ class __ContentListState extends State<_ContentList> {
     startPeriodController.dispose();
     endPeriodController.dispose();
     prizeController.dispose();
+    percentController.dispose();
+    ratioController.dispose();
     super.dispose();
   }
 
@@ -213,7 +225,9 @@ class __ContentListState extends State<_ContentList> {
         amountController_4.text.isNotEmpty &&
         startPeriodController.text.isNotEmpty &&
         endPeriodController.text.isNotEmpty &&
-        prizeController.text.isNotEmpty) {
+        prizeController.text.isNotEmpty &&
+        percentController.text.isNotEmpty &&
+        ratioController.text.isNotEmpty) {
       widget.plan
         ..quantity = [
           int.parse(quantityController_1.text),
@@ -229,7 +243,9 @@ class __ContentListState extends State<_ContentList> {
         ]
         ..startPeriod = startPeriodController.text
         ..endPeriod = endPeriodController.text
-        ..prize = double.parse(prizeController.text);
+        ..prize = double.parse(prizeController.text)
+        ..percent = double.parse(percentController.text)
+        ..ratio = double.parse(ratioController.text);
       Bloc.bloc.planBloc.updatePlan(widget.plan);
       return true;
     } else {
@@ -371,6 +387,26 @@ class __ContentListState extends State<_ContentList> {
                       double.parse(prizeController.text);
               },
             ),
+            InputField(
+              label: 'Стартовый %',
+              controller: percentController,
+              textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                  GlobalParameters.newPlan.percent =
+                      double.parse(percentController.text);
+              },
+            ),
+            InputField(
+              label: 'Коэффициент',
+              controller: ratioController,
+              textInputType: TextInputType.number,
+              update: (dynamic value) {
+                if (value != null)
+                  GlobalParameters.newPlan.ratio =
+                      double.parse(ratioController.text);
+              },
+            ),
           ],
         ),
         OutlinedWideButton(
@@ -381,16 +417,16 @@ class __ContentListState extends State<_ContentList> {
         ),
         OutlinedWideButton(
           title: 'Экспорт',
-          onTap: () async{
-            if(await save()){
+          onTap: () async {
+            if (await save()) {
               ExcelHelper.exportToExcel(context, 'filename');
             }
           },
         ),
         FlatWideButton(
           title: 'Готово',
-          onTap: () {
-            save();
+          onTap: ()async {
+            await save();
             GlobalParameters.currentPageIndex.value = 1;
           },
         ),

@@ -30,12 +30,6 @@ class BottomNavBar extends StatelessWidget {
       onTap: (int index) async {
         bool result = await planComplete();
         bool equal = true;
-        // Plan originalPlan = await GlobalParameters.originalPlan;
-        // Plan newPlan = GlobalParameters.newPlan;
-        // if(newPlan.quantity.isEmpty && newPlan.amount.isEmpty && newPlan.startPeriod == null && newPlan.endPeriod == null && newPlan.prize == null){
-        //   print('ok');
-        // }else if (!(GlobalParameters.newPlan == originalPlan) && ConstantData.currentPageIndex.value == 0)
-        //   equal = false;
         if (result && equal) {
           if(GlobalParameters.currentPageIndex.value != 1 && GlobalParameters.currentPageIndex.value!= -1 && Bloc.bloc.projectBloc.project != null){
             Bloc.bloc.projectBloc.dispose();
