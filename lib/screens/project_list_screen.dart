@@ -28,9 +28,7 @@ class ProjectListScreen extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.view_comfortable),
             onPressed: () {
-
-              GlobalParameters.currentPageIndex.value=-1;
-
+              GlobalParameters.currentPageIndex.value = -1;
             },
             tooltip: ConstantData.appToolTips['table'],
           ),
@@ -68,12 +66,6 @@ class _Body extends StatefulWidget {
 }
 
 class __BodyState extends State<_Body> {
-  // @override
-  // void dispose() {
-  //   Bloc.bloc.projectBloc.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -175,60 +167,117 @@ class _ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = Size(double.infinity, 90);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          elevation: 10,
-          primary: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15)),
+      child: Stack(
+        children: [
+          Container(
+            height: size.height,
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 10,
+                primary: Theme.of(context).focusColor,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return ProjectInfoScreen(
+                      str: 'Проект',
+                      project: project,
+                    );
+                  }),
+                );
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          project.title,
+                          style: Theme.of(context).textTheme.bodyText1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        '${project.price} ₽',
+                        style: Theme.of(context).textTheme.headline3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          project.status,
+                          style: Theme.of(context).textTheme.subtitle2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        '${project.startPeriod} - ${project.endPeriod}',
+                        style: Theme.of(context).textTheme.subtitle2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return ProjectInfoScreen(
-                str: 'Проект',
-                project: project,
-              );
-            }),
-          );
-        },
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  project.title,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                Spacer(),
-                Text(
-                  '${project.price} ₽',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ],
+          Positioned(
+            child: ClipPath(
+              child: Container(
+                height: size.height,
+                color: (project.complete ==
+                        ConstantData.projectCompleteStatuses[0])
+                    ? Theme.of(context).focusColor
+                    : (project.complete ==
+                            ConstantData.projectCompleteStatuses[1])
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).errorColor,
+              ),
+              clipper: BookmarkClipper(),
             ),
-            Row(
-              children: [
-                Text(
-                  project.status,
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-                Spacer(),
-                Text(
-                  '${project.startPeriod} - ${project.endPeriod}',
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class BookmarkClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    double offset = 10;
+    double ratio = 0.07;
+    Path path = Path();
+    path.moveTo(0, size.width * ratio);
+    path.lineTo(size.width * ratio, 0);
+    path.lineTo(size.width * ratio + offset, 0);
+    path.lineTo(0, size.width * ratio + offset);
+    path.lineTo(0, size.height * ratio);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    /*
+    Return true if you need to change orientation
+     */
+    return true;
   }
 }

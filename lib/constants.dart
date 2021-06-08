@@ -81,7 +81,7 @@ abstract class ConstantData {
     'По возрастанию',
     'По убыванию'
   ];
-  static const List<String> appProjectSortDirection =[
+  static const List<String> appProjectSortDirection = [
     '↑',
     '↓',
   ];
@@ -142,6 +142,7 @@ abstract class ConstantData {
 
 abstract class ConstDBData {
   static final databaseName = "data.db";
+
   // Increment this version when you need to change the schema.
   static final databaseVersion = 1;
 

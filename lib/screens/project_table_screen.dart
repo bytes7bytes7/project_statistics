@@ -257,6 +257,7 @@ class _ProjectCell extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           margin: EdgeInsets.all(0),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           width: 170.0,
           height: 40.0,
           decoration: BoxDecoration(
@@ -268,6 +269,7 @@ class _ProjectCell extends StatelessWidget {
           child: Text(
             text,
             style: Theme.of(context).textTheme.bodyText2,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
