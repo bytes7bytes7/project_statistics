@@ -60,7 +60,7 @@ class BottomNavBar extends StatelessWidget {
         return BottomNavigationBarItem(
           icon: Icon(
             destination.icon,
-            size: 22,
+            size: 25,
             color: (ConstantData
                         .appDestinations[(GlobalParameters.currentPageIndex.value==-1) ? 1 : GlobalParameters.currentPageIndex.value]
                         .name ==

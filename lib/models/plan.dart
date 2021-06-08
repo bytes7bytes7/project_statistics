@@ -1,5 +1,6 @@
 class Plan {
   Plan({
+    this.id,
     this.quantity,
     this.amount,
     this.startPeriod,
@@ -9,6 +10,7 @@ class Plan {
     this.ratio,
   });
 
+  int id;
   List<int> quantity;
   List<double> amount;
   String startPeriod;
@@ -19,7 +21,7 @@ class Plan {
 
   @override
   String toString() {
-    return "Plan(quantity: $quantity, amount: $amount, startPeriod: $startPeriod, endPeriod: $endPeriod, prize: $prize, percent: $percent, ratio: $ratio)";
+    return "Plan(id: $id, quantity: $quantity, amount: $amount, startPeriod: $startPeriod, endPeriod: $endPeriod, prize: $prize, percent: $percent, ratio: $ratio)";
   }
 
   @override
@@ -52,6 +54,7 @@ class Plan {
   }
 
   Plan.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
     quantity = map['quantity'];
     amount = map['amount'];
     startPeriod = map['startPeriod'];

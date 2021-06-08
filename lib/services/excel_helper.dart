@@ -79,6 +79,8 @@ abstract class ExcelHelper {
           ConstDBData.startPeriod,
           ConstDBData.endPeriod,
           ConstDBData.prize,
+          ConstDBData.percent,
+          ConstDBData.ratio,
         ];
         values = plan.toMap().values.toList();
         thisTable.appendRow(headerRow);
@@ -91,6 +93,7 @@ abstract class ExcelHelper {
           ConstDBData.price,
           ConstDBData.startPeriod,
           ConstDBData.endPeriod,
+          ConstDBData.complete,
         ];
         thisTable.appendRow(headerRow);
         for (int i = 0; i < projects.length; i++) {
@@ -207,6 +210,24 @@ abstract class ExcelHelper {
               continue;
             }
           }
+          if(values[6].isEmpty){
+            values[6]=0.0;
+          }else{
+            try{
+              values[6] = double.parse(values[6]);
+            }catch(error){
+              continue;
+            }
+          }
+          if(values[7].isEmpty){
+            values[7]=0.0;
+          }else{
+            try{
+              values[7] = double.parse(values[7]);
+            }catch(error){
+              continue;
+            }
+          }
           Map<String, dynamic> map =
               Map<String, dynamic>.fromIterables(headerRow, values);
           plan = Plan.fromMap(map);
@@ -246,6 +267,9 @@ abstract class ExcelHelper {
               continue;
             }
             if (values[5].isEmpty) {
+              continue;
+            }
+            if(values[6].isEmpty){
               continue;
             }
             Map<String, dynamic> map =

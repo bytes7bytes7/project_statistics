@@ -50,7 +50,8 @@ class DatabaseHelper {
         ${ConstDBData.status} TEXT,
         ${ConstDBData.price} INTEGER,
         ${ConstDBData.startPeriod} TEXT,
-        ${ConstDBData.endPeriod} TEXT
+        ${ConstDBData.endPeriod} TEXT,
+        ${ConstDBData.complete} TEXT
       )
     ''');
   }
@@ -71,9 +72,11 @@ class DatabaseHelper {
   // Plan methods
   Future addPlan(Plan plan) async {
     final db = await database;
+    plan.id=1;
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.id}, ${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?,?)",
       [
+        plan.id,
         plan.quantity?.join(';'),
         plan.amount?.join(';'),
         plan.startPeriod,
@@ -137,15 +140,17 @@ class DatabaseHelper {
     final db = await database;
     project.id = await _getMaxId(db, ConstDBData.projectTableName);
     await db.rawInsert(
-        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}) VALUES (?,?,?,?,?,?)",
-        [
-          project.id,
-          project.title,
-          project.status,
-          project.price,
-          project.startPeriod,
-          project.endPeriod,
-        ]);
+      "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
+      [
+        project.id,
+        project.title,
+        project.status,
+        project.price,
+        project.startPeriod,
+        project.endPeriod,
+        project.complete,
+      ],
+    );
   }
 
   Future addAllProjects(List<Project> projects) async {
@@ -154,7 +159,7 @@ class DatabaseHelper {
     for (Project project in projects) {
       project.id = id;
       await db.rawInsert(
-        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}) VALUES (?,?,?,?,?,?)",
+        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.startPeriod}, ${ConstDBData.endPeriod}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
         [
           project.id,
           project.title,
@@ -162,6 +167,7 @@ class DatabaseHelper {
           project.price,
           project.startPeriod,
           project.endPeriod,
+          project.complete,
         ],
       );
       id++;

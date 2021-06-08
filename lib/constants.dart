@@ -66,6 +66,11 @@ class MeasureBeautifier {
 }
 
 abstract class ConstantData {
+  static const List<String> projectCompleteStatuses = [
+    'не завершен',
+    'завершен',
+    'отменен',
+  ];
   static const List<String> appProjectParameterNames = [
     'Название',
     'Сумма',
@@ -158,4 +163,5 @@ abstract class ConstDBData {
   static const String title = 'title';
   static const String status = 'status';
   static const String price = 'price';
+  static const String complete = 'complete';
 }

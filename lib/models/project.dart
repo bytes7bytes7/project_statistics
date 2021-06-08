@@ -6,6 +6,7 @@ class Project {
     this.price,
     this.startPeriod,
     this.endPeriod,
+    this.complete,
   });
 
   int id;
@@ -14,10 +15,11 @@ class Project {
   int price;
   String startPeriod;
   String endPeriod;
+  String complete;
 
   @override
-  String toString(){
-    return 'Project(id: $id, title: $title, status: $status, price: $price, startPeriod: $startPeriod, endPeriod: $endPeriod)';
+  String toString() {
+    return 'Project(id: $id, title: $title, status: $status, price: $price, startPeriod: $startPeriod, endPeriod: $endPeriod, complete: $complete)';
   }
 
   Project.fromMap(Map<String, dynamic> map) {
@@ -27,6 +29,7 @@ class Project {
     price = map['price'];
     startPeriod = map['startPeriod'];
     endPeriod = map['endPeriod'];
+    complete = map['complete'];
   }
 
   Map<String, dynamic> toMap() {
@@ -37,6 +40,7 @@ class Project {
       'price': price,
       'startPeriod': startPeriod,
       'endPeriod': endPeriod,
+      'complete': complete,
     };
   }
 }
