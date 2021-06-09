@@ -171,8 +171,12 @@ class _ContentTable extends StatelessWidget {
                                   if (columnIndex == 0) {
                                     text = projects[rowIndex - 1].title;
                                   } else if (columnIndex == 1) {
-                                    text =
-                                        projects[rowIndex - 1].price.toString();
+                                    MeasureBeautifier()
+                                        .formatNumber(projects[rowIndex - 1].price, MeasureLevel.unit, 'руб.')
+                                        .reduce((a, b) {
+                                      text = '$a $b'.replaceAll('\n', '');
+                                      return;
+                                    });
                                   } else if (columnIndex == 2) {
                                     text = projects[rowIndex - 1].status;
                                   } else if (columnIndex == 3) {
