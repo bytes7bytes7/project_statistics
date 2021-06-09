@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/flat_small_button.dart';
+import '../widgets/empty_label.dart';
+import '../widgets/error_label.dart';
 import '../widgets/input_field.dart';
 import '../widgets/loading_circle.dart';
 import '../widgets/result_info_line.dart';
@@ -62,41 +63,24 @@ class __BodyState extends State<_Body> {
             Bloc.bloc.resultBloc.loadResult('', '');
             return SizedBox.shrink();
           } else if (snapshot.data is ResultLoadingState) {
-            return _buildLoading();
+            return LoadingCircle();
           } else if (snapshot.data is ResultDataState) {
             ResultDataState state = snapshot.data;
-            return _ContentList(result: state.result);
+            if(state.result.amount != null) {
+              return _ContentList(result: state.result);
+            }else{
+              return EmptyLabel();
+            }
           } else {
-            return _buildError();
+            return ErrorLabel(
+              error: snapshot.data.error,
+              stackTrace: snapshot.data.stackTrace,
+              onPressed: () {
+                Bloc.bloc.resultBloc.loadResult('', '');
+              },
+            );
           }
         },
-      ),
-    );
-  }
-
-  Widget _buildLoading() {
-    return Center(
-      child: LoadingCircle(),
-    );
-  }
-
-  Widget _buildError() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Ошибка',
-            style: Theme.of(context).textTheme.headline1,
-          ),
-          SizedBox(height: 20),
-          FlatSmallButton(
-            title: 'Обновить',
-            onTap: () {
-              Bloc.bloc.resultBloc.loadResult('', '');
-            },
-          ),
-        ],
       ),
     );
   }

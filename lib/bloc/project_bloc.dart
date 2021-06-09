@@ -26,6 +26,9 @@ class ProjectBloc {
       ProjectSortService.sortProjectsBy(projectList);
       if(!_projectStreamController.isClosed)
         _projectStreamController.sink.add(ProjectState._projectData(projectList));
+    }).onError((error, stackTrace) {
+      if (!_projectStreamController.isClosed)
+        _projectStreamController.sink.add(ProjectState._projectError(error,stackTrace));
     });
   }
 
@@ -58,11 +61,20 @@ class ProjectState {
   factory ProjectState._projectData(List<Project> projects) = ProjectDataState;
 
   factory ProjectState._projectLoading() = ProjectLoadingState;
+
+  factory ProjectState._projectError(Error error, StackTrace stackTrace) = ProjectErrorState;
 }
 
 class ProjectInitState extends ProjectState {}
 
 class ProjectLoadingState extends ProjectState {}
+
+class ProjectErrorState extends ProjectState {
+  ProjectErrorState(this.error, this.stackTrace);
+
+  final Error error;
+  final StackTrace stackTrace;
+}
 
 class ProjectDataState extends ProjectState {
   ProjectDataState(this.projects);

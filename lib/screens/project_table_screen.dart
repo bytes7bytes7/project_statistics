@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/bookmark_clipper.dart';
-import '../widgets/flat_small_button.dart';
+import '../widgets/empty_label.dart';
+import '../widgets/error_label.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/project_bloc.dart';
@@ -77,49 +77,23 @@ class __BodyState extends State<_Body> {
           Bloc.bloc.projectBloc.loadAllProjects();
           return SizedBox.shrink();
         } else if (snapshot.data is ProjectLoadingState) {
-          return _buildLoading();
+          return LoadingCircle();
         } else if (snapshot.data is ProjectDataState) {
           ProjectDataState state = snapshot.data;
           if (state.projects.length > 0)
             return _ContentTable(projects: state.projects);
           else
-            return Center(
-              child: Text(
-                'Пусто',
-                style: Theme.of(context).textTheme.headline2,
-              ),
-            );
+            return EmptyLabel();
         } else {
-          return _buildError();
-        }
-      },
-    );
-  }
-
-  Widget _buildLoading() {
-    return Center(
-      child: LoadingCircle(),
-    );
-  }
-
-  Widget _buildError() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Ошибка',
-            style: Theme.of(context).textTheme.headline1,
-          ),
-          SizedBox(height: 20),
-          FlatSmallButton(
-            title: 'Обновить',
-            onTap: () {
+          return ErrorLabel(
+            error: snapshot.data.error,
+            stackTrace: snapshot.data.stackTrace,
+            onPressed: () {
               Bloc.bloc.projectBloc.loadAllProjects();
             },
-          ),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 }

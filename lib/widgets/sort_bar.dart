@@ -129,11 +129,13 @@ class __SortDialogState extends State<_SortDialog> {
         ),
       );
     }).toList());
-    bodyWidgets.add(FlatWideButton(title: 'Применить', onTap: () {
-      ProjectSortService.sortProjectsBy(widget.projects);
-      widget.update.value = !widget.update.value;
-      Navigator.pop(context);
-    }));
+    bodyWidgets.add(FlatWideButton(
+        title: 'Применить',
+        onTap: () {
+          ProjectSortService.sortProjectsBy(widget.projects);
+          widget.update.value = !widget.update.value;
+          Navigator.pop(context);
+        }));
     return AlertDialog(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       title: Center(

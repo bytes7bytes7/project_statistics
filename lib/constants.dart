@@ -138,11 +138,11 @@ abstract class ConstantData {
       screen: ResultScreen(),
       icon: NavigationBarIcons.checklist,
     ),
-    Destination(
-      name: 'something',
-      screen: Scaffold(),
-      icon: NavigationBarIcons.question_circle,
-    ),
+    // Destination(
+    //   name: 'something',
+    //   screen: Scaffold(),
+    //   icon: NavigationBarIcons.question_circle,
+    // ),
   ];
 }
 

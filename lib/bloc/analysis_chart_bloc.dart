@@ -24,6 +24,9 @@ class AnalysisChartBloc {
     _repository.getAnalysisChart(startPeriod,endPeriod).then((analysisChart) {
       if (!_analysisChartStreamController.isClosed)
         _analysisChartStreamController.sink.add(AnalysisChartState._analysisChartData(analysisChart));
+    }).onError((error, stackTrace) {
+      if (!_analysisChartStreamController.isClosed)
+        _analysisChartStreamController.sink.add(AnalysisChartState._analysisChartError(error,stackTrace));
     });
   }
 }
@@ -34,11 +37,20 @@ class AnalysisChartState {
   factory AnalysisChartState._analysisChartData(AnalysisChart analysisChart) = AnalysisChartDataState;
 
   factory AnalysisChartState._analysisChartLoading() = AnalysisChartLoadingState;
+
+  factory AnalysisChartState._analysisChartError(Error error, StackTrace stackTrace) = AnalysisChartErrorState;
 }
 
 class AnalysisChartInitState extends AnalysisChartState {}
 
 class AnalysisChartLoadingState extends AnalysisChartState {}
+
+class AnalysisChartErrorState extends AnalysisChartState {
+  AnalysisChartErrorState(this.error, this.stackTrace);
+
+  final Error error;
+  final StackTrace stackTrace;
+}
 
 class AnalysisChartDataState extends AnalysisChartState {
   AnalysisChartDataState(this.analysisChart);

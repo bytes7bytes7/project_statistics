@@ -24,6 +24,9 @@ class ResultBloc {
     _repository.getResult(startPeriod,endPeriod).then((result) {
       if (!_resultStreamController.isClosed)
         _resultStreamController.sink.add(ResultState._resultData(result));
+    }).onError((error, stackTrace) {
+      if (!_resultStreamController.isClosed)
+        _resultStreamController.sink.add(ResultState._resultError(error,stackTrace));
     });
   }
 }
@@ -34,11 +37,20 @@ class ResultState {
   factory ResultState._resultData(Result result) = ResultDataState;
 
   factory ResultState._resultLoading() = ResultLoadingState;
+
+  factory ResultState._resultError(Error error, StackTrace stackTrace) = ResultErrorState;
 }
 
 class ResultInitState extends ResultState {}
 
 class ResultLoadingState extends ResultState {}
+
+class ResultErrorState extends ResultState {
+  ResultErrorState(this.error, this.stackTrace);
+
+  final Error error;
+  final StackTrace stackTrace;
+}
 
 class ResultDataState extends ResultState {
   ResultDataState(this.result);

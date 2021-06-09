@@ -17,22 +17,24 @@ class FlatSmallButton extends StatelessWidget {
       child: Material(
         child: InkWell(
           onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
+          child: FittedBox(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+              decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                width: 2,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                  width: 2,
+                ),
               ),
-            ),
-            child: Center(
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.headline2.copyWith(
-                      color: Theme.of(context).focusColor,
-                    ),
+              child: Center(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.headline2.copyWith(
+                        color: Theme.of(context).focusColor,
+                      ),
+                ),
               ),
             ),
           ),

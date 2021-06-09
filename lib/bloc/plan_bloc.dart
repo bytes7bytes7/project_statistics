@@ -25,6 +25,9 @@ class PlanBloc {
     _repository.getPlan().then((plan) {
       if (!_planStreamController.isClosed)
         _planStreamController.sink.add(PlanState._planData(plan));
+    }).onError((error, stackTrace) {
+      if (!_planStreamController.isClosed)
+        _planStreamController.sink.add(PlanState._planError(error,stackTrace));
     });
   }
 
@@ -53,11 +56,20 @@ class PlanState {
   factory PlanState._planData(Plan plan) = PlanDataState;
 
   factory PlanState._planLoading() = PlanLoadingState;
+
+  factory PlanState._planError(Error error, StackTrace stackTrace) = PlanErrorState;
 }
 
 class PlanInitState extends PlanState {}
 
 class PlanLoadingState extends PlanState {}
+
+class PlanErrorState extends PlanState {
+  PlanErrorState(this.error, this.stackTrace);
+
+  final Error error;
+  final StackTrace stackTrace;
+}
 
 class PlanDataState extends PlanState {
   PlanDataState(this.plan);

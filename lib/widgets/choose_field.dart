@@ -33,6 +33,10 @@ class ChooseField extends StatelessWidget {
               children: group.map<Widget>((e) {
                 return Card(
                   child: ListTile(
+                    onTap: () {
+                      controller.text = e;
+                      Navigator.pop(context);
+                    },
                     contentPadding: const EdgeInsets.all(0),
                     leading: Radio(
                       value: e,
@@ -42,18 +46,10 @@ class ChooseField extends StatelessWidget {
                         Navigator.pop(context);
                       },
                     ),
-                    title: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () {
-                          controller.text = e;
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          e,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
+                    title: Text(
+                      e,
+                      style: Theme.of(context).textTheme.bodyText1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 );

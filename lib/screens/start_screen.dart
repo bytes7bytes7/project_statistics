@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/services/excel_helper.dart';
 
+import '../services/excel_helper.dart';
+import '../widgets/empty_label.dart';
+import '../widgets/error_label.dart';
 import '../widgets/choose_field.dart';
-import '../widgets/flat_small_button.dart';
 import '../widgets/show_info_snack_bar.dart';
 import '../widgets/flat_wide_button.dart';
 import '../widgets/input_field.dart';
@@ -69,49 +70,23 @@ class __BodyState extends State<_Body> {
             Bloc.bloc.planBloc.loadPlan();
             return SizedBox.shrink();
           } else if (snapshot.data is PlanLoadingState) {
-            return _buildLoading();
+            return LoadingCircle();
           } else if (snapshot.data is PlanDataState) {
             PlanDataState state = snapshot.data;
             if (state.plan != null)
               return _ContentList(plan: state.plan);
             else
-              return Center(
-                child: Text(
-                  'Пусто',
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-              );
+              return EmptyLabel();
           } else {
-            return _buildError();
+            return ErrorLabel(
+              error: snapshot.data.error,
+              stackTrace: snapshot.data.stackTrace,
+              onPressed: () {
+                Bloc.bloc.planBloc.loadPlan();
+              },
+            );
           }
         },
-      ),
-    );
-  }
-
-  Widget _buildLoading() {
-    return Center(
-      child: LoadingCircle(),
-    );
-  }
-
-  Widget _buildError() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Ошибка',
-            style: Theme.of(context).textTheme.headline1,
-          ),
-          SizedBox(height: 20),
-          FlatSmallButton(
-            title: 'Обновить',
-            onTap: () {
-              Bloc.bloc.planBloc.loadPlan();
-            },
-          ),
-        ],
       ),
     );
   }

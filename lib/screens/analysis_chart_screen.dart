@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/error_label.dart';
+import '../widgets/empty_label.dart';
 import '../widgets/stacked_horizontal_bar_chart.dart';
 import '../widgets/percent_bar.dart';
-import '../widgets/flat_small_button.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/analysis_chart_bloc.dart';
 import '../bloc/bloc.dart';
@@ -64,44 +65,27 @@ class __BodyState extends State<_Body> {
           Bloc.bloc.analysisChartBloc.loadAnalysisChart('', '');
           return SizedBox.shrink();
         } else if (snapshot.data is AnalysisChartLoadingState) {
-          return _buildLoading();
+          return LoadingCircle();
         } else if (snapshot.data is AnalysisChartDataState) {
           AnalysisChartDataState state = snapshot.data;
           for(int i =0; i<state.analysisChart.realAmount.length;i++){
             state.analysisChart.realAmount[i]/=1000000;
           }
-          return ContentList(analysisChart: state.analysisChart);
+          if(state.analysisChart.realAmount.length > 0) {
+            return ContentList(analysisChart: state.analysisChart);
+          }else{
+            return EmptyLabel();
+          }
         } else {
-          return _buildError();
+          return ErrorLabel(
+            error: snapshot.data.error,
+            stackTrace: snapshot.data.stackTrace,
+            onPressed: () {
+              Bloc.bloc.analysisChartBloc.loadAnalysisChart('', '');
+            },
+          );
         }
       },
-    );
-  }
-
-  Widget _buildLoading() {
-    return Center(
-      child: LoadingCircle(),
-    );
-  }
-
-  Widget _buildError() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Ошибка',
-            style: Theme.of(context).textTheme.headline1,
-          ),
-          SizedBox(height: 20),
-          FlatSmallButton(
-            title: 'Обновить',
-            onTap: () {
-              Bloc.bloc.projectBloc.loadAllProjects();
-            },
-          ),
-        ],
-      ),
     );
   }
 }
