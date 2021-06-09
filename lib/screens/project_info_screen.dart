@@ -45,10 +45,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
 
     titleController = TextEditingController(text: widget.project.title);
     statusController = TextEditingController(text: widget.project.status);
-    priceController = TextEditingController(
-        text: (widget.project.price != null)
-            ? widget.project.price.toString()
-            : '');
+    priceController = TextEditingController();
+    priceController.text = widget.project.price?.toString();
     startPeriodController =
         TextEditingController(text: widget.project.startPeriod);
     endPeriodController = TextEditingController(text: widget.project.endPeriod);
@@ -135,8 +133,9 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             if (titleController.text != widget.project.title ||
                 statusController.text != widget.project.status ||
                 priceController.text !=
-                    MeasureBeautifier()
-                        .truncateZero(widget.project.price.toString()) ||
+                    widget.project.price.toString() &&
+                    !(!(priceController.text != '') &&
+                        !(widget.project.price != null)) ||
                 startPeriodController.text != widget.project.startPeriod ||
                 endPeriodController.text != widget.project.endPeriod ||
                 completeController.text != widget.project.complete) {
