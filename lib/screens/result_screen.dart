@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../global/global_parameters.dart';
 import '../widgets/choose_field.dart';
 import '../widgets/empty_label.dart';
-import '../widgets/error_label.dart';
 import '../widgets/loading_circle.dart';
+import '../widgets/error_label.dart';
 import '../widgets/result_info_line.dart';
 import '../bloc/bloc.dart';
 import '../bloc/result_bloc.dart';
@@ -35,8 +35,8 @@ class ResultScreen extends StatelessWidget {
             icon: const Icon(Icons.delete),
             tooltip: ConstantData.appToolTips['throw'],
             onPressed: () {
-              startPeriodController.text='';
-              endPeriodController.text='';
+              startPeriodController.text = '';
+              endPeriodController.text = '';
               GlobalParameters.resultFilterBorders[0] = '';
               GlobalParameters.resultFilterBorders[1] = '';
               Bloc.bloc.resultBloc.loadResult();
@@ -107,8 +107,8 @@ class __BodyState extends State<_Body> {
             if (state.result.amount != null) {
               return _ContentList(
                 result: state.result,
-                  startPeriodController: widget.startPeriodController,
-                  endPeriodController: widget.endPeriodController,
+                startPeriodController: widget.startPeriodController,
+                endPeriodController: widget.endPeriodController,
               );
             } else {
               return EmptyLabel();
