@@ -38,7 +38,6 @@ class PlanCard extends StatelessWidget {
             ),
             SizedBox(height: 15),
             for (var child in children) child,
-
           ],
         ),
       ),

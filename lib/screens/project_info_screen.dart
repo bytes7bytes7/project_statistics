@@ -131,6 +131,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             color: Theme.of(context).focusColor,
           ),
           onPressed: () {
+            FocusScope.of(context).requestFocus(FocusNode());
             if (titleController.text != widget.project.title ||
                 statusController.text != widget.project.status ||
                 priceController.text !=
@@ -163,6 +164,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
               color: Theme.of(context).focusColor,
             ),
             onPressed: () {
+              FocusScope.of(context).requestFocus(FocusNode());
               if (widget.project.id != null) {
                 showNoYesDialog(
                   context: context,
@@ -192,6 +194,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
               color: Theme.of(context).focusColor,
             ),
             onPressed: () async {
+              FocusScope.of(context).requestFocus(FocusNode());
               save();
             },
           ),
