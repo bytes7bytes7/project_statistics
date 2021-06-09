@@ -18,6 +18,25 @@ class AnalysisChart {
     planAmount = map['planAmount'];
   }
 
+  copy(AnalysisChart other){
+    realQuantity = [];
+    planQuantity = [];
+    realAmount = [];
+    planAmount = [];
+    for(var e in other.realQuantity){
+      realQuantity.add(e);
+    }
+    for(var e in other.planQuantity){
+      planQuantity.add(e);
+    }
+    for(var e in other.realAmount){
+      realAmount.add(e);
+    }
+    for(var e in other.planAmount){
+      planAmount.add(e);
+    }
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'realQuantity': realQuantity,

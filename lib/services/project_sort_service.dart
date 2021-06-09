@@ -1,5 +1,5 @@
-import '../constants.dart';
 import '../models/project.dart';
+import '../constants.dart';
 import '../global/global_parameters.dart';
 
 abstract class ProjectSortService {
@@ -54,6 +54,5 @@ abstract class ProjectSortService {
       default:
         throw Exception('Implement it!!! Because this type of sort is not implemented yet!');
     }
-
   }
 }

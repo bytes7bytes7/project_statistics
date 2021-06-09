@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/widgets/chart_filter.dart';
 
 import '../widgets/error_label.dart';
 import '../widgets/empty_label.dart';
@@ -28,8 +29,16 @@ class AnalysisChartScreen extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.filter_alt_outlined),
-              onPressed: () {},
               tooltip: ConstantData.appToolTips['filter'],
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return ChartFilter();
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -40,10 +49,6 @@ class AnalysisChartScreen extends StatelessWidget {
 }
 
 class _Body extends StatefulWidget {
-  const _Body({
-    Key key,
-  }) : super(key: key);
-
   @override
   __BodyState createState() => __BodyState();
 }
@@ -62,7 +67,7 @@ class __BodyState extends State<_Body> {
       initialData: AnalysisChartInitState(),
       builder: (context, snapshot) {
         if (snapshot.data is AnalysisChartInitState) {
-          Bloc.bloc.analysisChartBloc.loadAnalysisChart('', '');
+          Bloc.bloc.analysisChartBloc.loadAnalysisChart();
           return SizedBox.shrink();
         } else if (snapshot.data is AnalysisChartLoadingState) {
           return LoadingCircle();
@@ -72,7 +77,7 @@ class __BodyState extends State<_Body> {
             state.analysisChart.realAmount[i] /= 1000000;
           }
           if (state.analysisChart.realAmount.length > 0) {
-            return ContentList(analysisChart: state.analysisChart);
+            return _ContentList(analysisChart: state.analysisChart);
           } else {
             return EmptyLabel();
           }
@@ -81,7 +86,7 @@ class __BodyState extends State<_Body> {
             error: snapshot.data.error,
             stackTrace: snapshot.data.stackTrace,
             onPressed: () {
-              Bloc.bloc.analysisChartBloc.loadAnalysisChart('', '');
+              Bloc.bloc.analysisChartBloc.loadAnalysisChart();
             },
           );
         }
@@ -90,8 +95,8 @@ class __BodyState extends State<_Body> {
   }
 }
 
-class ContentList extends StatelessWidget {
-  const ContentList({
+class _ContentList extends StatelessWidget {
+  const _ContentList({
     Key key,
     @required this.analysisChart,
   }) : super(key: key);

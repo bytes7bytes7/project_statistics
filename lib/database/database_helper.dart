@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:path/path.dart';
+import 'package:project_statistics/global/global_parameters.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -233,8 +234,6 @@ class DatabaseHelper {
     // премия
     result['prize'] = 0.0;
 
-    // TODO: implement result['percent']
-
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         if (proj['status'] == ConstantData.appStatus[3]) {
@@ -254,15 +253,14 @@ class DatabaseHelper {
 
     if (result['plan'] != 0) {
       result['percent'] =
-          (100* result['amount'] / (result['plan'] * 1000000)).round();
+          (100 * result['amount'] / (result['plan'] * 1000000)).round();
     }
 
     return Result.fromMap(result);
   }
 
   // AnalysisChart methods
-  Future<AnalysisChart> getAnalysisChart(
-      String startPeriod, String endPeriod) async {
+  Future<AnalysisChart> getAnalysisChart() async {
     final db = await database;
     Map<String, dynamic> result = AnalysisChart().toMap();
 
@@ -284,12 +282,33 @@ class DatabaseHelper {
 
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
-        for (int i = 0; i < ConstantData.appStatus.length; i++) {
-          if (proj['status'] == ConstantData.appStatus[i]) {
+        int i = ConstantData.appStatus.indexOf(proj['status']);
+        if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
+            GlobalParameters.chartFilterBorders[1].isNotEmpty) {
+          if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
+                  ConstantData.appMonths
+                      .indexOf(GlobalParameters.chartFilterBorders[0]) &&
+              ConstantData.appMonths.indexOf(proj['endPeriod']) <=
+                  ConstantData.appMonths
+                      .indexOf(GlobalParameters.chartFilterBorders[1])) {
             result['realQuantity'][i]++;
             result['realAmount'][i] += proj['price'];
-            break;
           }
+        } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
+          if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
+              ConstantData.appMonths
+                  .indexOf(GlobalParameters.chartFilterBorders[0])) {
+            result['realQuantity'][i]++;
+            result['realAmount'][i] += proj['price'];
+          }
+        } else if (ConstantData.appMonths.indexOf(proj['endPeriod']) <=
+            ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[1])) {
+          result['realQuantity'][i]++;
+          result['realAmount'][i] += proj['price'];
+        } else {
+          result['realQuantity'][i]++;
+          result['realAmount'][i] += proj['price'];
         }
       });
     }

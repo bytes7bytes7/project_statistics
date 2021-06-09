@@ -19,9 +19,9 @@ class AnalysisChartBloc {
     _analysisChartStreamController.close();
   }
 
-  void loadAnalysisChart(String startPeriod, String endPeriod) async {
+  void loadAnalysisChart() async {
     _analysisChartStreamController.sink.add(AnalysisChartState._analysisChartLoading());
-    _repository.getAnalysisChart(startPeriod,endPeriod).then((analysisChart) {
+    _repository.getAnalysisChart().then((analysisChart) {
       if (!_analysisChartStreamController.isClosed)
         _analysisChartStreamController.sink.add(AnalysisChartState._analysisChartData(analysisChart));
     }).onError((error, stackTrace) {

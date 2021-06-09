@@ -9,6 +9,7 @@ class GlobalParameters {
   static String projectSortParamName = ConstantData.appProjectParameterNames[0];
   static String projectSortParamDirection =
       ConstantData.appProjectParameterDirection[0];
+  static List<String> chartFilterBorders = ['', ''];
 
   static Plan newPlan = Plan(quantity: [], amount: []);
 
