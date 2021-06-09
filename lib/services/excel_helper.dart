@@ -133,6 +133,7 @@ abstract class ExcelHelper {
       info: 'Экспорт завершен',
       icon: Icons.done_all_outlined,
     );
+    Navigator.pop(context);
   }
 
   static importFromExcel(BuildContext context) async {

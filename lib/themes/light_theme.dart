@@ -20,7 +20,7 @@ var lightTheme = ThemeData(
       color: ConstantColors.shadowColor,
     ),
     headline3: TextStyle(
-      fontSize: 27,
+      fontSize: 32,
       fontWeight: FontWeight.w400,
       color: ConstantColors.disabledColor,
     ),

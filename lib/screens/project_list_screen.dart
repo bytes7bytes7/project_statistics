@@ -143,14 +143,22 @@ class _ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = Size(double.infinity, 90);
+    String price, priceMeasure;
+    MeasureBeautifier()
+        .formatNumber(project.price, MeasureLevel.unit, 'руб.')
+        .reduce((a, b) {
+      price = a;
+      priceMeasure = b;
+      return;
+    });
+    Size size = Size(double.infinity, 100);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Stack(
         children: [
           Container(
             height: size.height,
-            width: double.infinity,
+             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 10,
@@ -186,12 +194,19 @@ class _ProjectCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${project.price} ₽',
+                        price,
                         style: Theme.of(context).textTheme.headline3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        priceMeasure,
+                        style: Theme.of(context).textTheme.subtitle2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

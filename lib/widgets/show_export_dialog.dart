@@ -24,9 +24,11 @@ Future<void> showExportDialog({BuildContext context, Function onDone}) async {
         },
         child: AlertDialog(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text(
-            'Экспорт',
-            style: Theme.of(context).textTheme.headline2,
+          title: Center(
+            child: Text(
+              'Экспорт',
+              style: Theme.of(context).textTheme.headline2,
+            ),
           ),
           content: SingleChildScrollView(
             child: ListBody(
@@ -45,7 +47,7 @@ Future<void> showExportDialog({BuildContext context, Function onDone}) async {
                     },
                     decoration: InputDecoration(
                       labelText: 'Название файла',
-                      labelStyle: Theme.of(context).textTheme.headline3,
+                      labelStyle: Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
                 ),
