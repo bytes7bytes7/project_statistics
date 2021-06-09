@@ -113,13 +113,6 @@ abstract class ExcelHelper {
       }
     }
 
-    // Print result
-    for (var table in excel.tables.keys) {
-      for (var row in excel.tables[table].rows) {
-        print(row);
-      }
-    }
-
     // Save excel
     excel.encode().then(
       (onValue) {
@@ -178,21 +171,23 @@ abstract class ExcelHelper {
           }
           if (values[1].isEmpty) {
             values[1] = <int>[];
-          }else{
+          } else {
             try {
               values[1] =
                   values[1].split(';').map<int>((e) => int.parse(e)).toList();
-            }catch(error){
+            } catch (error) {
               continue;
             }
           }
           if (values[2].isEmpty) {
             values[2] = <double>[];
-          }else{
+          } else {
             try {
-              values[2] =
-                  values[2].split(';').map<double>((e) => double.parse(e)).toList();
-            }catch(error){
+              values[2] = values[2]
+                  .split(';')
+                  .map<double>((e) => double.parse(e))
+                  .toList();
+            } catch (error) {
               continue;
             }
           }
@@ -202,30 +197,30 @@ abstract class ExcelHelper {
           if (values[4].isEmpty) {
             continue;
           }
-          if(values[5].isEmpty){
-            values[5]=0.0;
-          }else{
-            try{
+          if (values[5].isEmpty) {
+            values[5] = 0.0;
+          } else {
+            try {
               values[5] = double.parse(values[5]);
-            }catch(error){
+            } catch (error) {
               continue;
             }
           }
-          if(values[6].isEmpty){
-            values[6]=0.0;
-          }else{
-            try{
+          if (values[6].isEmpty) {
+            values[6] = 0.0;
+          } else {
+            try {
               values[6] = double.parse(values[6]);
-            }catch(error){
+            } catch (error) {
               continue;
             }
           }
-          if(values[7].isEmpty){
-            values[7]=0.0;
-          }else{
-            try{
+          if (values[7].isEmpty) {
+            values[7] = 0.0;
+          } else {
+            try {
               values[7] = double.parse(values[7]);
-            }catch(error){
+            } catch (error) {
               continue;
             }
           }
@@ -240,6 +235,7 @@ abstract class ExcelHelper {
           for (int i = 1; i < thisTable.rows.length; i++) {
             values =
                 thisTable.rows[i].map<dynamic>((e) => e.toString()).toList();
+
             if (values[0].isEmpty) {
               continue;
             } else {
@@ -270,7 +266,7 @@ abstract class ExcelHelper {
             if (values[5].isEmpty) {
               continue;
             }
-            if(values[6].isEmpty){
+            if (values[6].isEmpty) {
               continue;
             }
             Map<String, dynamic> map =
@@ -279,10 +275,7 @@ abstract class ExcelHelper {
           }
         }
       }
-      print(plan);
-      for (var p in projects) {
-        print(p);
-      }
+
       Bloc.bloc.planBloc.importExcel(plan, projects);
       showInfoSnackBar(
         context: context,

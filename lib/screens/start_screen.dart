@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/widgets/show_no_yes_dialog.dart';
 
 import '../widgets/show_export_dialog.dart';
 import '../services/excel_helper.dart';
@@ -19,6 +20,20 @@ import '../constants.dart';
 import '../global/global_parameters.dart';
 
 class StartScreen extends StatelessWidget {
+  final TextEditingController quantityController_1 = TextEditingController();
+  final TextEditingController quantityController_2 = TextEditingController();
+  final TextEditingController quantityController_3 = TextEditingController();
+  final TextEditingController quantityController_4 = TextEditingController();
+  final TextEditingController amountController_1 = TextEditingController();
+  final TextEditingController amountController_2 = TextEditingController();
+  final TextEditingController amountController_3 = TextEditingController();
+  final TextEditingController amountController_4 = TextEditingController();
+  final TextEditingController startPeriodController = TextEditingController();
+  final TextEditingController endPeriodController = TextEditingController();
+  final TextEditingController prizeController = TextEditingController();
+  final TextEditingController percentController = TextEditingController();
+  final TextEditingController ratioController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,11 +51,54 @@ class StartScreen extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.delete_forever_outlined),
             onPressed: () {
-              DatabaseHelper.db.dropBD();
+              showNoYesDialog(
+                context: context,
+                title: 'Удаление',
+                subtitle: 'Удалить все данные?',
+                noAnswer: () {
+                  Navigator.pop(context);
+                },
+                yesAnswer: () async {
+                  await DatabaseHelper.db.dropBD();
+                  quantityController_1.text = '';
+                  quantityController_2.text = '';
+                  quantityController_3.text = '';
+                  quantityController_4.text = '';
+                  amountController_1.text = '';
+                  amountController_2.text = '';
+                  amountController_3.text = '';
+                  amountController_4.text = '';
+                  startPeriodController.text = '';
+                  endPeriodController.text = '';
+                  prizeController.text = '';
+                  percentController.text = '';
+                  ratioController.text = '';
+                  showInfoSnackBar(
+                    context: context,
+                    info: 'Данные удалены',
+                    icon: Icons.done_all_outlined,
+                  );
+                  Navigator.pop(context);
+                },
+              );
             },
           ),
         ),
-        body: _Body(),
+        body: _Body(
+          quantityController_1: quantityController_1,
+          quantityController_2: quantityController_2,
+          quantityController_3: quantityController_3,
+          quantityController_4: quantityController_4,
+          amountController_1: amountController_1,
+          amountController_2: amountController_2,
+          amountController_3: amountController_3,
+          amountController_4: amountController_4,
+          startPeriodController: startPeriodController,
+          endPeriodController: endPeriodController,
+          prizeController: prizeController,
+          percentController: percentController,
+          ratioController: ratioController,
+        ),
       ),
     );
   }
@@ -49,7 +107,34 @@ class StartScreen extends StatelessWidget {
 class _Body extends StatefulWidget {
   const _Body({
     Key key,
+    @required this.quantityController_1,
+    @required this.quantityController_2,
+    @required this.quantityController_3,
+    @required this.quantityController_4,
+    @required this.amountController_1,
+    @required this.amountController_2,
+    @required this.amountController_3,
+    @required this.amountController_4,
+    @required this.startPeriodController,
+    @required this.endPeriodController,
+    @required this.prizeController,
+    @required this.percentController,
+    @required this.ratioController,
   }) : super(key: key);
+
+  final TextEditingController quantityController_1;
+  final TextEditingController quantityController_2;
+  final TextEditingController quantityController_3;
+  final TextEditingController quantityController_4;
+  final TextEditingController amountController_1;
+  final TextEditingController amountController_2;
+  final TextEditingController amountController_3;
+  final TextEditingController amountController_4;
+  final TextEditingController startPeriodController;
+  final TextEditingController endPeriodController;
+  final TextEditingController prizeController;
+  final TextEditingController percentController;
+  final TextEditingController ratioController;
 
   @override
   __BodyState createState() => __BodyState();
@@ -75,7 +160,22 @@ class __BodyState extends State<_Body> {
           } else if (snapshot.data is PlanDataState) {
             PlanDataState state = snapshot.data;
             if (state.plan != null)
-              return _ContentList(plan: state.plan);
+              return _ContentList(
+                plan: state.plan,
+                quantityController_1: widget.quantityController_1,
+                quantityController_2: widget.quantityController_2,
+                quantityController_3: widget.quantityController_3,
+                quantityController_4: widget.quantityController_4,
+                amountController_1: widget.amountController_1,
+                amountController_2: widget.amountController_2,
+                amountController_3: widget.amountController_3,
+                amountController_4: widget.amountController_4,
+                startPeriodController: widget.startPeriodController,
+                endPeriodController: widget.endPeriodController,
+                prizeController: widget.prizeController,
+                percentController: widget.percentController,
+                ratioController: widget.ratioController,
+              );
             else
               return EmptyLabel();
           } else {
@@ -97,131 +197,113 @@ class _ContentList extends StatefulWidget {
   const _ContentList({
     Key key,
     @required this.plan,
+    @required this.quantityController_1,
+    @required this.quantityController_2,
+    @required this.quantityController_3,
+    @required this.quantityController_4,
+    @required this.amountController_1,
+    @required this.amountController_2,
+    @required this.amountController_3,
+    @required this.amountController_4,
+    @required this.startPeriodController,
+    @required this.endPeriodController,
+    @required this.prizeController,
+    @required this.percentController,
+    @required this.ratioController,
   }) : super(key: key);
 
   final Plan plan;
+  final TextEditingController quantityController_1;
+  final TextEditingController quantityController_2;
+  final TextEditingController quantityController_3;
+  final TextEditingController quantityController_4;
+  final TextEditingController amountController_1;
+  final TextEditingController amountController_2;
+  final TextEditingController amountController_3;
+  final TextEditingController amountController_4;
+  final TextEditingController startPeriodController;
+  final TextEditingController endPeriodController;
+  final TextEditingController prizeController;
+  final TextEditingController percentController;
+  final TextEditingController ratioController;
 
   @override
   __ContentListState createState() => __ContentListState();
 }
 
 class __ContentListState extends State<_ContentList> {
-  TextEditingController quantityController_1;
-  TextEditingController quantityController_2;
-  TextEditingController quantityController_3;
-  TextEditingController quantityController_4;
-  TextEditingController amountController_1;
-  TextEditingController amountController_2;
-  TextEditingController amountController_3;
-  TextEditingController amountController_4;
-  TextEditingController startPeriodController;
-  TextEditingController endPeriodController;
-  TextEditingController prizeController;
-  TextEditingController percentController;
-  TextEditingController ratioController;
-
   @override
   void initState() {
-    quantityController_1 = TextEditingController(
-        text: (widget.plan.quantity != null)
-            ? widget.plan.quantity[0].toString()
-            : '');
-    quantityController_2 = TextEditingController(
-        text: (widget.plan.quantity != null)
-            ? widget.plan.quantity[1].toString()
-            : '');
-    quantityController_3 = TextEditingController(
-        text: (widget.plan.quantity != null)
-            ? widget.plan.quantity[2].toString()
-            : '');
-    quantityController_4 = TextEditingController(
-        text: (widget.plan.quantity != null)
-            ? widget.plan.quantity[3].toString()
-            : '');
-    amountController_1 = TextEditingController(
-        text: (widget.plan.amount != null)
-            ? MeasureBeautifier().truncateZero(widget.plan.amount[0].toString())
-            : '');
-    amountController_2 = TextEditingController(
-        text: (widget.plan.amount != null)
-            ? MeasureBeautifier().truncateZero(widget.plan.amount[1].toString())
-            : '');
-    amountController_3 = TextEditingController(
-        text: (widget.plan.amount != null)
-            ? MeasureBeautifier().truncateZero(widget.plan.amount[2].toString())
-            : '');
-    amountController_4 = TextEditingController(
-        text: (widget.plan.amount != null)
-            ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
-            : '');
-    startPeriodController =
-        TextEditingController(text: widget.plan.startPeriod);
-    endPeriodController = TextEditingController(text: widget.plan.endPeriod);
-    prizeController = TextEditingController(
-        text: (widget.plan.prize != null)
-            ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
-            : '');
-    percentController = TextEditingController(
-        text: (widget.plan.percent != null)
-            ? MeasureBeautifier().truncateZero(widget.plan.percent.toString())
-            : '');
-    ratioController = TextEditingController(
-        text: (widget.plan.ratio != null)
-            ? MeasureBeautifier().truncateZero(widget.plan.ratio.toString())
-            : '');
+    widget.quantityController_1.text = (widget.plan.quantity != null)
+        ? widget.plan.quantity[0].toString()
+        : '';
+    widget.quantityController_2.text = (widget.plan.quantity != null)
+        ? widget.plan.quantity[1].toString()
+        : '';
+    widget.quantityController_3.text = (widget.plan.quantity != null)
+        ? widget.plan.quantity[2].toString()
+        : '';
+    widget.quantityController_4.text = (widget.plan.quantity != null)
+        ? widget.plan.quantity[3].toString()
+        : '';
+    widget.amountController_1.text = (widget.plan.amount != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.amount[0].toString())
+        : '';
+    widget.amountController_2.text = (widget.plan.amount != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.amount[1].toString())
+        : '';
+    widget.amountController_3.text = (widget.plan.amount != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.amount[2].toString())
+        : '';
+    widget.amountController_4.text = (widget.plan.amount != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
+        : '';
+    widget.startPeriodController.text = widget.plan.startPeriod;
+    widget.endPeriodController.text = widget.plan.endPeriod;
+    widget.prizeController.text = (widget.plan.prize != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
+        : '';
+    widget.percentController.text = (widget.plan.percent != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.percent.toString())
+        : '';
+    widget.ratioController.text = (widget.plan.ratio != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.ratio.toString())
+        : '';
     super.initState();
   }
 
-  @override
-  void dispose() {
-    quantityController_1.dispose();
-    quantityController_2.dispose();
-    quantityController_3.dispose();
-    quantityController_4.dispose();
-    amountController_1.dispose();
-    amountController_2.dispose();
-    amountController_3.dispose();
-    amountController_4.dispose();
-    startPeriodController.dispose();
-    endPeriodController.dispose();
-    prizeController.dispose();
-    percentController.dispose();
-    ratioController.dispose();
-    super.dispose();
-  }
-
   Future<bool> save() async {
-    if (quantityController_1.text.isNotEmpty &&
-        quantityController_2.text.isNotEmpty &&
-        quantityController_3.text.isNotEmpty &&
-        quantityController_4.text.isNotEmpty &&
-        amountController_1.text.isNotEmpty &&
-        amountController_2.text.isNotEmpty &&
-        amountController_3.text.isNotEmpty &&
-        amountController_4.text.isNotEmpty &&
-        startPeriodController.text.isNotEmpty &&
-        endPeriodController.text.isNotEmpty &&
-        prizeController.text.isNotEmpty &&
-        percentController.text.isNotEmpty &&
-        ratioController.text.isNotEmpty) {
+    if (widget.quantityController_1.text.isNotEmpty &&
+        widget.quantityController_2.text.isNotEmpty &&
+        widget.quantityController_3.text.isNotEmpty &&
+        widget.quantityController_4.text.isNotEmpty &&
+        widget.amountController_1.text.isNotEmpty &&
+        widget.amountController_2.text.isNotEmpty &&
+        widget.amountController_3.text.isNotEmpty &&
+        widget.amountController_4.text.isNotEmpty &&
+        widget.startPeriodController.text.isNotEmpty &&
+        widget.endPeriodController.text.isNotEmpty &&
+        widget.prizeController.text.isNotEmpty &&
+        widget.percentController.text.isNotEmpty &&
+        widget.ratioController.text.isNotEmpty) {
       widget.plan
         ..quantity = [
-          int.parse(quantityController_1.text),
-          int.parse(quantityController_2.text),
-          int.parse(quantityController_3.text),
-          int.parse(quantityController_4.text),
+          int.parse(widget.quantityController_1.text),
+          int.parse(widget.quantityController_2.text),
+          int.parse(widget.quantityController_3.text),
+          int.parse(widget.quantityController_4.text),
         ]
         ..amount = [
-          double.parse(amountController_1.text),
-          double.parse(amountController_2.text),
-          double.parse(amountController_3.text),
-          double.parse(amountController_4.text),
+          double.parse(widget.amountController_1.text),
+          double.parse(widget.amountController_2.text),
+          double.parse(widget.amountController_3.text),
+          double.parse(widget.amountController_4.text),
         ]
-        ..startPeriod = startPeriodController.text
-        ..endPeriod = endPeriodController.text
-        ..prize = double.parse(prizeController.text)
-        ..percent = double.parse(percentController.text)
-        ..ratio = double.parse(ratioController.text);
+        ..startPeriod = widget.startPeriodController.text
+        ..endPeriod = widget.endPeriodController.text
+        ..prize = double.parse(widget.prizeController.text)
+        ..percent = double.parse(widget.percentController.text)
+        ..ratio = double.parse(widget.ratioController.text);
       Bloc.bloc.planBloc.updatePlan(widget.plan);
       return true;
     } else {
@@ -244,42 +326,42 @@ class __ContentListState extends State<_ContentList> {
           children: [
             InputField(
               label: 'Запросы',
-              controller: quantityController_1,
+              controller: widget.quantityController_1,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.quantity[0] =
-                      int.parse(quantityController_1.text);
+                      int.parse(widget.quantityController_1.text);
               },
             ),
             InputField(
               label: 'КП',
-              controller: quantityController_2,
+              controller: widget.quantityController_2,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.quantity[1] =
-                      int.parse(quantityController_2.text);
+                      int.parse(widget.quantityController_2.text);
               },
             ),
             InputField(
               label: 'Тендеры',
-              controller: quantityController_3,
+              controller: widget.quantityController_3,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.quantity[2] =
-                      int.parse(quantityController_3.text);
+                      int.parse(widget.quantityController_3.text);
               },
             ),
             InputField(
               label: 'Договоры',
-              controller: quantityController_4,
+              controller: widget.quantityController_4,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.quantity[3] =
-                      int.parse(quantityController_4.text);
+                      int.parse(widget.quantityController_4.text);
               },
             ),
           ],
@@ -289,42 +371,42 @@ class __ContentListState extends State<_ContentList> {
           children: [
             InputField(
               label: 'Запросы (млн руб)',
-              controller: amountController_1,
+              controller: widget.amountController_1,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.amount[0] =
-                      double.parse(amountController_1.text);
+                      double.parse(widget.amountController_1.text);
               },
             ),
             InputField(
               label: 'КП (млн руб)',
-              controller: amountController_2,
+              controller: widget.amountController_2,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.amount[1] =
-                      double.parse(amountController_2.text);
+                      double.parse(widget.amountController_2.text);
               },
             ),
             InputField(
               label: 'Тендеры (млн руб)',
-              controller: amountController_3,
+              controller: widget.amountController_3,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.amount[2] =
-                      double.parse(amountController_3.text);
+                      double.parse(widget.amountController_3.text);
               },
             ),
             InputField(
               label: 'Договоры (млн руб)',
-              controller: amountController_4,
+              controller: widget.amountController_4,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.amount[3] =
-                      double.parse(amountController_4.text);
+                      double.parse(widget.amountController_4.text);
               },
             ),
           ],
@@ -339,7 +421,7 @@ class __ContentListState extends State<_ContentList> {
                     label: 'Начало',
                     chooseLabel: 'Начало срока',
                     group: ConstantData.appMonths,
-                    controller: startPeriodController,
+                    controller: widget.startPeriodController,
                   ),
                 ),
                 SizedBox(width: 18),
@@ -348,39 +430,39 @@ class __ContentListState extends State<_ContentList> {
                     label: 'Конец',
                     chooseLabel: 'Конец срока',
                     group: ConstantData.appMonths,
-                    controller: endPeriodController,
+                    controller: widget.endPeriodController,
                   ),
                 ),
               ],
             ),
             InputField(
               label: 'Премия (тыс руб)',
-              controller: prizeController,
+              controller: widget.prizeController,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.prize =
-                      double.parse(prizeController.text);
+                      double.parse(widget.prizeController.text);
               },
             ),
             InputField(
               label: 'Стартовый %',
-              controller: percentController,
+              controller: widget.percentController,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.percent =
-                      double.parse(percentController.text);
+                      double.parse(widget.percentController.text);
               },
             ),
             InputField(
               label: 'Коэффициент',
-              controller: ratioController,
+              controller: widget.ratioController,
               textInputType: TextInputType.number,
               update: (dynamic value) {
                 if (value != null)
                   GlobalParameters.newPlan.ratio =
-                      double.parse(ratioController.text);
+                      double.parse(widget.ratioController.text);
               },
             ),
           ],

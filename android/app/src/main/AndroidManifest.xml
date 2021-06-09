@@ -2,7 +2,7 @@
     package="tolik.project_statistics">
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
    <application
-        android:label="project_statistics"
+        android:label="Статистика"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

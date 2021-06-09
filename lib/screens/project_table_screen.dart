@@ -125,11 +125,11 @@ class _ContentTable extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(
                         projects.length + 1,
-                        (rowIndex) {
+                            (rowIndex) {
                           return Row(
                             children: List.generate(
                               ConstantData.appProjectParameterNames.length,
-                              (columnIndex) {
+                                  (columnIndex) {
                                 String text;
                                 Function onTap;
                                 if (rowIndex == 0) {
@@ -138,28 +138,28 @@ class _ContentTable extends StatelessWidget {
                                   if (columnIndex ==
                                       ConstantData.appProjectParameterNames
                                           .indexOf(GlobalParameters
-                                              .projectSortParamName)) {
+                                          .projectSortParamName)) {
                                     text += ' ' +
                                         ConstantData.appProjectSortDirection[
-                                            ConstantData
-                                                .appProjectParameterDirection
-                                                .indexOf(GlobalParameters
-                                                    .projectSortParamDirection)];
+                                        ConstantData
+                                            .appProjectParameterDirection
+                                            .indexOf(GlobalParameters
+                                            .projectSortParamDirection)];
                                   }
                                   onTap = () {
                                     if (columnIndex ==
                                         ConstantData.appProjectParameterNames
                                             .indexOf(GlobalParameters
-                                                .projectSortParamName)) {
+                                            .projectSortParamName)) {
                                       GlobalParameters
                                           .projectSortParamDirection = ConstantData
-                                              .appProjectParameterDirection[
-                                          (ConstantData
-                                                      .appProjectParameterDirection
-                                                      .indexOf(GlobalParameters
-                                                          .projectSortParamDirection) -
-                                                  1)
-                                              .abs()];
+                                          .appProjectParameterDirection[
+                                      (ConstantData
+                                          .appProjectParameterDirection
+                                          .indexOf(GlobalParameters
+                                          .projectSortParamDirection) -
+                                          1)
+                                          .abs()];
                                     } else {
                                       GlobalParameters.projectSortParamName =
                                           text;
@@ -181,7 +181,7 @@ class _ContentTable extends StatelessWidget {
                                     text = projects[rowIndex - 1].status;
                                   } else if (columnIndex == 3) {
                                     text =
-                                        '${projects[rowIndex - 1].startPeriod} - ${projects[rowIndex - 1].endPeriod}';
+                                    '${projects[rowIndex - 1].startPeriod} - ${projects[rowIndex - 1].endPeriod}';
                                   } else {
                                     text = projects[rowIndex - 1].complete;
                                   }
@@ -237,57 +237,6 @@ class _ProjectCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Size size = Size(170, 40);
-    // return Material(
-    //   child: InkWell(
-    //     onTap: onTap,
-    //     child: Container(
-    //       margin: EdgeInsets.all(0),
-    //       height: size.height,
-    //       width: size.width,
-    //       child: Stack(
-    //         children: [
-    //           Container(
-    //             alignment: Alignment.center,
-    //             padding: const EdgeInsets.symmetric(horizontal: 4),
-    //             height: size.height,
-    //             width: double.infinity,
-    //             decoration: BoxDecoration(
-    //               color: Theme.of(context).focusColor,
-    //               border: Border.all(
-    //                 color: Theme.of(context).shadowColor.withOpacity(0.2),
-    //               ),
-    //             ),
-    //             child: Text(
-    //               text,
-    //               style: Theme.of(context).textTheme.bodyText2,
-    //               overflow: TextOverflow.ellipsis,
-    //             ),
-    //           ),
-    //           Positioned(
-    //             child: ClipPath(
-    //               child: Container(
-    //                 height: size.height,
-    //                 color: (complete == null)
-    //                     ? Colors.transparent
-    //                     : (complete == ConstantData.projectCompleteStatuses[0])
-    //                         ? Colors.transparent
-    //                         : (complete ==
-    //                                 ConstantData.projectCompleteStatuses[1])
-    //                             ? Theme.of(context).primaryColor
-    //                             : Theme.of(context).errorColor,
-    //               ),
-    //               clipper: BookmarkClipper(
-    //                 ratio: 0.07,
-    //                 offset: 5,
-    //               ),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
     return Material(
       child: InkWell(
         onTap: onTap,
@@ -295,14 +244,15 @@ class _ProjectCell extends StatelessWidget {
           alignment: Alignment.center,
           margin: EdgeInsets.all(0),
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          width: 170.0,
-          height: 40.0,
+          width: 180.0,
+          height: 100.0,
           decoration: BoxDecoration(
-            color: (complete == ConstantData.projectCompleteStatuses[1])
-                ? Theme.of(context).primaryColor.withOpacity(0.4)
-                : (complete == ConstantData.projectCompleteStatuses[2])
-                    ? Theme.of(context).errorColor.withOpacity(0.4)
-                    : Theme.of(context).focusColor,
+            // color: (complete == ConstantData.projectCompleteStatuses[1])
+            //     ? Theme.of(context).primaryColor.withOpacity(0.4)
+            //     : (complete == ConstantData.projectCompleteStatuses[2])
+            //         ? Theme.of(context).errorColor.withOpacity(0.4)
+            //         : Theme.of(context).focusColor,
+            color: Theme.of(context).focusColor,
             border: Border.all(
               color: Theme.of(context).shadowColor.withOpacity(0.2),
             ),
