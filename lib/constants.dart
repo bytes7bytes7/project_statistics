@@ -36,7 +36,7 @@ class MeasureBeautifier {
 
   String truncateZero(String str) {
     if (str.contains('.')) {
-      if (str.substring(str.indexOf('.') + 1) == '0')
+      if(double.parse(str)==double.parse(str).round())
         str = str.substring(0, str.indexOf('.'));
     }
     return str;

@@ -68,12 +68,12 @@ class __BodyState extends State<_Body> {
           return LoadingCircle();
         } else if (snapshot.data is AnalysisChartDataState) {
           AnalysisChartDataState state = snapshot.data;
-          for(int i =0; i<state.analysisChart.realAmount.length;i++){
-            state.analysisChart.realAmount[i]/=1000000;
+          for (int i = 0; i < state.analysisChart.realAmount.length; i++) {
+            state.analysisChart.realAmount[i] /= 1000000;
           }
-          if(state.analysisChart.realAmount.length > 0) {
+          if (state.analysisChart.realAmount.length > 0) {
             return ContentList(analysisChart: state.analysisChart);
-          }else{
+          } else {
             return EmptyLabel();
           }
         } else {
@@ -117,7 +117,8 @@ class ContentList extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height: (size.height < size.width) ? size.height : size.width,
+                    height:
+                        (size.height < size.width) ? size.height : size.width,
                     width: double.infinity,
                     child: StackedHorizontalBarChart(
                       r: analysisChart.realQuantity,
@@ -146,7 +147,6 @@ class ContentList extends StatelessWidget {
           },
         ),
         ListView.builder(
-
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           itemCount: analysisChart.planAmount.length + 1,
           itemBuilder: (context, i) {
@@ -252,7 +252,9 @@ class _AnalysisChartCard extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                real.toString(),
+                (real.runtimeType == int)
+                    ? real.toString()
+                    : MeasureBeautifier().truncateZero(real.toStringAsFixed(2)),
                 style: Theme.of(context)
                     .textTheme
                     .headline2
