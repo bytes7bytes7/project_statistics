@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/show_export_dialog.dart';
 import '../services/excel_helper.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
@@ -394,13 +395,13 @@ class __ContentListState extends State<_ContentList> {
           title: 'Экспорт',
           onTap: () async {
             if (await save()) {
-              ExcelHelper.exportToExcel(context, 'filename');
+              showExportDialog(context: context);
             }
           },
         ),
         FlatWideButton(
           title: 'Готово',
-          onTap: ()async {
+          onTap: () async {
             await save();
             GlobalParameters.currentPageIndex.value = 1;
           },

@@ -71,6 +71,7 @@ class MeasureBeautifier {
 }
 
 abstract class ConstantData {
+  static const String forbiddenFileCharacters = r'\/:*?"<>|+%!@';
   static const List<String> projectCompleteStatuses = [
     'не завершен',
     'завершен',
