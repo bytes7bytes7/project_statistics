@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../global/global_parameters.dart';
+import '../widgets/choose_field.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
-import '../widgets/input_field.dart';
 import '../widgets/loading_circle.dart';
 import '../widgets/result_info_line.dart';
 import '../bloc/bloc.dart';
@@ -11,6 +12,11 @@ import '../constants.dart';
 import '../models/result.dart';
 
 class ResultScreen extends StatelessWidget {
+  final TextEditingController startPeriodController =
+      TextEditingController(text: GlobalParameters.resultFilterBorders[0]);
+  final TextEditingController endPeriodController =
+      TextEditingController(text: GlobalParameters.resultFilterBorders[1]);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,8 +31,35 @@ class ResultScreen extends StatelessWidget {
             'Результат',
             style: Theme.of(context).textTheme.headline1,
           ),
+          leading: IconButton(
+            icon: const Icon(Icons.delete),
+            tooltip: ConstantData.appToolTips['throw'],
+            onPressed: () {
+              startPeriodController.text='';
+              endPeriodController.text='';
+              GlobalParameters.resultFilterBorders[0] = '';
+              GlobalParameters.resultFilterBorders[1] = '';
+              Bloc.bloc.resultBloc.loadResult();
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh_outlined),
+              tooltip: ConstantData.appToolTips['refresh'],
+              onPressed: () {
+                GlobalParameters.resultFilterBorders[0] =
+                    startPeriodController.text ?? '';
+                GlobalParameters.resultFilterBorders[1] =
+                    endPeriodController.text ?? '';
+                Bloc.bloc.resultBloc.loadResult();
+              },
+            ),
+          ],
         ),
-        body: _Body(),
+        body: _Body(
+          startPeriodController: startPeriodController,
+          endPeriodController: endPeriodController,
+        ),
       ),
     );
   }
@@ -35,7 +68,12 @@ class ResultScreen extends StatelessWidget {
 class _Body extends StatefulWidget {
   const _Body({
     Key key,
+    @required this.startPeriodController,
+    @required this.endPeriodController,
   }) : super(key: key);
+
+  final TextEditingController startPeriodController;
+  final TextEditingController endPeriodController;
 
   @override
   __BodyState createState() => __BodyState();
@@ -60,15 +98,19 @@ class __BodyState extends State<_Body> {
         initialData: ResultInitState(),
         builder: (context, snapshot) {
           if (snapshot.data is ResultInitState) {
-            Bloc.bloc.resultBloc.loadResult('', '');
+            Bloc.bloc.resultBloc.loadResult();
             return SizedBox.shrink();
           } else if (snapshot.data is ResultLoadingState) {
             return LoadingCircle();
           } else if (snapshot.data is ResultDataState) {
             ResultDataState state = snapshot.data;
-            if(state.result.amount != null) {
-              return _ContentList(result: state.result);
-            }else{
+            if (state.result.amount != null) {
+              return _ContentList(
+                result: state.result,
+                  startPeriodController: widget.startPeriodController,
+                  endPeriodController: widget.endPeriodController,
+              );
+            } else {
               return EmptyLabel();
             }
           } else {
@@ -76,7 +118,7 @@ class __BodyState extends State<_Body> {
               error: snapshot.data.error,
               stackTrace: snapshot.data.stackTrace,
               onPressed: () {
-                Bloc.bloc.resultBloc.loadResult('', '');
+                Bloc.bloc.resultBloc.loadResult();
               },
             );
           }
@@ -87,12 +129,16 @@ class __BodyState extends State<_Body> {
 }
 
 class _ContentList extends StatelessWidget {
-  const _ContentList({
+  _ContentList({
     Key key,
     @required this.result,
+    @required this.startPeriodController,
+    @required this.endPeriodController,
   }) : super(key: key);
 
   final Result result;
+  final TextEditingController startPeriodController;
+  final TextEditingController endPeriodController;
 
   @override
   Widget build(BuildContext context) {
@@ -147,9 +193,26 @@ class _ContentList extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       children: [
         SizedBox(height: 10),
-        InputField(
-          label: 'Период',
-          controller: TextEditingController(),
+        Row(
+          children: [
+            Flexible(
+              child: ChooseField(
+                label: 'Начало',
+                chooseLabel: 'Начало срока',
+                group: ConstantData.appMonths,
+                controller: startPeriodController,
+              ),
+            ),
+            SizedBox(width: 18),
+            Flexible(
+              child: ChooseField(
+                label: 'Конец',
+                chooseLabel: 'Конец срока',
+                group: ConstantData.appMonths,
+                controller: endPeriodController,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 10),
         ResultInfoLine(

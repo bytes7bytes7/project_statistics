@@ -210,7 +210,7 @@ class DatabaseHelper {
   }
 
   // Result methods
-  Future<Result> getResult(String startPeriod, String endPeriod) async {
+  Future<Result> getResult() async {
     final db = await database;
     Map<String, dynamic> result = Result().toMap();
 
@@ -237,8 +237,35 @@ class DatabaseHelper {
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         if (proj['status'] == ConstantData.appStatus[3]) {
-          result['amount'] += proj['price'];
-          result['quantity']++;
+          if (GlobalParameters.resultFilterBorders[0].isNotEmpty &&
+              GlobalParameters.resultFilterBorders[1].isNotEmpty) {
+            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
+                    ConstantData.appMonths
+                        .indexOf(GlobalParameters.resultFilterBorders[0]) &&
+                ConstantData.appMonths.indexOf(proj['endPeriod']) <=
+                    ConstantData.appMonths
+                        .indexOf(GlobalParameters.resultFilterBorders[1])) {
+              result['amount'] += proj['price'];
+              result['quantity']++;
+            }
+          } else if (GlobalParameters.resultFilterBorders[0].isNotEmpty) {
+            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
+                ConstantData.appMonths
+                    .indexOf(GlobalParameters.resultFilterBorders[0])) {
+              result['amount'] += proj['price'];
+              result['quantity']++;
+            }
+          } else if (GlobalParameters.resultFilterBorders[1].isNotEmpty) {
+            if (ConstantData.appMonths.indexOf(proj['endPeriod']) <=
+                ConstantData.appMonths
+                    .indexOf(GlobalParameters.resultFilterBorders[1])) {
+              result['amount'] += proj['price'];
+              result['quantity']++;
+            }
+          } else {
+            result['amount'] += proj['price'];
+            result['quantity']++;
+          }
         }
       });
     }

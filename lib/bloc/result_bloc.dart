@@ -19,9 +19,9 @@ class ResultBloc {
     _resultStreamController.close();
   }
 
-  void loadResult(String startPeriod, String endPeriod) async {
+  void loadResult() async {
     _resultStreamController.sink.add(ResultState._resultLoading());
-    _repository.getResult(startPeriod,endPeriod).then((result) {
+    _repository.getResult().then((result) {
       if (!_resultStreamController.isClosed)
         _resultStreamController.sink.add(ResultState._resultData(result));
     }).onError((error, stackTrace) {

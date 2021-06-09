@@ -117,6 +117,8 @@ abstract class ConstantData {
     'table': 'Таблица',
     'list': 'Список',
     'filter': 'Фильтр',
+    'refresh':'Обновить',
+    'throw': 'Сбросить',
   };
   static final List<Destination> appDestinations = [
     Destination(
