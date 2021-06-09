@@ -132,8 +132,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             FocusScope.of(context).requestFocus(FocusNode());
             if (titleController.text != widget.project.title ||
                 statusController.text != widget.project.status ||
-                priceController.text !=
-                    widget.project.price.toString() &&
+                priceController.text != widget.project.price.toString() &&
                     !(!(priceController.text != '') &&
                         !(widget.project.price != null)) ||
                 startPeriodController.text != widget.project.startPeriod ||
