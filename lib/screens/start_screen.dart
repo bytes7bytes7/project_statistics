@@ -286,25 +286,37 @@ class __ContentListState extends State<_ContentList> {
         widget.prizeController.text.isNotEmpty &&
         widget.percentController.text.isNotEmpty &&
         widget.ratioController.text.isNotEmpty) {
-      widget.plan
-        ..quantity = [
-          int.parse(widget.quantityController_1.text),
-          int.parse(widget.quantityController_2.text),
-          int.parse(widget.quantityController_3.text),
-          int.parse(widget.quantityController_4.text),
-        ]
-        ..amount = [
-          double.parse(widget.amountController_1.text),
-          double.parse(widget.amountController_2.text),
-          double.parse(widget.amountController_3.text),
-          double.parse(widget.amountController_4.text),
-        ]
-        ..startPeriod = widget.startPeriodController.text
-        ..endPeriod = widget.endPeriodController.text
-        ..prize = double.parse(widget.prizeController.text)
-        ..percent = double.parse(widget.percentController.text)
-        ..ratio = double.parse(widget.ratioController.text);
-      Bloc.bloc.planBloc.updatePlan(widget.plan);
+      try {
+        widget.prizeController.text = widget.prizeController.text.replaceAll(',', '.');
+        widget.percentController.text= widget.percentController.text.replaceAll(',', '.');
+        widget.ratioController.text = widget.ratioController.text.replaceAll(',', '.');
+        widget.plan
+          ..quantity = [
+            int.parse(widget.quantityController_1.text),
+            int.parse(widget.quantityController_2.text),
+            int.parse(widget.quantityController_3.text),
+            int.parse(widget.quantityController_4.text),
+          ]
+          ..amount = [
+            int.parse(widget.amountController_1.text),
+            int.parse(widget.amountController_2.text),
+            int.parse(widget.amountController_3.text),
+            int.parse(widget.amountController_4.text),
+          ]
+          ..startPeriod = widget.startPeriodController.text
+          ..endPeriod = widget.endPeriodController.text
+          ..prize = double.parse(widget.prizeController.text)
+          ..percent = double.parse(widget.percentController.text)
+          ..ratio = double.parse(widget.ratioController.text);
+        Bloc.bloc.planBloc.updatePlan(widget.plan);
+      } catch (error) {
+        showInfoSnackBar(
+          context: context,
+          info: 'Ошибка ввода',
+          icon: Icons.warning_amber_outlined,
+        );
+        return false;
+      }
       return true;
     } else {
       showInfoSnackBar(
@@ -328,41 +340,21 @@ class __ContentListState extends State<_ContentList> {
               label: 'Запросы',
               controller: widget.quantityController_1,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.quantity[0] =
-                      int.parse(widget.quantityController_1.text);
-              },
             ),
             InputField(
               label: 'КП',
               controller: widget.quantityController_2,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.quantity[1] =
-                      int.parse(widget.quantityController_2.text);
-              },
             ),
             InputField(
               label: 'Тендеры',
               controller: widget.quantityController_3,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.quantity[2] =
-                      int.parse(widget.quantityController_3.text);
-              },
             ),
             InputField(
               label: 'Договоры',
               controller: widget.quantityController_4,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.quantity[3] =
-                      int.parse(widget.quantityController_4.text);
-              },
             ),
           ],
         ),
@@ -370,44 +362,24 @@ class __ContentListState extends State<_ContentList> {
           title: 'Сумма',
           children: [
             InputField(
-              label: 'Запросы (млн руб)',
+              label: 'Запросы (руб)',
               controller: widget.amountController_1,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.amount[0] =
-                      double.parse(widget.amountController_1.text);
-              },
             ),
             InputField(
-              label: 'КП (млн руб)',
+              label: 'КП (руб)',
               controller: widget.amountController_2,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.amount[1] =
-                      double.parse(widget.amountController_2.text);
-              },
             ),
             InputField(
-              label: 'Тендеры (млн руб)',
+              label: 'Тендеры (руб)',
               controller: widget.amountController_3,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.amount[2] =
-                      double.parse(widget.amountController_3.text);
-              },
             ),
             InputField(
-              label: 'Договоры (млн руб)',
+              label: 'Договоры (руб)',
               controller: widget.amountController_4,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.amount[3] =
-                      double.parse(widget.amountController_4.text);
-              },
             ),
           ],
         ),
@@ -436,34 +408,19 @@ class __ContentListState extends State<_ContentList> {
               ],
             ),
             InputField(
-              label: 'Премия (тыс руб)',
+              label: 'Премия за выполнение (руб)',
               controller: widget.prizeController,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.prize =
-                      double.parse(widget.prizeController.text);
-              },
             ),
             InputField(
-              label: 'Стартовый %',
+              label: 'Минимальный % выполнения',
               controller: widget.percentController,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.percent =
-                      double.parse(widget.percentController.text);
-              },
             ),
             InputField(
-              label: 'Коэффициент',
+              label: 'Коэффициент за перевыполнение',
               controller: widget.ratioController,
               textInputType: TextInputType.number,
-              update: (dynamic value) {
-                if (value != null)
-                  GlobalParameters.newPlan.ratio =
-                      double.parse(widget.ratioController.text);
-              },
             ),
           ],
         ),
@@ -484,8 +441,9 @@ class __ContentListState extends State<_ContentList> {
         FlatWideButton(
           title: 'Готово',
           onTap: () async {
-            await save();
-            GlobalParameters.currentPageIndex.value = 1;
+            if(await save()) {
+              GlobalParameters.currentPageIndex.value = 1;
+            }
           },
         ),
       ],

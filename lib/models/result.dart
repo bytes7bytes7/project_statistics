@@ -10,7 +10,7 @@ class Result {
 
   double amount;
   int quantity;
-  double plan;
+  int plan;
   int percent;
   double until;
   double prize;

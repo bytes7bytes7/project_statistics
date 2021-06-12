@@ -12,7 +12,7 @@ class Plan {
 
   int id;
   List<int> quantity;
-  List<double> amount;
+  List<int> amount;
   String startPeriod;
   String endPeriod;
   double prize;

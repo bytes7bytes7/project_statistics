@@ -122,7 +122,7 @@ class DatabaseHelper {
       m[ConstDBData.amount] = (m[ConstDBData.amount].length > 0)
           ? m[ConstDBData.amount]
               .split(';')
-              .map<double>((e) => double.parse(e))
+              .map<int>((e) => int.parse(e))
               .toList()
           : a;
       return Plan.fromMap(m);
@@ -226,7 +226,7 @@ class DatabaseHelper {
     // кол-во договоров
     result['quantity'] = 0;
     // план
-    result['plan'] = 0.0;
+    result['plan'] = 0;
     // процент
     result['percent'] = 0;
     // сумма до
@@ -271,16 +271,15 @@ class DatabaseHelper {
     }
 
     if (plan.isNotEmpty) {
-      result['plan'] += double.parse(plan.first['amount'].split(';')[3]);
-      result['until'] = result['plan'] * 1000000 - result['amount'];
+      result['plan'] += int.parse(plan.first['amount'].split(';')[3]);
+      result['until'] = result['plan'] - result['amount'];
       if (result['until'] <= 0) {
         result['prize'] = plan.first['prize'];
       }
     }
 
     if (result['plan'] != 0) {
-      result['percent'] =
-          (100 * result['amount'] / (result['plan'] * 1000000)).round();
+      result['percent'] = (100 * result['amount'] / result['plan']).round();
     }
 
     return Result.fromMap(result);
