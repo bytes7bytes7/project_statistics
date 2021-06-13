@@ -8,6 +8,7 @@ import '../widgets/error_label.dart';
 import '../widgets/result_info_line.dart';
 import '../bloc/bloc.dart';
 import '../bloc/result_bloc.dart';
+import '../services/measure_beautifier.dart';
 import '../constants.dart';
 import '../models/result.dart';
 

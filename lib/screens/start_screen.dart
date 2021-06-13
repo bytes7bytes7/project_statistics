@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/widgets/show_no_yes_dialog.dart';
 
+import '../widgets/show_no_yes_dialog.dart';
 import '../widgets/show_export_dialog.dart';
-import '../services/excel_helper.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
 import '../widgets/choose_field.dart';
@@ -14,6 +13,8 @@ import '../widgets/plan_card.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/plan_bloc.dart';
+import '../services/excel_helper.dart';
+import '../services/measure_beautifier.dart';
 import '../database/database_helper.dart';
 import '../models/plan.dart';
 import '../constants.dart';
@@ -292,22 +293,22 @@ class __ContentListState extends State<_ContentList> {
         widget.ratioController.text = widget.ratioController.text.replaceAll(',', '.');
         widget.plan
           ..quantity = [
-            int.parse(widget.quantityController_1.text),
-            int.parse(widget.quantityController_2.text),
-            int.parse(widget.quantityController_3.text),
-            int.parse(widget.quantityController_4.text),
+            int.parse(widget.quantityController_1.text.replaceAll(' ', '')),
+            int.parse(widget.quantityController_2.text.replaceAll(' ', '')),
+            int.parse(widget.quantityController_3.text.replaceAll(' ', '')),
+            int.parse(widget.quantityController_4.text.replaceAll(' ', '')),
           ]
           ..amount = [
-            int.parse(widget.amountController_1.text),
-            int.parse(widget.amountController_2.text),
-            int.parse(widget.amountController_3.text),
-            int.parse(widget.amountController_4.text),
+            int.parse(widget.amountController_1.text.replaceAll(' ', '')),
+            int.parse(widget.amountController_2.text.replaceAll(' ', '')),
+            int.parse(widget.amountController_3.text.replaceAll(' ', '')),
+            int.parse(widget.amountController_4.text.replaceAll(' ', '')),
           ]
           ..startPeriod = widget.startPeriodController.text
           ..endPeriod = widget.endPeriodController.text
-          ..prize = double.parse(widget.prizeController.text)
-          ..percent = double.parse(widget.percentController.text)
-          ..ratio = double.parse(widget.ratioController.text);
+          ..prize = double.parse(widget.prizeController.text.replaceAll(' ', ''))
+          ..percent = double.parse(widget.percentController.text.replaceAll(' ', ''))
+          ..ratio = double.parse(widget.ratioController.text.replaceAll(' ', ''));
         Bloc.bloc.planBloc.updatePlan(widget.plan);
       } catch (error) {
         showInfoSnackBar(

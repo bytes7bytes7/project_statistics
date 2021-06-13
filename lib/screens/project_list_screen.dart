@@ -7,6 +7,7 @@ import '../widgets/sort_bar.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/project_bloc.dart';
+import '../services/measure_beautifier.dart';
 import '../constants.dart';
 import '../models/project.dart';
 import '../global/global_parameters.dart';

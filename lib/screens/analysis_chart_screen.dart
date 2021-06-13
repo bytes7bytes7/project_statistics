@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/widgets/chart_filter.dart';
 
+import '../widgets/chart_filter.dart';
 import '../widgets/error_label.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/stacked_horizontal_bar_chart.dart';
@@ -8,6 +8,7 @@ import '../widgets/percent_bar.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/analysis_chart_bloc.dart';
 import '../bloc/bloc.dart';
+import '../services/measure_beautifier.dart';
 import '../constants.dart';
 import '../models/analysis_chart.dart';
 
