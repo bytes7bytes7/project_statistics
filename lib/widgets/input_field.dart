@@ -22,26 +22,19 @@ class InputField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: TextField(
         controller: controller,
-        style: Theme
-            .of(context)
-            .textTheme
-            .bodyText1,
+        style: Theme.of(context).textTheme.bodyText1,
         keyboardType: textInputType,
         inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r"^\d+[\,\.]?\d{0,6}")),
           AmountTextInputFormatter(),
         ],
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: Theme
-              .of(context)
-              .textTheme
-              .subtitle1,
+          labelStyle: Theme.of(context).textTheme.subtitle1,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           disabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Theme
-                  .of(context)
-                  .disabledColor,
+              color: Theme.of(context).disabledColor,
             ),
           ),
         ),
@@ -52,22 +45,21 @@ class InputField extends StatelessWidget {
 
 class AmountTextInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue before,
-      TextEditingValue after) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue before, TextEditingValue after) {
     final StringBuffer newValue = StringBuffer();
     TextEditingValue _after =
-    TextEditingValue(text: after.text.replaceAll(' ', ''));
+        TextEditingValue(text: after.text.replaceAll(' ', ''));
 
     final int afterLength = _after.text.length;
     final int parts = afterLength ~/ 3;
 
     int cursorPosition = after.selection.end;
-    print(cursorPosition);
 
     List<String> lst = [];
     for (int i = 0; i < parts; i++) {
       String tmp =
-      _after.text.substring(afterLength - 3 * (i + 1), afterLength - 3 * i);
+          _after.text.substring(afterLength - 3 * (i + 1), afterLength - 3 * i);
       lst.add(tmp);
     }
 
@@ -77,22 +69,22 @@ class AmountTextInputFormatter extends TextInputFormatter {
     lst = lst.reversed.toList();
     newValue.write(lst.join(' '));
 
-    if (afterLength % 3 == 0 && before.text.length < after.text.length) {
-      newValue.write(' ');
+    if (before.text.length > after.text.length && afterLength % 3 == 0) {
+      cursorPosition--;
+      String tmp = newValue.toString();
+      newValue.clear();
+      newValue.write(tmp.substring(0, tmp.length));
     }
 
-    if (before.text.length < after.text.length && afterLength % 3 == 0) {
+    if(cursorPosition==after.text.length) {
+      cursorPosition = newValue.length;
+    }else{
       cursorPosition++;
-    } else {
-      
-      if (before.text.length > after.text.length && afterLength % 3 == 0) {
-        cursorPosition--;
-        String tmp = newValue.toString();
-        newValue.clear();
-        newValue.write(tmp.substring(0, tmp.length));
-      }
     }
 
+    if(cursorPosition>newValue.length || cursorPosition < 0){
+      cursorPosition=newValue.length;
+    }
     return TextEditingValue(
       text: newValue.toString(),
       selection: TextSelection.collapsed(offset: cursorPosition),
