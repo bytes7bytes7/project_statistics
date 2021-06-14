@@ -309,32 +309,34 @@ class DatabaseHelper {
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         int i = ProjectStatuses.indexOf(proj['status']);
-        if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
-            GlobalParameters.chartFilterBorders[1].isNotEmpty) {
-          if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
-                  ConstantData.appMonths
-                      .indexOf(GlobalParameters.chartFilterBorders[0]) &&
-              ConstantData.appMonths.indexOf(proj['endPeriod']) <=
-                  ConstantData.appMonths
-                      .indexOf(GlobalParameters.chartFilterBorders[1])) {
-            result['realQuantity'][i]++;
-            result['realAmount'][i] += proj['price'];
-          }
-        } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
-          if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
+        if (proj['complete'] != ProjectCompleteStatuses.canceled) {
+          if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[1].isNotEmpty) {
+            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
+                    ConstantData.appMonths
+                        .indexOf(GlobalParameters.chartFilterBorders[0]) &&
+                ConstantData.appMonths.indexOf(proj['endPeriod']) <=
+                    ConstantData.appMonths
+                        .indexOf(GlobalParameters.chartFilterBorders[1])) {
+              result['realQuantity'][i]++;
+              result['realAmount'][i] += proj['price'];
+            }
+          } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
+            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
+                ConstantData.appMonths
+                    .indexOf(GlobalParameters.chartFilterBorders[0])) {
+              result['realQuantity'][i]++;
+              result['realAmount'][i] += proj['price'];
+            }
+          } else if (ConstantData.appMonths.indexOf(proj['endPeriod']) <=
               ConstantData.appMonths
-                  .indexOf(GlobalParameters.chartFilterBorders[0])) {
+                  .indexOf(GlobalParameters.chartFilterBorders[1])) {
+            result['realQuantity'][i]++;
+            result['realAmount'][i] += proj['price'];
+          } else {
             result['realQuantity'][i]++;
             result['realAmount'][i] += proj['price'];
           }
-        } else if (ConstantData.appMonths.indexOf(proj['endPeriod']) <=
-            ConstantData.appMonths
-                .indexOf(GlobalParameters.chartFilterBorders[1])) {
-          result['realQuantity'][i]++;
-          result['realAmount'][i] += proj['price'];
-        } else {
-          result['realQuantity'][i]++;
-          result['realAmount'][i] += proj['price'];
         }
       });
     }

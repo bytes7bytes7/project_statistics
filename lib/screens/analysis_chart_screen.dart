@@ -124,7 +124,7 @@ class _ContentList extends StatelessWidget {
                   SizedBox(height: 10),
                   Container(
                     height:
-                        (size.height < size.width) ? size.height : size.width,
+                        (size.height < size.width) ? size.height-20 : size.width-20,
                     width: double.infinity,
                     child: StackedHorizontalBarChart(
                       r: analysisChart.realQuantity,
@@ -166,8 +166,9 @@ class _ContentList extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height: 400,
-                    width: 700,
+                    height:
+                    (size.height < size.width) ? size.height-20 : size.width-20,
+                    width: double.infinity,
                     child: StackedHorizontalBarChart(
                       r: analysisChart.realAmount,
                       p: analysisChart.planAmount,
