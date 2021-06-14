@@ -15,13 +15,64 @@ abstract class ConstantColors {
   static const Color errorColor = Color(0xFFFF0000);
 }
 
+class ProjectCompleteStatuses {
+  static const String notCompleted = 'не завершен';
+  static const String canceled = 'отменен';
+}
+
+class ProjectStatuses {
+  ProjectStatuses._internal();
+
+  static final ProjectStatuses _singleton = ProjectStatuses._internal();
+
+  factory ProjectStatuses() {
+    return _singleton;
+  }
+
+  static const String request = 'Запросы';
+  static const String kp = 'КП';
+  static const String hot = 'Горячие!!!';
+  static const String contract = 'Договоры';
+
+  static final length = 4;
+
+  static int indexOf(String value) {
+    switch (value) {
+      case request:
+        return 0;
+      case kp:
+        return 1;
+      case hot:
+        return 2;
+      case contract:
+        return 3;
+      default:
+        return -1;
+    }
+  }
+
+  operator [](int index) {
+    switch (index) {
+      case 0:
+        return request;
+      case 1:
+        return kp;
+      case 2:
+        return hot;
+      case 3:
+        return contract;
+      default:
+        return '';
+    }
+  }
+
+  static List<String> values() {
+    return <String>[request, kp, hot, contract];
+  }
+}
+
 abstract class ConstantData {
   static const String forbiddenFileCharacters = r'\/:*?"<>|+%!@';
-  static const List<String> projectCompleteStatuses = [
-    'не завершен',
-    'завершен',
-    'отменен',
-  ];
   static const List<String> appProjectParameterNames = [
     'Название',
     'Сумма',
@@ -51,18 +102,12 @@ abstract class ConstantData {
     'Ноябрь',
     'Декабрь',
   ];
-  static const List<String> appStatus = [
-    'Запросы',
-    'КП',
-    'Тендеры',
-    'Договоры',
-  ];
   static final Map<String, String> appToolTips = {
     'add': 'Добавить',
     'table': 'Таблица',
     'list': 'Список',
     'filter': 'Фильтр',
-    'refresh':'Обновить',
+    'refresh': 'Обновить',
     'throw': 'Сбросить',
   };
   static final List<Destination> appDestinations = [

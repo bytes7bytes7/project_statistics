@@ -153,13 +153,16 @@ class _ProjectCard extends StatelessWidget {
       return;
     });
     Size size = Size(double.infinity, 100);
+    Color color = (project.status == ProjectStatuses.hot)
+        ? Theme.of(context).errorColor
+        : Theme.of(context).disabledColor;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Stack(
         children: [
           Container(
             height: size.height,
-             width: double.infinity,
+            width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 10,
@@ -214,7 +217,10 @@ class _ProjectCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           project.status,
-                          style: Theme.of(context).textTheme.subtitle2,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2
+                              .copyWith(color: color),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -233,12 +239,9 @@ class _ProjectCard extends StatelessWidget {
             child: ClipPath(
               child: Container(
                 height: size.height,
-                color: (project.complete ==
-                        ConstantData.projectCompleteStatuses[0])
-                    ? Colors.transparent
-                    : (project.complete ==
-                            ConstantData.projectCompleteStatuses[1])
-                        ? Theme.of(context).primaryColor
+                color:
+                    (project.complete == ProjectCompleteStatuses.notCompleted)
+                        ? Colors.transparent
                         : Theme.of(context).errorColor,
               ),
               clipper: BookmarkClipper(

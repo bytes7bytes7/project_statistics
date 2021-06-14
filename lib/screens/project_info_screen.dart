@@ -41,7 +41,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     widget.project.startPeriod = widget.project.startPeriod ?? '';
     widget.project.endPeriod = widget.project.endPeriod ?? '';
     widget.project.complete =
-        widget.project.complete ?? ConstantData.projectCompleteStatuses[0];
+        widget.project.complete ?? ProjectCompleteStatuses.notCompleted;
 
     titleController = TextEditingController(text: widget.project.title);
     statusController = TextEditingController(text: widget.project.status);
@@ -66,7 +66,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     super.dispose();
   }
 
-  Future save() async {
+  Future<String> save() async {
     if (titleController.text.isNotEmpty &&
         statusController.text.isNotEmpty &&
         priceController.text.isNotEmpty &&
@@ -87,24 +87,12 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       }
       widget.title.value = 'Проект';
       update.value = !update.value;
-      showInfoSnackBar(
-        context: context,
-        info: 'Сохранено',
-        icon: Icons.done_all_outlined,
-      );
+      return '';
     } else if (priceController.text.isNotEmpty &&
         double.parse(priceController.text) < 0) {
-      showInfoSnackBar(
-        context: context,
-        info: 'Сумма отрицательна',
-        icon: Icons.warning_amber_outlined,
-      );
+      return 'Сумма отрицательна';
     } else {
-      showInfoSnackBar(
-        context: context,
-        info: 'Заполните все поля',
-        icon: Icons.warning_amber_outlined,
-      );
+      return 'Заполните все поля';
     }
   }
 
@@ -193,7 +181,21 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
             ),
             onPressed: () async {
               FocusScope.of(context).requestFocus(FocusNode());
-              save();
+              String error = await save();
+              if (error == '') {
+                Navigator.pop(context);
+                showInfoSnackBar(
+                  context: context,
+                  info: 'Сохранено',
+                  icon: Icons.done_all_outlined,
+                );
+              } else {
+                showInfoSnackBar(
+                  context: context,
+                  info: error,
+                  icon: Icons.warning_amber_outlined,
+                );
+              }
             },
           ),
         ],
@@ -263,7 +265,7 @@ class __BodyState extends State<_Body> {
             ChooseField(
               label: 'Статус',
               chooseLabel: 'Статус',
-              group: ConstantData.appStatus,
+              group: ProjectStatuses.values(),
               controller: widget.statusController,
             ),
             InputField(
@@ -298,35 +300,23 @@ class __BodyState extends State<_Body> {
               builder: (context, _, __) {
                 if (widget.project.id != null &&
                     widget.completeController.text ==
-                        ConstantData.projectCompleteStatuses[0]) {
-                  return Column(
-                    children: [
-                      OutlinedWideButton(
-                        title: 'Отменить',
-                        onTap: () {
-                          widget.completeController.text =
-                              ConstantData.projectCompleteStatuses[2];
-                          widget.save();
-                        },
-                      ),
-                      FlatWideButton(
-                        title: 'Завершить',
-                        onTap: () {
-                          widget.completeController.text =
-                              ConstantData.projectCompleteStatuses[1];
-                          widget.save();
-                        },
-                      ),
-                    ],
+                        ProjectCompleteStatuses.notCompleted) {
+                  return OutlinedWideButton(
+                    title: 'Отменить',
+                    onTap: () {
+                      widget.completeController.text =
+                          ProjectCompleteStatuses.canceled;
+                      widget.save();
+                    },
                   );
                 } else if (widget.project.id != null &&
                     widget.completeController.text !=
-                        ConstantData.projectCompleteStatuses[0]) {
+                        ProjectCompleteStatuses.notCompleted) {
                   return OutlinedWideButton(
                     title: 'Возобновить',
                     onTap: () {
                       widget.completeController.text =
-                          ConstantData.projectCompleteStatuses[0];
+                          ProjectCompleteStatuses.notCompleted;
                       widget.save();
                     },
                   );

@@ -236,7 +236,7 @@ class DatabaseHelper {
 
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
-        if (proj['status'] == ConstantData.appStatus[3]) {
+        if (proj['status'] == ProjectStatuses.contract) {
           if (GlobalParameters.resultFilterBorders[0].isNotEmpty &&
               GlobalParameters.resultFilterBorders[1].isNotEmpty) {
             if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
@@ -298,17 +298,17 @@ class DatabaseHelper {
         whereArgs: [1]);
 
     result['realQuantity'] =
-        List<int>.generate(ConstantData.appStatus.length, (index) => 0);
+        List<int>.generate(ProjectStatuses.length, (index) => 0);
     result['planQuantity'] =
-        List<int>.generate(ConstantData.appStatus.length, (index) => 0);
+        List<int>.generate(ProjectStatuses.length, (index) => 0);
     result['realAmount'] =
-        List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
+        List<double>.generate(ProjectStatuses.length, (index) => 0.0);
     result['planAmount'] =
-        List<double>.generate(ConstantData.appStatus.length, (index) => 0.0);
+        List<double>.generate(ProjectStatuses.length, (index) => 0.0);
 
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
-        int i = ConstantData.appStatus.indexOf(proj['status']);
+        int i = ProjectStatuses.indexOf(proj['status']);
         if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
             GlobalParameters.chartFilterBorders[1].isNotEmpty) {
           if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=

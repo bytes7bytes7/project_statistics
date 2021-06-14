@@ -143,7 +143,7 @@ class _ContentList extends StatelessWidget {
             } else {
               return _AnalysisChartCard(
                 primary: (i == analysisChart.planQuantity.length),
-                title: ConstantData.appStatus[i - 1] + ' (шт.)',
+                title: ProjectStatuses()[i - 1] + ' (шт.)',
                 subtitle1: 'Реальное кол-во:',
                 subtitle2: 'Плановое кол-во:',
                 real: analysisChart.realQuantity[i - 1],
@@ -185,7 +185,7 @@ class _ContentList extends StatelessWidget {
             } else {
               return _AnalysisChartCard(
                 primary: (i == analysisChart.planAmount.length),
-                title: ConstantData.appStatus[i - 1] + ' (млн. руб.)',
+                title: ProjectStatuses()[i - 1] + ' (млн. руб.)',
                 subtitle1: 'Реальная сумма:',
                 subtitle2: 'Плановая сумма:',
                 real: analysisChart.realAmount[i - 1],

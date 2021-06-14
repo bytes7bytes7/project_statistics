@@ -47,7 +47,7 @@ class StackedHorizontalBarChart extends StatelessWidget {
     List<_ChartColumn> chartRealData =
         List<_ChartColumn>.generate(real.length, (i) {
       return _ChartColumn(
-        title: ConstantData.appStatus[i],
+        title: ProjectStatuses()[i],
         value: real[i],
         color: colors[i],
       );
@@ -56,7 +56,7 @@ class StackedHorizontalBarChart extends StatelessWidget {
     List<_ChartColumn> chartPlanData =
         List<_ChartColumn>.generate(plan.length, (i) {
       return _ChartColumn(
-        title: ConstantData.appStatus[i],
+        title: ProjectStatuses()[i],
         value: plan[i],
         color: colors[i].withOpacity(0.5),
       );
@@ -67,7 +67,7 @@ class StackedHorizontalBarChart extends StatelessWidget {
     for (int i = 0; i < chartPlanData.length; i++) {
       chartData.add(charts.Series<_ChartColumn, String>(
         id: 'plan $i',
-        domainFn: (_, __) => ConstantData.appStatus[i],
+        domainFn: (_, __) => ProjectStatuses()[i],
         measureFn: (_, __) => plan[i],
         data: [chartPlanData[i]],
         seriesColor: charts.Color(
@@ -82,7 +82,7 @@ class StackedHorizontalBarChart extends StatelessWidget {
     for (int i = 0; i < chartRealData.length; i++) {
       chartData.add(charts.Series<_ChartColumn, String>(
         id: 'real $i',
-        domainFn: (_, __) => ConstantData.appStatus[i],
+        domainFn: (_, __) => ProjectStatuses()[i],
         measureFn: (_, __) => real[i],
         data: [chartRealData[i]],
         seriesColor: charts.Color(
