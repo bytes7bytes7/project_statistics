@@ -97,10 +97,8 @@ abstract class ExcelHelper {
           ConstDBData.title,
           ConstDBData.status,
           ConstDBData.price,
-          ConstDBData.startMonth,
-          ConstDBData.startYear,
-          ConstDBData.endMonth,
-          ConstDBData.endYear,
+          ConstDBData.month,
+          ConstDBData.year,
           ConstDBData.complete,
         ];
         thisTable.appendRow(headerRow);
@@ -191,10 +189,8 @@ abstract class ExcelHelper {
             values[2] = <int>[];
           } else {
             try {
-              values[2] = values[2]
-                  .split(';')
-                  .map<int>((e) => int.parse(e))
-                  .toList();
+              values[2] =
+                  values[2].split(';').map<int>((e) => int.parse(e)).toList();
             } catch (error) {
               continue;
             }
@@ -204,21 +200,21 @@ abstract class ExcelHelper {
           }
           if (values[4].isEmpty) {
             continue;
-          }
-          if (values[5].isEmpty) {
-            values[5] = 0.0;
           } else {
             try {
-              values[5] = double.parse(values[5]);
+              values[4] = int.parse(values[4]);
             } catch (error) {
               continue;
             }
           }
+          if (values[5].isEmpty) {
+            continue;
+          }
           if (values[6].isEmpty) {
-            values[6] = 0.0;
+            continue;
           } else {
             try {
-              values[6] = double.parse(values[6]);
+              values[6] = int.parse(values[6]);
             } catch (error) {
               continue;
             }
@@ -228,6 +224,24 @@ abstract class ExcelHelper {
           } else {
             try {
               values[7] = double.parse(values[7]);
+            } catch (error) {
+              continue;
+            }
+          }
+          if (values[8].isEmpty) {
+            values[8] = 0.0;
+          } else {
+            try {
+              values[8] = double.parse(values[8]);
+            } catch (error) {
+              continue;
+            }
+          }
+          if (values[9].isEmpty) {
+            values[9] = 0.0;
+          } else {
+            try {
+              values[9] = double.parse(values[9]);
             } catch (error) {
               continue;
             }
@@ -271,6 +285,12 @@ abstract class ExcelHelper {
             }
             if (values[5].isEmpty) {
               continue;
+            } else {
+              try {
+                values[5] = int.parse(values[5]);
+              } catch (error) {
+                continue;
+              }
             }
             if (values[6].isEmpty) {
               continue;

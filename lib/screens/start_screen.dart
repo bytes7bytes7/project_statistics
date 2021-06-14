@@ -486,9 +486,10 @@ class __ContentListState extends State<_ContentList> {
             try {
               await ExcelHelper.importFromExcel(context);
             } catch (error) {
+              print(error.toString());
               showInfoSnackBar(
                 context: context,
-                info: 'Ошибка',
+                info: error.toString(),
                 icon: Icons.warning_amber_outlined,
               );
             }
