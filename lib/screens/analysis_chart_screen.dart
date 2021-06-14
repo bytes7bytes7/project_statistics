@@ -41,7 +41,7 @@ class AnalysisChartScreen extends StatelessWidget {
                   barrierDismissible: true,
                   builder: (BuildContext context) {
                     return ProjectFilter(
-                      staticList: GlobalParameters.chartFilterBorders,
+                      datesList: GlobalParameters.chartFilterBorders,
                       refresh: () {
                         Bloc.bloc.analysisChartBloc.loadAnalysisChart();
                       },

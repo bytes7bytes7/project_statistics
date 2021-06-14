@@ -36,14 +36,14 @@ class MeasureBeautifier {
     MeasureBeautifier resultMeasure = MeasureBeautifier(level);
     if (number is int || number is double) {
       if (number >= 1000000 && level == MeasureLevel.unit) {
-        result = (number / 1000000).toStringAsFixed(1);
+        result = (number / 1000000).toString();
         resultMeasure.level = MeasureLevel.millions;
       } else if (number >= 1000) {
         if (level == MeasureLevel.unit) {
-          result = (number / 1000).toStringAsFixed(1);
+          result = (number / 1000).round().toString();
           resultMeasure.level = MeasureLevel.thousands;
         } else if (level == MeasureLevel.thousands) {
-          result = (number / 1000).toStringAsFixed(1);
+          result = (number / 1000).toString();
           resultMeasure.level = MeasureLevel.millions;
         }
       }

@@ -37,7 +37,7 @@ class ResultScreen extends StatelessWidget {
                   barrierDismissible: true,
                   builder: (BuildContext context) {
                     return ProjectFilter(
-                      staticList: GlobalParameters.resultFilterBorders,
+                      datesList: GlobalParameters.resultFilterBorders,
                       refresh: () {
                         Bloc.bloc.resultBloc.loadResult();
                       },
@@ -117,6 +117,7 @@ class _ContentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String amount, amountMeasure;
+
     MeasureBeautifier()
         .formatNumber(
       number: result.amount,
@@ -130,6 +131,7 @@ class _ContentList extends StatelessWidget {
     });
 
     String quantity, quantityMeasure;
+
     MeasureBeautifier()
         .formatNumber(
       number: result.quantity,
@@ -142,9 +144,19 @@ class _ContentList extends StatelessWidget {
       return;
     });
 
-    String plan =
-            MeasureBeautifier().truncateZero(result.plan.toStringAsFixed(3)),
-        planMeasure = 'млн.\nруб.';
+    String plan, planMeasure;
+
+    MeasureBeautifier()
+        .formatNumber(
+      number: result.plan,
+      level: MeasureLevel.unit,
+      measure: 'руб.',
+    )
+        .reduce((a, b) {
+      plan = a;
+      planMeasure = b;
+      return;
+    });
 
     String percent = result.percent.toString(), percentMeasure = '%';
 
@@ -165,7 +177,7 @@ class _ContentList extends StatelessWidget {
     MeasureBeautifier()
         .formatNumber(
       number: result.prize,
-      level: MeasureLevel.thousands,
+      level: MeasureLevel.unit,
       measure: 'руб.',
     )
         .reduce((a, b) {

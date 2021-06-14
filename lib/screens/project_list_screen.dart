@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/widgets/project_filter.dart';
 
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
 import '../widgets/bookmark_clipper.dart';
-import '../widgets/sort_bar.dart';
+import '../widgets/project_sort.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/project_bloc.dart';
@@ -36,24 +37,52 @@ class ProjectListScreen extends StatelessWidget {
             tooltip: ConstantData.appToolTips['table'],
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return ProjectInfoScreen(
-                      str: 'Новый Проект',
-                      project: Project(),
-                    );
-                  }),
-                );
-              },
-              tooltip: ConstantData.appToolTips['add'],
-            ),
+            // IconButton(
+            //   icon: const Icon(Icons.sort),
+            //   tooltip: ConstantData.appToolTips['sort'],
+            //   onPressed: () {
+            //     showDialog<void>(
+            //       context: context,
+            //       barrierDismissible: true,
+            //       builder: (BuildContext context) {
+            //         return ProjectFilter();
+            //       },
+            //     );
+            //   },
+            // ),
+            // IconButton(
+            //   icon: const Icon(Icons.filter_alt_outlined),
+            //   tooltip: ConstantData.appToolTips['filter'],
+            //   onPressed: () {
+            //     showDialog<void>(
+            //       context: context,
+            //       barrierDismissible: true,
+            //       builder: (BuildContext context) {
+            //         return ProjectFilter(
+            //           datesList: ,
+            //         );
+            //       },
+            //     );
+            //   },
+            // ),
           ],
         ),
         body: _Body(),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          tooltip: ConstantData.appToolTips['add'],
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return ProjectInfoScreen(
+                  str: 'Новый Проект',
+                  project: Project(),
+                );
+              }),
+            );
+          },
+        ),
       ),
     );
   }
@@ -116,17 +145,11 @@ class _ContentList extends StatelessWidget {
       builder: (context, value, child) {
         return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 30),
-          itemCount: projects.length + 1,
+          itemCount: projects.length,
           itemBuilder: (context, i) {
-            if (i == 0)
-              return SortBar(
-                projects: projects,
-                update: update,
-              );
-            else
-              return _ProjectCard(
-                project: projects[i - 1],
-              );
+            return _ProjectCard(
+              project: projects[i],
+            );
           },
         );
       },
@@ -145,7 +168,8 @@ class _ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String price, priceMeasure = 'млн.\nруб.';
-    price = MeasureBeautifier().truncateZero((project.price / 1000000).toStringAsFixed(3));
+    price = MeasureBeautifier()
+        .truncateZero((project.price / 1000000).toStringAsFixed(3));
     Size size = Size(double.infinity, 100);
     Color color = (project.status == ProjectStatuses.hot)
         ? Theme.of(context).errorColor

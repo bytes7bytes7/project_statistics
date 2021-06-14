@@ -281,16 +281,21 @@ class DatabaseHelper {
     }
 
     if (plan.isNotEmpty) {
-      result['plan'] += int.parse(plan.first['amount'].split(';')[3]);
+      result['plan'] += double.parse(plan.first['amount'].split(';')[3]);
       result['until'] = result['plan'] - result['amount'];
-      if (result['until'] <= 0) {
+      if(result['until']<0){
+        result['until']=0.0;
+      }
+
+      if (result['plan'] != 0) {
+        result['percent'] = (100 * result['amount'] / result['plan']).round();
+      }
+
+      if (result['percent'] > 100) {
+        result['prize'] = plan.first['prize'] * plan.first['ratio'];
+      } else if (result['percent'] >= plan.first['percent']) {
         result['prize'] = plan.first['prize'];
       }
-    }
-
-    if (result['plan'] != 0) {
-      result['percent'] = (100 * result['amount'] / result['plan']).round();
-      result['plan'] /= 1000000;
     }
 
     return Result.fromMap(result);

@@ -34,25 +34,23 @@ class ProjectTableScreen extends StatelessWidget {
             },
             tooltip: ConstantData.appToolTips['list'],
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return ProjectInfoScreen(
-                      str: 'Новый Проект',
-                      project: Project(),
-                    );
-                  }),
-                );
-              },
-              tooltip: ConstantData.appToolTips['add'],
-            ),
-          ],
         ),
         body: _Body(),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          tooltip: ConstantData.appToolTips['add'],
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return ProjectInfoScreen(
+                  str: 'Новый Проект',
+                  project: Project(),
+                );
+              }),
+            );
+          },
+        ),
       ),
     );
   }

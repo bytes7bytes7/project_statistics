@@ -9,6 +9,7 @@ class GlobalParameters {
   static String projectSortParamName = ProjectParameterNames.title;
   static String projectSortParamDirection =
       ConstantData.appProjectParameterDirection[0];
+  static List<String> projectFilterBorders = ['', ];
   static List<String> chartFilterBorders = ['', '', '', ''];
   static List<String> resultFilterBorders = ['', '', '', ''];
 

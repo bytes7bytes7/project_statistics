@@ -8,15 +8,15 @@ import 'outlined_wide_button.dart';
 class ProjectFilter extends StatelessWidget {
   ProjectFilter({
     Key key,
-    @required this.staticList,
+    @required this.datesList,
     @required this.refresh,
-  })  : this.startMonthController = TextEditingController(text: staticList[0]),
-        this.startYearController = TextEditingController(text: staticList[1]),
-        this.endMonthController = TextEditingController(text: staticList[2]),
-        this.endYearController = TextEditingController(text: staticList[3]),
+  })  : this.startMonthController = TextEditingController(text: datesList[0]),
+        this.startYearController = TextEditingController(text: datesList[1]),
+        this.endMonthController = TextEditingController(text: datesList[2]),
+        this.endYearController = TextEditingController(text: datesList[3]),
         super(key: key);
 
-  final List<String> staticList;
+  final List<String> datesList;
   final Function refresh;
 
   final ValueNotifier<String> errorNotifier = ValueNotifier('');
@@ -103,10 +103,10 @@ class ProjectFilter extends StatelessWidget {
                 startYearController.text = '';
                 endMonthController.text = '';
                 endYearController.text = '';
-                staticList[0] = '';
-                staticList[1] = '';
-                staticList[2] = '';
-                staticList[3] = '';
+                datesList[0] = '';
+                datesList[1] = '';
+                datesList[2] = '';
+                datesList[3] = '';
                 refresh();
                 errorNotifier.value = 'Заполните все поля';
                 Navigator.pop(context);
@@ -122,10 +122,10 @@ class ProjectFilter extends StatelessWidget {
                   errorNotifier.value = 'Заполните все поля';
                 } else {
                   errorNotifier.value = '';
-                  staticList[0] = startMonthController.text;
-                  staticList[1] = startYearController.text;
-                  staticList[2] = endMonthController.text;
-                  staticList[3] = endYearController.text;
+                  datesList[0] = startMonthController.text;
+                  datesList[1] = startYearController.text;
+                  datesList[2] = endMonthController.text;
+                  datesList[3] = endYearController.text;
                   refresh();
                   Navigator.pop(context);
                 }
