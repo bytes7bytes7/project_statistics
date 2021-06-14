@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 
-import '../bloc/bloc.dart';
 import '../constants.dart';
-import '../global/global_parameters.dart';
 import 'choose_field.dart';
 import 'flat_wide_button.dart';
 import 'outlined_wide_button.dart';
 
-class ChartFilter extends StatelessWidget {
-  final TextEditingController startMonthController =
-      TextEditingController(text: GlobalParameters.chartFilterBorders[0]);
-  final TextEditingController startYearController =
-      TextEditingController(text: GlobalParameters.chartFilterBorders[1]);
-  final TextEditingController endMonthController =
-      TextEditingController(text: GlobalParameters.chartFilterBorders[2]);
-  final TextEditingController endYearController =
-      TextEditingController(text: GlobalParameters.chartFilterBorders[3]);
+class ProjectFilter extends StatelessWidget {
+  ProjectFilter({
+    Key key,
+    @required this.staticList,
+    @required this.refresh,
+  })  : this.startMonthController = TextEditingController(text: staticList[0]),
+        this.startYearController = TextEditingController(text: staticList[1]),
+        this.endMonthController = TextEditingController(text: staticList[2]),
+        this.endYearController = TextEditingController(text: staticList[3]),
+        super(key: key);
+
+  final List<String> staticList;
+  final Function refresh;
 
   final ValueNotifier<String> errorNotifier = ValueNotifier('');
+  final TextEditingController startMonthController;
+  final TextEditingController startYearController;
+  final TextEditingController endMonthController;
+  final TextEditingController endYearController;
 
   @override
   Widget build(BuildContext context) {
@@ -97,11 +103,11 @@ class ChartFilter extends StatelessWidget {
                 startYearController.text = '';
                 endMonthController.text = '';
                 endYearController.text = '';
-                GlobalParameters.chartFilterBorders[0] = '';
-                GlobalParameters.chartFilterBorders[1] = '';
-                GlobalParameters.chartFilterBorders[2] = '';
-                GlobalParameters.chartFilterBorders[3] = '';
-                Bloc.bloc.analysisChartBloc.loadAnalysisChart();
+                staticList[0] = '';
+                staticList[1] = '';
+                staticList[2] = '';
+                staticList[3] = '';
+                refresh();
                 errorNotifier.value = 'Заполните все поля';
                 Navigator.pop(context);
               },
@@ -116,15 +122,11 @@ class ChartFilter extends StatelessWidget {
                   errorNotifier.value = 'Заполните все поля';
                 } else {
                   errorNotifier.value = '';
-                  GlobalParameters.chartFilterBorders[0] =
-                      startMonthController.text;
-                  GlobalParameters.chartFilterBorders[1] =
-                      startYearController.text;
-                  GlobalParameters.chartFilterBorders[2] =
-                      endMonthController.text;
-                  GlobalParameters.chartFilterBorders[3] =
-                      endYearController.text;
-                  Bloc.bloc.analysisChartBloc.loadAnalysisChart();
+                  staticList[0] = startMonthController.text;
+                  staticList[1] = startYearController.text;
+                  staticList[2] = endMonthController.text;
+                  staticList[3] = endYearController.text;
+                  refresh();
                   Navigator.pop(context);
                 }
               },

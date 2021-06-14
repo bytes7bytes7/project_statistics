@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/widgets/project_filter.dart';
 
 import '../global/global_parameters.dart';
-import '../widgets/choose_field.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/loading_circle.dart';
 import '../widgets/error_label.dart';
@@ -13,11 +13,6 @@ import '../constants.dart';
 import '../models/result.dart';
 
 class ResultScreen extends StatelessWidget {
-  final TextEditingController startPeriodController =
-      TextEditingController(text: GlobalParameters.resultFilterBorders[0]);
-  final TextEditingController endPeriodController =
-      TextEditingController(text: GlobalParameters.resultFilterBorders[1]);
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -32,50 +27,34 @@ class ResultScreen extends StatelessWidget {
             'Результат',
             style: Theme.of(context).textTheme.headline1,
           ),
-          leading: IconButton(
-            icon: const Icon(Icons.delete),
-            tooltip: ConstantData.appToolTips['throw'],
-            onPressed: () {
-              startPeriodController.text = '';
-              endPeriodController.text = '';
-              GlobalParameters.resultFilterBorders[0] = '';
-              GlobalParameters.resultFilterBorders[1] = '';
-              Bloc.bloc.resultBloc.loadResult();
-            },
-          ),
           actions: [
             IconButton(
-              icon: const Icon(Icons.refresh_outlined),
-              tooltip: ConstantData.appToolTips['refresh'],
+              icon: const Icon(Icons.filter_alt_outlined),
+              tooltip: ConstantData.appToolTips['filter'],
               onPressed: () {
-                GlobalParameters.resultFilterBorders[0] =
-                    startPeriodController.text ?? '';
-                GlobalParameters.resultFilterBorders[1] =
-                    endPeriodController.text ?? '';
-                Bloc.bloc.resultBloc.loadResult();
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return ProjectFilter(
+                      staticList: GlobalParameters.resultFilterBorders,
+                      refresh: () {
+                        Bloc.bloc.resultBloc.loadResult();
+                      },
+                    );
+                  },
+                );
               },
             ),
           ],
         ),
-        body: _Body(
-          startPeriodController: startPeriodController,
-          endPeriodController: endPeriodController,
-        ),
+        body: _Body(),
       ),
     );
   }
 }
 
 class _Body extends StatefulWidget {
-  const _Body({
-    Key key,
-    @required this.startPeriodController,
-    @required this.endPeriodController,
-  }) : super(key: key);
-
-  final TextEditingController startPeriodController;
-  final TextEditingController endPeriodController;
-
   @override
   __BodyState createState() => __BodyState();
 }
@@ -108,8 +87,6 @@ class __BodyState extends State<_Body> {
             if (state.result.amount != null) {
               return _ContentList(
                 result: state.result,
-                startPeriodController: widget.startPeriodController,
-                endPeriodController: widget.endPeriodController,
               );
             } else {
               return EmptyLabel();
@@ -133,13 +110,9 @@ class _ContentList extends StatelessWidget {
   _ContentList({
     Key key,
     @required this.result,
-    @required this.startPeriodController,
-    @required this.endPeriodController,
   }) : super(key: key);
 
   final Result result;
-  final TextEditingController startPeriodController;
-  final TextEditingController endPeriodController;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +142,9 @@ class _ContentList extends StatelessWidget {
       return;
     });
 
-    String plan=MeasureBeautifier().truncateZero(result.plan.toStringAsFixed(3)), planMeasure='млн.\nруб.';
+    String plan =
+            MeasureBeautifier().truncateZero(result.plan.toStringAsFixed(3)),
+        planMeasure = 'млн.\nруб.';
 
     String percent = result.percent.toString(), percentMeasure = '%';
 
@@ -202,28 +177,6 @@ class _ContentList extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       children: [
-        SizedBox(height: 10),
-        Row(
-          children: [
-            Flexible(
-              child: ChooseField(
-                label: 'Начало',
-                chooseLabel: 'Начало срока',
-                group: ConstantData.appMonths,
-                controller: startPeriodController,
-              ),
-            ),
-            SizedBox(width: 18),
-            Flexible(
-              child: ChooseField(
-                label: 'Конец',
-                chooseLabel: 'Конец срока',
-                group: ConstantData.appMonths,
-                controller: endPeriodController,
-              ),
-            ),
-          ],
-        ),
         SizedBox(height: 10),
         ResultInfoLine(
           title: 'Сумма\nзаключенных\nдоговоров',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/global/global_parameters.dart';
 
-import '../widgets/chart_filter.dart';
+import '../widgets/project_filter.dart';
 import '../widgets/error_label.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/stacked_horizontal_bar_chart.dart';
@@ -25,7 +26,10 @@ class AnalysisChartScreen extends StatelessWidget {
           centerTitle: true,
           title: Text(
             'Диаграмма',
-            style: Theme.of(context).textTheme.headline1,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline1,
           ),
           actions: [
             IconButton(
@@ -36,7 +40,12 @@ class AnalysisChartScreen extends StatelessWidget {
                   context: context,
                   barrierDismissible: true,
                   builder: (BuildContext context) {
-                    return ChartFilter();
+                    return ProjectFilter(
+                      staticList: GlobalParameters.chartFilterBorders,
+                      refresh: () {
+                        Bloc.bloc.analysisChartBloc.loadAnalysisChart();
+                      },
+                    );
                   },
                 );
               },
@@ -106,7 +115,9 @@ class _ContentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return PageView(
       children: [
         ListView.builder(
@@ -119,7 +130,10 @@ class _ContentList extends StatelessWidget {
                 children: [
                   Text(
                     'Количество',
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline2,
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -163,7 +177,10 @@ class _ContentList extends StatelessWidget {
                 children: [
                   Text(
                     'Сумма',
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline2,
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -224,19 +241,28 @@ class _AnalysisChartCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Color color;
     if (primary)
-      color = Theme.of(context).errorColor;
+      color = Theme
+          .of(context)
+          .errorColor;
     else
-      color = Theme.of(context).shadowColor;
+      color = Theme
+          .of(context)
+          .shadowColor;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: Theme.of(context).focusColor,
+        color: Theme
+            .of(context)
+            .focusColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).shadowColor.withOpacity(0.3),
+            color: Theme
+                .of(context)
+                .shadowColor
+                .withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 4,
             offset: Offset(2, 2),
@@ -248,13 +274,18 @@ class _AnalysisChartCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(color: color),
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText1
+                .copyWith(color: color),
           ),
           Row(
             children: [
               Text(
                 subtitle1,
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .headline2
                     .copyWith(color: color),
@@ -264,7 +295,8 @@ class _AnalysisChartCard extends StatelessWidget {
                 (real.runtimeType == int)
                     ? real.toString()
                     : MeasureBeautifier().truncateZero(real.toStringAsFixed(2)),
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .headline2
                     .copyWith(color: color),
@@ -275,7 +307,8 @@ class _AnalysisChartCard extends StatelessWidget {
             children: [
               Text(
                 subtitle2,
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .subtitle2
                     .copyWith(color: color),
@@ -283,7 +316,8 @@ class _AnalysisChartCard extends StatelessWidget {
               Spacer(),
               Text(
                 MeasureBeautifier().truncateZero(plan.toStringAsFixed(2)),
-                style: Theme.of(context)
+                style: Theme
+                    .of(context)
                     .textTheme
                     .subtitle2
                     .copyWith(color: color),
@@ -292,7 +326,9 @@ class _AnalysisChartCard extends StatelessWidget {
           ),
           PercentBar(
             percent: int.parse((100 * real / plan).toStringAsFixed(0)),
-            color: (primary) ? color : Theme.of(context).primaryColor,
+            color: (primary) ? color : Theme
+                .of(context)
+                .primaryColor,
           ),
         ],
       ),
