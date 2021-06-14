@@ -25,7 +25,6 @@ class InputField extends StatelessWidget {
         style: Theme.of(context).textTheme.bodyText1,
         keyboardType: textInputType,
         inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r"^\d+[\,\.]?\d{0,6}")),
           AmountTextInputFormatter(),
         ],
         decoration: InputDecoration(
@@ -48,6 +47,9 @@ class AmountTextInputFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue before, TextEditingValue after) {
     final StringBuffer newValue = StringBuffer();
+
+    print(after.text);
+
     TextEditingValue _after =
         TextEditingValue(text: after.text.replaceAll(' ', ''));
 
@@ -76,14 +78,13 @@ class AmountTextInputFormatter extends TextInputFormatter {
       newValue.write(tmp.substring(0, tmp.length));
     }
 
-    if(cursorPosition==after.text.length) {
-      cursorPosition = newValue.length;
-    }else{
+    if ((before.text.replaceAll(' ', '').length / 3).ceil() <
+        (_after.text.length / 3).ceil() && _after.text.length > 1) {
       cursorPosition++;
     }
 
-    if(cursorPosition>newValue.length || cursorPosition < 0){
-      cursorPosition=newValue.length;
+    if (cursorPosition > newValue.length || cursorPosition < 0) {
+      cursorPosition = 0;
     }
     return TextEditingValue(
       text: newValue.toString(),
