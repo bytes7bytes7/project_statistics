@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets/choose_field.dart';
 import '../widgets/show_info_snack_bar.dart';
-import '../widgets/flat_wide_button.dart';
 import '../widgets/input_field.dart';
 import '../widgets/outlined_wide_button.dart';
 import '../widgets/show_no_yes_dialog.dart';

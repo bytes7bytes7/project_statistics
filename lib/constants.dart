@@ -139,29 +139,214 @@ abstract class ConstantData {
   ];
 }
 
+class TranslatableVar {
+  const TranslatableVar({
+    @required this.en,
+    @required this.ru,
+  });
+
+  final String en;
+  final String ru;
+}
+
 abstract class ConstDBData {
+  static String locale = 'en';
   static final databaseName = "data.db";
 
   // Increment this version when you need to change the schema.
   static final databaseVersion = 1;
 
   // Names of tables
-  static const String planTableName = 'plan';
-  static const String projectTableName = 'project';
+  static const TranslatableVar _planTableName = TranslatableVar(
+    en: 'plan',
+    ru: 'План',
+  );
+  static const TranslatableVar _projectTableName = TranslatableVar(
+    en: 'project',
+    ru: 'Проекты',
+  );
 
   // Special columns for plan
-  static const String id = 'id';
-  static const String quantity = 'quantity';
-  static const String amount = 'amount';
-  static const String startPeriod = 'startPeriod';
-  static const String endPeriod = 'endPeriod';
-  static const String prize = 'prize';
-  static const String percent = 'percent';
-  static const String ratio = 'ratio';
+  static const TranslatableVar _id = TranslatableVar(
+    en: 'id',
+    ru: 'id',
+  );
+  static const TranslatableVar _quantity = TranslatableVar(
+    en: 'quantity',
+    ru: 'Кол-во',
+  );
+  static const TranslatableVar _amount = TranslatableVar(
+    en: 'amount',
+    ru: 'Сумма',
+  );
+  static const TranslatableVar _startPeriod = TranslatableVar(
+    en: 'startPeriod',
+    ru: 'Начало',
+  );
+  static const TranslatableVar _endPeriod = TranslatableVar(
+    en: 'endPeriod',
+    ru: 'Конец',
+  );
+  static const TranslatableVar _prize = TranslatableVar(
+    en: 'prize',
+    ru: 'Премия',
+  );
+  static const TranslatableVar _percent = TranslatableVar(
+    en: 'percent',
+    ru: 'Процент',
+  );
+  static const TranslatableVar _ratio = TranslatableVar(
+    en: 'ratio',
+    ru: 'Коэффициент',
+  );
 
   // Special columns for project
-  static const String title = 'title';
-  static const String status = 'status';
-  static const String price = 'price';
-  static const String complete = 'complete';
+  static const TranslatableVar _title = TranslatableVar(
+    en: 'title',
+    ru: 'Название',
+  );
+  static const TranslatableVar _status = TranslatableVar(
+    en: 'status',
+    ru: 'Статус',
+  );
+  static const TranslatableVar _price = TranslatableVar(
+    en: 'price',
+    ru: 'Цена',
+  );
+  static const TranslatableVar _complete = TranslatableVar(
+    en: 'complete',
+    ru: 'Завершенность',
+  );
+
+  // Getters
+  static String get planTableName {
+    if (locale == 'en') {
+      return _planTableName.en;
+    } else if (locale == 'ru') {
+      return _planTableName.ru;
+    } else {
+      return 'undefined locale';
+    }
+  }
+  static String get projectTableName {
+    if(locale=='en'){
+      return _projectTableName.en;
+    }else if(locale=='ru'){
+      return _projectTableName.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+
+  // Special columns for plan
+  static String get id {
+    if(locale=='en'){
+      return _id.en;
+    }else if(locale=='ru'){
+      return _id.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get quantity {
+    if(locale=='en'){
+      return _quantity.en;
+    }else if(locale=='ru'){
+      return _quantity.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get amount {
+    if(locale=='en'){
+      return _amount.en;
+    }else if(locale=='ru'){
+      return _amount.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get startPeriod {
+    if(locale=='en'){
+      return _startPeriod.en;
+    }else if(locale=='ru'){
+      return _startPeriod.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get endPeriod {
+    if(locale=='en'){
+      return _endPeriod.en;
+    }else if(locale=='ru'){
+      return _endPeriod.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get prize {
+    if(locale=='en'){
+      return _prize.en;
+    }else if(locale=='ru'){
+      return _prize.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get percent {
+    if(locale=='en'){
+      return _percent.en;
+    }else if(locale=='ru'){
+      return _percent.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get ratio {
+    if(locale=='en'){
+      return _ratio.en;
+    }else if(locale=='ru'){
+      return _ratio.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+
+  // Special columns for project
+  static String get title {
+    if(locale=='en'){
+      return _title.en;
+    }else if(locale=='ru'){
+      return _title.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get status {
+    if(locale=='en'){
+      return _status.en;
+    }else if(locale=='ru'){
+      return _status.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get price {
+    if(locale=='en'){
+      return _price.en;
+    }else if(locale=='ru'){
+      return _price.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
+  static String get complete {
+    if(locale=='en'){
+      return _complete.en;
+    }else if(locale=='ru'){
+      return _complete.ru;
+    }else {
+      return 'undefined locale';
+    }
+  }
 }

@@ -64,6 +64,17 @@ class Plan {
     ratio = map['ratio'];
   }
 
+  Plan.fromValues(List<dynamic> values){
+    id = values[0];
+    quantity = values[1];
+    amount = values[2];
+    startPeriod = values[3];
+    endPeriod = values[4];
+    prize = values[5];
+    percent = values[6];
+    ratio = values[7];
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': 1,

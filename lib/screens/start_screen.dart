@@ -288,9 +288,12 @@ class __ContentListState extends State<_ContentList> {
         widget.percentController.text.isNotEmpty &&
         widget.ratioController.text.isNotEmpty) {
       try {
-        widget.prizeController.text = widget.prizeController.text.replaceAll(',', '.');
-        widget.percentController.text= widget.percentController.text.replaceAll(',', '.');
-        widget.ratioController.text = widget.ratioController.text.replaceAll(',', '.');
+        widget.prizeController.text =
+            widget.prizeController.text.replaceAll(',', '.');
+        widget.percentController.text =
+            widget.percentController.text.replaceAll(',', '.');
+        widget.ratioController.text =
+            widget.ratioController.text.replaceAll(',', '.');
         widget.plan
           ..quantity = [
             int.parse(widget.quantityController_1.text.replaceAll(' ', '')),
@@ -306,9 +309,12 @@ class __ContentListState extends State<_ContentList> {
           ]
           ..startPeriod = widget.startPeriodController.text
           ..endPeriod = widget.endPeriodController.text
-          ..prize = double.parse(widget.prizeController.text.replaceAll(' ', ''))
-          ..percent = double.parse(widget.percentController.text.replaceAll(' ', ''))
-          ..ratio = double.parse(widget.ratioController.text.replaceAll(' ', ''));
+          ..prize =
+              double.parse(widget.prizeController.text.replaceAll(' ', ''))
+          ..percent =
+              double.parse(widget.percentController.text.replaceAll(' ', ''))
+          ..ratio =
+              double.parse(widget.ratioController.text.replaceAll(' ', ''));
         Bloc.bloc.planBloc.updatePlan(widget.plan);
       } catch (error) {
         showInfoSnackBar(
@@ -427,8 +433,20 @@ class __ContentListState extends State<_ContentList> {
         ),
         OutlinedWideButton(
           title: 'Импорт',
-          onTap: () {
-            ExcelHelper.importFromExcel(context);
+          onTap: ()async {
+            // Change locale to RU
+            ConstDBData.locale = 'ru';
+            try {
+              await ExcelHelper.importFromExcel(context);
+            } catch (error) {
+              showInfoSnackBar(
+                context: context,
+                info: 'Ошибка',
+                icon: Icons.warning_amber_outlined,
+              );
+            }
+            // Change locale to RU
+            ConstDBData.locale = 'en';
           },
         ),
         OutlinedWideButton(
@@ -442,7 +460,7 @@ class __ContentListState extends State<_ContentList> {
         FlatWideButton(
           title: 'Готово',
           onTap: () async {
-            if(await save()) {
+            if (await save()) {
               GlobalParameters.currentPageIndex.value = 1;
             }
           },

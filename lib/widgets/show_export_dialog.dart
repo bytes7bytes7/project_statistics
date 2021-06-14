@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/widgets/show_info_snack_bar.dart';
 
+import '../constants.dart';
 import '../services/value_validation.dart';
 import '../services/excel_helper.dart';
 
@@ -75,13 +77,25 @@ Future<void> showExportDialog({BuildContext context, Function onDone}) async {
                     .bodyText1
                     .copyWith(color: Theme.of(context).primaryColor),
               ),
-              onPressed: () {
+              onPressed: ()async {
                 errorNotifier.value = filenameValidation(controller.text);
                 if (errorNotifier.value != null) {
                   _formKey.currentState.validate();
                 } else {
                   errorNotifier.value = null;
-                  ExcelHelper.exportToExcel(context, controller.text);
+                  // Change locale to RU
+                  ConstDBData.locale = 'ru';
+                  try {
+                    await ExcelHelper.exportToExcel(context, controller.text);
+                  } catch (error) {
+                    showInfoSnackBar(
+                      context: context,
+                      info: 'Ошибка',
+                      icon: Icons.warning_amber_outlined,
+                    );
+                  }
+                  // Change locale to EN
+                  ConstDBData.locale = 'en';
                 }
               },
             ),

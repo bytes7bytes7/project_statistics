@@ -32,6 +32,16 @@ class Project {
     complete = map['complete'];
   }
 
+  Project.fromValues(List<dynamic> values) {
+    id = values[0];
+    title = values[1];
+    status = values[2];
+    price = values[3];
+    startPeriod = values[4];
+    endPeriod = values[5];
+    complete = values[6];
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

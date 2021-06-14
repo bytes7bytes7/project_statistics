@@ -62,8 +62,12 @@ abstract class ExcelHelper {
     excel.delete('Sheet1');
 
     // Get data
+    // Change locale to EN
+    ConstDBData.locale = 'en';
     Plan plan = await DatabaseHelper.db.getPlan();
     List<Project> projects = await DatabaseHelper.db.getAllProjects();
+    // Change locale to RU
+    ConstDBData.locale = 'ru';
 
     List<String> headerRow;
 
@@ -149,15 +153,15 @@ abstract class ExcelHelper {
       Plan plan = Plan();
       List<Project> projects = <Project>[];
 
-      List<String> headerRow;
+      // List<String> headerRow;
 
       for (var table in excel.tables.keys) {
         var thisTable = excel.tables[table];
         List<dynamic> values;
         if (table == ConstDBData.planTableName) {
           if (thisTable.rows.length > 0) {
-            headerRow =
-                thisTable.rows[0].map<String>((e) => e.toString()).toList();
+            // headerRow =
+            //     thisTable.rows[0].map<String>((e) => e.toString()).toList();
           }
           values = thisTable.rows[1].map<dynamic>((e) => e.toString()).toList();
           if (values[0].isEmpty) {
@@ -180,12 +184,12 @@ abstract class ExcelHelper {
             }
           }
           if (values[2].isEmpty) {
-            values[2] = <double>[];
+            values[2] = <int>[];
           } else {
             try {
               values[2] = values[2]
                   .split(';')
-                  .map<double>((e) => double.parse(e))
+                  .map<int>((e) => int.parse(e))
                   .toList();
             } catch (error) {
               continue;
@@ -224,13 +228,11 @@ abstract class ExcelHelper {
               continue;
             }
           }
-          Map<String, dynamic> map =
-              Map<String, dynamic>.fromIterables(headerRow, values);
-          plan = Plan.fromMap(map);
+          plan = Plan.fromValues(values);
         } else if (table == ConstDBData.projectTableName) {
           if (thisTable.rows.length > 0) {
-            headerRow =
-                thisTable.rows[0].map<String>((e) => e.toString()).toList();
+            // headerRow =
+            //     thisTable.rows[0].map<String>((e) => e.toString()).toList();
           }
           for (int i = 1; i < thisTable.rows.length; i++) {
             values =
@@ -269,9 +271,7 @@ abstract class ExcelHelper {
             if (values[6].isEmpty) {
               continue;
             }
-            Map<String, dynamic> map =
-                Map<String, dynamic>.fromIterables(headerRow, values);
-            projects.add(Project.fromMap(map));
+            projects.add(Project.fromValues(values));
           }
         }
       }
