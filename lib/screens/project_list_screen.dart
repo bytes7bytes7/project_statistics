@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/widgets/project_filter.dart';
 
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
@@ -37,19 +36,19 @@ class ProjectListScreen extends StatelessWidget {
             tooltip: ConstantData.appToolTips['table'],
           ),
           actions: [
-            // IconButton(
-            //   icon: const Icon(Icons.sort),
-            //   tooltip: ConstantData.appToolTips['sort'],
-            //   onPressed: () {
-            //     showDialog<void>(
-            //       context: context,
-            //       barrierDismissible: true,
-            //       builder: (BuildContext context) {
-            //         return ProjectFilter();
-            //       },
-            //     );
-            //   },
-            // ),
+            IconButton(
+              icon: const Icon(Icons.sort),
+              tooltip: ConstantData.appToolTips['sort'],
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return ProjectSort();
+                  },
+                );
+              },
+            ),
             // IconButton(
             //   icon: const Icon(Icons.filter_alt_outlined),
             //   tooltip: ConstantData.appToolTips['filter'],
