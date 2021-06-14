@@ -6,7 +6,7 @@ import '../models/plan.dart';
 
 class GlobalParameters {
   static final ValueNotifier<int> currentPageIndex = ValueNotifier(0);
-  static String projectSortParamName = ConstantData.appProjectParameterNames[0];
+  static String projectSortParamName = ProjectParameterNames.title;
   static String projectSortParamDirection =
       ConstantData.appProjectParameterDirection[0];
   static List<String> chartFilterBorders = ['', ''];

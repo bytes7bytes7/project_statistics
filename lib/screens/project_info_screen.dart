@@ -264,7 +264,7 @@ class __BodyState extends State<_Body> {
             ChooseField(
               label: 'Статус',
               chooseLabel: 'Статус',
-              group: ProjectStatuses.values(),
+              group: ProjectStatuses.values,
               controller: widget.statusController,
             ),
             InputField(

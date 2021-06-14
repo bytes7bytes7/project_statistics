@@ -25,8 +25,11 @@ class MeasureBeautifier {
     return str;
   }
 
-  List<String> formatNumber(
-      dynamic number, MeasureLevel level, String measure) {
+  List<String> formatNumber({
+    dynamic number,
+    MeasureLevel level,
+    String measure,
+  }) {
     bool negative = number < 0;
     String result = number.abs().toString();
     number = number.abs();
@@ -63,7 +66,7 @@ class MeasureBeautifier {
     int i = value.length;
     while (i - 3 >= 0) {
       begin = value.substring(i - 3, i) + begin;
-      begin = ' '+begin;
+      begin = ' ' + begin;
       i -= 3;
     }
     if (i > 0) {

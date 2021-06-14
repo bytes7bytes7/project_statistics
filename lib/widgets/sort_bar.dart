@@ -71,7 +71,7 @@ class __SortDialogState extends State<_SortDialog> {
   @override
   Widget build(BuildContext context) {
     List<Widget> bodyWidgets =
-        ConstantData.appProjectParameterNames.map<Widget>((e) {
+        ProjectParameterNames.values.map<Widget>((e) {
       return ListTile(
         contentPadding: const EdgeInsets.all(0),
         leading: Radio(

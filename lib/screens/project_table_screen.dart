@@ -129,29 +129,33 @@ class _ContentTable extends StatelessWidget {
                         (rowIndex) {
                           return Row(
                             children: List.generate(
-                              ConstantData.appProjectParameterNames.length,
+                              ProjectParameterNames.length,
                               (columnIndex) {
                                 String text;
                                 Function onTap;
                                 bool redLine = false;
                                 if (rowIndex == 0) {
-                                  text = ConstantData
-                                      .appProjectParameterNames[columnIndex];
+                                  text = ProjectParameterNames()[columnIndex];
+                                  // if (columnIndex ==
+                                  //     ProjectParameterNames.indexOf(
+                                  //         ProjectParameterNames.price)) {
+                                  //   text += ' млн.руб. ';
+                                  // }
                                   if (columnIndex ==
-                                      ConstantData.appProjectParameterNames
-                                          .indexOf(GlobalParameters
+                                      ProjectParameterNames.indexOf(
+                                          GlobalParameters
                                               .projectSortParamName)) {
-                                    text += ' ' +
-                                        ConstantData.appProjectSortDirection[
-                                            ConstantData
-                                                .appProjectParameterDirection
-                                                .indexOf(GlobalParameters
-                                                    .projectSortParamDirection)];
+                                    text += ConstantData
+                                            .appProjectSortDirection[
+                                        ConstantData
+                                            .appProjectParameterDirection
+                                            .indexOf(GlobalParameters
+                                                .projectSortParamDirection)];
                                   }
                                   onTap = () {
                                     if (columnIndex ==
-                                        ConstantData.appProjectParameterNames
-                                            .indexOf(GlobalParameters
+                                        ProjectParameterNames.indexOf(
+                                            GlobalParameters
                                                 .projectSortParamName)) {
                                       GlobalParameters
                                           .projectSortParamDirection = ConstantData
@@ -173,15 +177,9 @@ class _ContentTable extends StatelessWidget {
                                   if (columnIndex == 0) {
                                     text = projects[rowIndex - 1].title;
                                   } else if (columnIndex == 1) {
-                                    MeasureBeautifier()
-                                        .formatNumber(
-                                            projects[rowIndex - 1].price,
-                                            MeasureLevel.unit,
-                                            'руб.')
-                                        .reduce((a, b) {
-                                      text = '$a $b'.replaceAll('\n', '');
-                                      return;
-                                    });
+                                    text = MeasureBeautifier().truncateZero(
+                                        (projects[rowIndex - 1].price / 1000000)
+                                            .toStringAsFixed(3));
                                   } else if (columnIndex == 2) {
                                     text = projects[rowIndex - 1].status;
                                     if (text == ProjectStatuses.hot) {

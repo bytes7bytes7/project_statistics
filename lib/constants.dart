@@ -66,20 +66,67 @@ class ProjectStatuses {
     }
   }
 
-  static List<String> values() {
+  static get values {
     return <String>[request, kp, hot, contract];
+  }
+}
+
+class ProjectParameterNames {
+  static const String title = 'Название';
+  static const String price = 'Сумма';
+  static const String status = 'Статус';
+  static const String period = 'Срок';
+  static const String complete = 'Завершенность';
+
+  static final length = 5;
+
+  static int indexOf(String value) {
+    switch (value) {
+      case title:
+        return 0;
+      case price:
+        return 1;
+      case status:
+        return 2;
+      case period:
+        return 3;
+      case complete:
+        return 4;
+      default:
+        return -1;
+    }
+  }
+
+  operator [](int index) {
+    switch (index) {
+      case 0:
+        return title;
+      case 1:
+        return price;
+      case 2:
+        return status;
+      case 3:
+        return period;
+      case 4:
+        return complete;
+      default:
+        return '';
+    }
+  }
+
+  static get values {
+    return <String>[
+      title,
+      price,
+      status,
+      period,
+      complete,
+    ];
   }
 }
 
 abstract class ConstantData {
   static const String forbiddenFileCharacters = r'\/:*?"<>|+%!@';
-  static const List<String> appProjectParameterNames = [
-    'Название',
-    'Сумма',
-    'Статус',
-    'Срок',
-    'Завершенность',
-  ];
   static const List<String> appProjectParameterDirection = [
     'По возрастанию',
     'По убыванию'
@@ -131,11 +178,6 @@ abstract class ConstantData {
       screen: ResultScreen(),
       icon: NavigationBarIcons.checklist,
     ),
-    // Destination(
-    //   name: 'something',
-    //   screen: Scaffold(),
-    //   icon: NavigationBarIcons.question_circle,
-    // ),
   ];
 }
 
@@ -228,124 +270,135 @@ abstract class ConstDBData {
       return 'undefined locale';
     }
   }
+
   static String get projectTableName {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _projectTableName.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _projectTableName.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
 
   // Special columns for plan
   static String get id {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _id.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _id.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get quantity {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _quantity.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _quantity.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get amount {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _amount.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _amount.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get startPeriod {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _startPeriod.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _startPeriod.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get endPeriod {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _endPeriod.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _endPeriod.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get prize {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _prize.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _prize.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get percent {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _percent.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _percent.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get ratio {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _ratio.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _ratio.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
 
   // Special columns for project
   static String get title {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _title.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _title.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get status {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _status.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _status.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get price {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _price.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _price.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }
+
   static String get complete {
-    if(locale=='en'){
+    if (locale == 'en') {
       return _complete.en;
-    }else if(locale=='ru'){
+    } else if (locale == 'ru') {
       return _complete.ru;
-    }else {
+    } else {
       return 'undefined locale';
     }
   }

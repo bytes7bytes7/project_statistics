@@ -145,7 +145,11 @@ class _ContentList extends StatelessWidget {
   Widget build(BuildContext context) {
     String amount, amountMeasure;
     MeasureBeautifier()
-        .formatNumber(result.amount, MeasureLevel.unit, 'руб.')
+        .formatNumber(
+      number: result.amount,
+      level: MeasureLevel.unit,
+      measure: 'руб.',
+    )
         .reduce((a, b) {
       amount = a;
       amountMeasure = b;
@@ -154,7 +158,11 @@ class _ContentList extends StatelessWidget {
 
     String quantity, quantityMeasure;
     MeasureBeautifier()
-        .formatNumber(result.quantity, MeasureLevel.unit, 'шт.')
+        .formatNumber(
+      number: result.quantity,
+      level: MeasureLevel.unit,
+      measure: 'шт.',
+    )
         .reduce((a, b) {
       quantity = a;
       quantityMeasure = b;
@@ -163,7 +171,11 @@ class _ContentList extends StatelessWidget {
 
     String plan, planMeasure;
     MeasureBeautifier()
-        .formatNumber(result.plan, MeasureLevel.millions, 'руб.')
+        .formatNumber(
+      number: result.plan,
+      level: MeasureLevel.millions,
+      measure: 'руб.',
+    )
         .reduce((a, b) {
       plan = a;
       planMeasure = b;
@@ -174,7 +186,11 @@ class _ContentList extends StatelessWidget {
 
     String until, untilMeasure;
     MeasureBeautifier()
-        .formatNumber(result.until, MeasureLevel.unit, 'руб.')
+        .formatNumber(
+      number: result.until,
+      level: MeasureLevel.unit,
+      measure: 'руб.',
+    )
         .reduce((a, b) {
       until = a;
       untilMeasure = b;
@@ -183,7 +199,11 @@ class _ContentList extends StatelessWidget {
 
     String prize, prizeMeasure;
     MeasureBeautifier()
-        .formatNumber(result.prize, MeasureLevel.thousands, 'руб.')
+        .formatNumber(
+      number: result.prize,
+      level: MeasureLevel.thousands,
+      measure: 'руб.',
+    )
         .reduce((a, b) {
       prize = a;
       prizeMeasure = b;

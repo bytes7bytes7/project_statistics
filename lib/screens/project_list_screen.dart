@@ -144,14 +144,8 @@ class _ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String price, priceMeasure;
-    MeasureBeautifier()
-        .formatNumber(project.price, MeasureLevel.unit, 'руб.')
-        .reduce((a, b) {
-      price = a;
-      priceMeasure = b;
-      return;
-    });
+    String price, priceMeasure = 'млн.\nруб.';
+    price = MeasureBeautifier().truncateZero((project.price / 1000000).toStringAsFixed(3));
     Size size = Size(double.infinity, 100);
     Color color = (project.status == ProjectStatuses.hot)
         ? Theme.of(context).errorColor

@@ -4,7 +4,7 @@ import '../global/global_parameters.dart';
 
 abstract class ProjectSortService {
   static sortProjectsBy(List<Project> projects) {
-    switch (ConstantData.appProjectParameterNames
+    switch (ProjectParameterNames
         .indexOf(GlobalParameters.projectSortParamName)) {
       case 0:
         if(ConstantData.appProjectParameterDirection.indexOf(GlobalParameters.projectSortParamDirection) == 0){
