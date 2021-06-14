@@ -169,18 +169,7 @@ class _ContentList extends StatelessWidget {
       return;
     });
 
-    String plan, planMeasure;
-    MeasureBeautifier()
-        .formatNumber(
-      number: result.plan,
-      level: MeasureLevel.millions,
-      measure: 'руб.',
-    )
-        .reduce((a, b) {
-      plan = a;
-      planMeasure = b;
-      return;
-    });
+    String plan=MeasureBeautifier().truncateZero(result.plan.toStringAsFixed(3)), planMeasure='млн.\nруб.';
 
     String percent = result.percent.toString(), percentMeasure = '%';
 

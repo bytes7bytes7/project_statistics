@@ -29,8 +29,10 @@ class StartScreen extends StatelessWidget {
   final TextEditingController amountController_2 = TextEditingController();
   final TextEditingController amountController_3 = TextEditingController();
   final TextEditingController amountController_4 = TextEditingController();
-  final TextEditingController startPeriodController = TextEditingController();
-  final TextEditingController endPeriodController = TextEditingController();
+  final TextEditingController startMonthController = TextEditingController();
+  final TextEditingController startYearController = TextEditingController();
+  final TextEditingController endMonthController = TextEditingController();
+  final TextEditingController endYearController = TextEditingController();
   final TextEditingController prizeController = TextEditingController();
   final TextEditingController percentController = TextEditingController();
   final TextEditingController ratioController = TextEditingController();
@@ -69,8 +71,10 @@ class StartScreen extends StatelessWidget {
                   amountController_2.text = '';
                   amountController_3.text = '';
                   amountController_4.text = '';
-                  startPeriodController.text = '';
-                  endPeriodController.text = '';
+                  startMonthController.text = '';
+                  startYearController.text = '';
+                  endMonthController.text = '';
+                  endYearController.text = '';
                   prizeController.text = '';
                   percentController.text = '';
                   ratioController.text = '';
@@ -94,8 +98,10 @@ class StartScreen extends StatelessWidget {
           amountController_2: amountController_2,
           amountController_3: amountController_3,
           amountController_4: amountController_4,
-          startPeriodController: startPeriodController,
-          endPeriodController: endPeriodController,
+          startMonthController: startMonthController,
+          startYearController: startYearController,
+          endMonthController: endMonthController,
+          endYearController: endYearController,
           prizeController: prizeController,
           percentController: percentController,
           ratioController: ratioController,
@@ -116,8 +122,10 @@ class _Body extends StatefulWidget {
     @required this.amountController_2,
     @required this.amountController_3,
     @required this.amountController_4,
-    @required this.startPeriodController,
-    @required this.endPeriodController,
+    @required this.startMonthController,
+    @required this.startYearController,
+    @required this.endMonthController,
+    @required this.endYearController,
     @required this.prizeController,
     @required this.percentController,
     @required this.ratioController,
@@ -131,8 +139,10 @@ class _Body extends StatefulWidget {
   final TextEditingController amountController_2;
   final TextEditingController amountController_3;
   final TextEditingController amountController_4;
-  final TextEditingController startPeriodController;
-  final TextEditingController endPeriodController;
+  final TextEditingController startMonthController;
+  final TextEditingController startYearController;
+  final TextEditingController endMonthController;
+  final TextEditingController endYearController;
   final TextEditingController prizeController;
   final TextEditingController percentController;
   final TextEditingController ratioController;
@@ -171,8 +181,10 @@ class __BodyState extends State<_Body> {
                 amountController_2: widget.amountController_2,
                 amountController_3: widget.amountController_3,
                 amountController_4: widget.amountController_4,
-                startPeriodController: widget.startPeriodController,
-                endPeriodController: widget.endPeriodController,
+                startMonthController: widget.startMonthController,
+                startYearController: widget.startYearController,
+                endMonthController: widget.endMonthController,
+                endYearController: widget.endYearController,
                 prizeController: widget.prizeController,
                 percentController: widget.percentController,
                 ratioController: widget.ratioController,
@@ -206,8 +218,10 @@ class _ContentList extends StatefulWidget {
     @required this.amountController_2,
     @required this.amountController_3,
     @required this.amountController_4,
-    @required this.startPeriodController,
-    @required this.endPeriodController,
+    @required this.startMonthController,
+    @required this.startYearController,
+    @required this.endMonthController,
+    @required this.endYearController,
     @required this.prizeController,
     @required this.percentController,
     @required this.ratioController,
@@ -222,8 +236,10 @@ class _ContentList extends StatefulWidget {
   final TextEditingController amountController_2;
   final TextEditingController amountController_3;
   final TextEditingController amountController_4;
-  final TextEditingController startPeriodController;
-  final TextEditingController endPeriodController;
+  final TextEditingController startMonthController;
+  final TextEditingController startYearController;
+  final TextEditingController endMonthController;
+  final TextEditingController endYearController;
   final TextEditingController prizeController;
   final TextEditingController percentController;
   final TextEditingController ratioController;
@@ -259,8 +275,10 @@ class __ContentListState extends State<_ContentList> {
     widget.amountController_4.text = (widget.plan.amount != null)
         ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
         : '';
-    widget.startPeriodController.text = widget.plan.startPeriod;
-    widget.endPeriodController.text = widget.plan.endPeriod;
+    widget.startMonthController.text = widget.plan.startMonth;
+    widget.startYearController.text = widget.plan.startYear;
+    widget.endMonthController.text = widget.plan.endMonth;
+    widget.endYearController.text = widget.plan.endYear;
     widget.prizeController.text = (widget.plan.prize != null)
         ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
         : '';
@@ -282,8 +300,10 @@ class __ContentListState extends State<_ContentList> {
         widget.amountController_2.text.isNotEmpty &&
         widget.amountController_3.text.isNotEmpty &&
         widget.amountController_4.text.isNotEmpty &&
-        widget.startPeriodController.text.isNotEmpty &&
-        widget.endPeriodController.text.isNotEmpty &&
+        widget.startMonthController.text.isNotEmpty &&
+        widget.startYearController.text.isNotEmpty &&
+        widget.endMonthController.text.isNotEmpty &&
+        widget.endYearController.text.isNotEmpty &&
         widget.prizeController.text.isNotEmpty &&
         widget.percentController.text.isNotEmpty &&
         widget.ratioController.text.isNotEmpty) {
@@ -307,8 +327,10 @@ class __ContentListState extends State<_ContentList> {
             int.parse(widget.amountController_3.text.replaceAll(' ', '')),
             int.parse(widget.amountController_4.text.replaceAll(' ', '')),
           ]
-          ..startPeriod = widget.startPeriodController.text
-          ..endPeriod = widget.endPeriodController.text
+          ..startMonth = widget.startMonthController.text
+          ..startYear = widget.startYearController.text
+          ..endMonth = widget.endMonthController.text
+          ..endYear = widget.endYearController.text
           ..prize =
               double.parse(widget.prizeController.text.replaceAll(' ', ''))
           ..percent =
@@ -398,18 +420,39 @@ class __ContentListState extends State<_ContentList> {
                 Flexible(
                   child: ChooseField(
                     label: 'Начало',
-                    chooseLabel: 'Начало срока',
+                    chooseLabel: 'Месяц',
                     group: ConstantData.appMonths,
-                    controller: widget.startPeriodController,
+                    controller: widget.startMonthController,
+                  ),
+                ),
+                SizedBox(width: 18),
+                Flexible(
+                  child: ChooseField(
+                    label: 'Начало',
+                    chooseLabel: 'Год',
+                    group: ConstantData.appYears,
+                    controller: widget.startYearController,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Flexible(
+                  child: ChooseField(
+                    label: 'Конец',
+                    chooseLabel: 'Месяц',
+                    group: ConstantData.appMonths,
+                    controller: widget.endMonthController,
                   ),
                 ),
                 SizedBox(width: 18),
                 Flexible(
                   child: ChooseField(
                     label: 'Конец',
-                    chooseLabel: 'Конец срока',
-                    group: ConstantData.appMonths,
-                    controller: widget.endPeriodController,
+                    chooseLabel: 'Год',
+                    group: ConstantData.appYears,
+                    controller: widget.endYearController,
                   ),
                 ),
               ],
@@ -433,7 +476,7 @@ class __ContentListState extends State<_ContentList> {
         ),
         OutlinedWideButton(
           title: 'Импорт',
-          onTap: ()async {
+          onTap: () async {
             // Change locale to RU
             ConstDBData.locale = 'ru';
             try {

@@ -28,8 +28,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
   TextEditingController titleController;
   TextEditingController statusController;
   TextEditingController priceController;
-  TextEditingController startPeriodController;
-  TextEditingController endPeriodController;
+  TextEditingController monthController;
+  TextEditingController yearController;
   TextEditingController completeController;
   ValueNotifier<bool> update;
 
@@ -37,8 +37,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
   void initState() {
     widget.project.title = widget.project.title ?? '';
     widget.project.status = widget.project.status ?? '';
-    widget.project.startPeriod = widget.project.startPeriod ?? '';
-    widget.project.endPeriod = widget.project.endPeriod ?? '';
+    widget.project.month = widget.project.month ?? '';
+    widget.project.year = widget.project.year ?? '';
     widget.project.complete =
         widget.project.complete ?? ProjectCompleteStatuses.notCompleted;
 
@@ -46,9 +46,9 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     statusController = TextEditingController(text: widget.project.status);
     priceController = TextEditingController();
     priceController.text = widget.project.price?.toString();
-    startPeriodController =
-        TextEditingController(text: widget.project.startPeriod);
-    endPeriodController = TextEditingController(text: widget.project.endPeriod);
+    monthController =
+        TextEditingController(text: widget.project.month);
+    yearController = TextEditingController(text: widget.project.year);
     completeController = TextEditingController(text: widget.project.complete);
     update = ValueNotifier(true);
     super.initState();
@@ -59,8 +59,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     titleController.dispose();
     statusController.dispose();
     priceController.dispose();
-    startPeriodController.dispose();
-    endPeriodController.dispose();
+    monthController.dispose();
+    yearController.dispose();
     completeController.dispose();
     super.dispose();
   }
@@ -69,15 +69,15 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     if (titleController.text.isNotEmpty &&
         statusController.text.isNotEmpty &&
         priceController.text.isNotEmpty &&
-        startPeriodController.text.isNotEmpty &&
-        endPeriodController.text.isNotEmpty &&
+        monthController.text.isNotEmpty &&
+        yearController.text.isNotEmpty &&
         double.parse(priceController.text) >= 0) {
       widget.project
         ..title = titleController.text
         ..status = statusController.text
         ..price = int.parse(priceController.text)
-        ..startPeriod = startPeriodController.text
-        ..endPeriod = endPeriodController.text
+        ..month = monthController.text
+        ..year = yearController.text
         ..complete = completeController.text;
       if (widget.project.id == null) {
         await Bloc.bloc.projectBloc.addProject(widget.project);
@@ -122,8 +122,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                 priceController.text != widget.project.price.toString() &&
                     !(!(priceController.text != '') &&
                         !(widget.project.price != null)) ||
-                startPeriodController.text != widget.project.startPeriod ||
-                endPeriodController.text != widget.project.endPeriod ||
+                monthController.text != widget.project.month ||
+                yearController.text != widget.project.year ||
                 completeController.text != widget.project.complete) {
               showNoYesDialog(
                 context: context,
@@ -205,8 +205,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
         titleController: titleController,
         statusController: statusController,
         priceController: priceController,
-        startPeriodController: startPeriodController,
-        endPeriodController: endPeriodController,
+        monthController: monthController,
+        yearController: yearController,
         completeController: completeController,
         update: update,
         save: save,
@@ -223,8 +223,8 @@ class _Body extends StatefulWidget {
     @required this.titleController,
     @required this.statusController,
     @required this.priceController,
-    @required this.startPeriodController,
-    @required this.endPeriodController,
+    @required this.monthController,
+    @required this.yearController,
     @required this.completeController,
     @required this.update,
     @required this.save,
@@ -235,8 +235,8 @@ class _Body extends StatefulWidget {
   final TextEditingController titleController;
   final TextEditingController statusController;
   final TextEditingController priceController;
-  final TextEditingController startPeriodController;
-  final TextEditingController endPeriodController;
+  final TextEditingController monthController;
+  final TextEditingController yearController;
   final TextEditingController completeController;
   final ValueNotifier<bool> update;
   final Function save;
@@ -276,19 +276,19 @@ class __BodyState extends State<_Body> {
               children: [
                 Flexible(
                   child: ChooseField(
-                    label: 'Начало',
-                    chooseLabel: 'Начало срока',
+                    label: 'Месяц',
+                    chooseLabel: 'Месяц',
                     group: ConstantData.appMonths,
-                    controller: widget.startPeriodController,
+                    controller: widget.monthController,
                   ),
                 ),
                 SizedBox(width: 18),
                 Flexible(
                   child: ChooseField(
-                    label: 'Конец',
-                    chooseLabel: 'Конец срока',
-                    group: ConstantData.appMonths,
-                    controller: widget.endPeriodController,
+                    label: 'Год',
+                    chooseLabel: 'Год',
+                    group: ConstantData.appYears,
+                    controller: widget.yearController,
                   ),
                 ),
               ],

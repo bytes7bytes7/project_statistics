@@ -187,7 +187,7 @@ class _ContentTable extends StatelessWidget {
                                     }
                                   } else if (columnIndex == 3) {
                                     text =
-                                        '${projects[rowIndex - 1].startPeriod} - ${projects[rowIndex - 1].endPeriod}';
+                                        '${projects[rowIndex - 1].month} ${projects[rowIndex - 1].year}';
                                   } else {
                                     text = projects[rowIndex - 1].complete;
                                   }
