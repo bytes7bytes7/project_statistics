@@ -14,7 +14,7 @@ class Project {
   String status;
   int price;
   String month;
-  String year;
+  int year;
   String complete;
 
   @override

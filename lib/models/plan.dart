@@ -16,9 +16,9 @@ class Plan {
   List<int> quantity;
   List<int> amount;
   String startMonth;
-  String startYear;
+  int startYear;
   String endMonth;
-  String endYear;
+  int endYear;
   double prize;
   double percent;
   double ratio;

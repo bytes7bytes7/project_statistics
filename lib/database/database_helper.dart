@@ -38,9 +38,9 @@ class DatabaseHelper {
         ${ConstDBData.quantity} TEXT,
         ${ConstDBData.amount} TEXT,
         ${ConstDBData.startMonth} TEXT,
-        ${ConstDBData.startYear} TEXT,
+        ${ConstDBData.startYear} INTEGER,
         ${ConstDBData.endMonth} TEXT,
-        ${ConstDBData.endYear} TEXT,
+        ${ConstDBData.endYear} INTEGER,
         ${ConstDBData.prize} REAL,
         ${ConstDBData.percent} REAL,
         ${ConstDBData.ratio} REAL
@@ -53,7 +53,7 @@ class DatabaseHelper {
         ${ConstDBData.status} TEXT,
         ${ConstDBData.price} INTEGER,
         ${ConstDBData.month} TEXT,
-        ${ConstDBData.year} TEXT,
+        ${ConstDBData.year} INTEGER,
         ${ConstDBData.complete} TEXT
       )
     ''');
@@ -241,30 +241,17 @@ class DatabaseHelper {
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         if (proj['status'] == ProjectStatuses.contract) {
-          if (GlobalParameters.resultFilterBorders[0].isNotEmpty &&
-              GlobalParameters.resultFilterBorders[1].isNotEmpty) {
-            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
-                    ConstantData.appMonths
-                        .indexOf(GlobalParameters.resultFilterBorders[0]) &&
-                ConstantData.appMonths.indexOf(proj['endPeriod']) <=
-                    ConstantData.appMonths
-                        .indexOf(GlobalParameters.resultFilterBorders[1])) {
-              result['amount'] += proj['price'];
-              result['quantity']++;
-            }
-          } else if (GlobalParameters.resultFilterBorders[0].isNotEmpty) {
-            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
-                ConstantData.appMonths
-                    .indexOf(GlobalParameters.resultFilterBorders[0])) {
-              result['amount'] += proj['price'];
-              result['quantity']++;
-            }
-          } else if (GlobalParameters.resultFilterBorders[1].isNotEmpty) {
-            if (ConstantData.appMonths.indexOf(proj['endPeriod']) <=
-                ConstantData.appMonths
-                    .indexOf(GlobalParameters.resultFilterBorders[1])) {
-              result['amount'] += proj['price'];
-              result['quantity']++;
+          if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
+            int thisMonth = ConstantData.appMonths.indexOf(proj['month']);
+            int sMonth = ConstantData.appMonths.indexOf(GlobalParameters.chartFilterBorders[0]);
+            int sYear = int.parse(GlobalParameters.chartFilterBorders[1]);
+            int eMonth = ConstantData.appMonths.indexOf(GlobalParameters.chartFilterBorders[2]);
+            int eYear = int.parse(GlobalParameters.chartFilterBorders[3]);
+            if(proj['year']>=sYear && proj['year']<=eYear){
+              if(thisMonth >= sMonth && thisMonth <= eMonth){
+                result['amount'] += proj['price'];
+                result['quantity']++;
+              }
             }
           } else {
             result['amount'] += proj['price'];
@@ -284,7 +271,7 @@ class DatabaseHelper {
 
     if (result['plan'] != 0) {
       result['percent'] = (100 * result['amount'] / result['plan']).round();
-      result['plan']/=1000000;
+      result['plan'] /= 1000000;
     }
 
     return Result.fromMap(result);
@@ -315,29 +302,18 @@ class DatabaseHelper {
       projects.forEach((proj) {
         int i = ProjectStatuses.indexOf(proj['status']);
         if (proj['complete'] != ProjectCompleteStatuses.canceled) {
-          if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
-              GlobalParameters.chartFilterBorders[1].isNotEmpty) {
-            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
-                    ConstantData.appMonths
-                        .indexOf(GlobalParameters.chartFilterBorders[0]) &&
-                ConstantData.appMonths.indexOf(proj['endPeriod']) <=
-                    ConstantData.appMonths
-                        .indexOf(GlobalParameters.chartFilterBorders[1])) {
-              result['realQuantity'][i]++;
-              result['realAmount'][i] += proj['price'];
+          if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
+            int thisMonth = ConstantData.appMonths.indexOf(proj['month']);
+            int sMonth = ConstantData.appMonths.indexOf(GlobalParameters.chartFilterBorders[0]);
+            int sYear = int.parse(GlobalParameters.chartFilterBorders[1]);
+            int eMonth = ConstantData.appMonths.indexOf(GlobalParameters.chartFilterBorders[2]);
+            int eYear = int.parse(GlobalParameters.chartFilterBorders[3]);
+            if(proj['year']>=sYear && proj['year']<=eYear){
+              if(thisMonth >= sMonth && thisMonth <= eMonth){
+                result['realQuantity'][i]++;
+                result['realAmount'][i] += proj['price'];
+              }
             }
-          } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
-            if (ConstantData.appMonths.indexOf(proj['startPeriod']) >=
-                ConstantData.appMonths
-                    .indexOf(GlobalParameters.chartFilterBorders[0])) {
-              result['realQuantity'][i]++;
-              result['realAmount'][i] += proj['price'];
-            }
-          } else if (ConstantData.appMonths.indexOf(proj['endPeriod']) <=
-              ConstantData.appMonths
-                  .indexOf(GlobalParameters.chartFilterBorders[1])) {
-            result['realQuantity'][i]++;
-            result['realAmount'][i] += proj['price'];
           } else {
             result['realQuantity'][i]++;
             result['realAmount'][i] += proj['price'];
@@ -349,7 +325,7 @@ class DatabaseHelper {
     if (plan.isNotEmpty) {
       result['planAmount'] = plan.first['amount']
           .split(';')
-          .map<double>((e) => double.parse(e))
+          .map<double>((e) => double.parse(e)/1000000)
           .toList();
       result['planQuantity'] = plan.first['quantity']
           .split(';')

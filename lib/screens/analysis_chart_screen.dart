@@ -123,8 +123,9 @@ class _ContentList extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height:
-                        (size.height < size.width) ? size.height-20 : size.width-20,
+                    height: (size.height < size.width)
+                        ? size.height - 20
+                        : size.width - 20,
                     width: double.infinity,
                     child: StackedHorizontalBarChart(
                       r: analysisChart.realQuantity,
@@ -166,8 +167,9 @@ class _ContentList extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   Container(
-                    height:
-                    (size.height < size.width) ? size.height-20 : size.width-20,
+                    height: (size.height < size.width)
+                        ? size.height - 20
+                        : size.width - 20,
                     width: double.infinity,
                     child: StackedHorizontalBarChart(
                       r: analysisChart.realAmount,
@@ -280,7 +282,7 @@ class _AnalysisChartCard extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                plan.toString(),
+                MeasureBeautifier().truncateZero(plan.toStringAsFixed(2)),
                 style: Theme.of(context)
                     .textTheme
                     .subtitle2

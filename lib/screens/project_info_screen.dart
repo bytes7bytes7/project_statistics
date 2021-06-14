@@ -38,17 +38,16 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     widget.project.title = widget.project.title ?? '';
     widget.project.status = widget.project.status ?? '';
     widget.project.month = widget.project.month ?? '';
-    widget.project.year = widget.project.year ?? '';
     widget.project.complete =
         widget.project.complete ?? ProjectCompleteStatuses.notCompleted;
 
     titleController = TextEditingController(text: widget.project.title);
     statusController = TextEditingController(text: widget.project.status);
-    priceController = TextEditingController();
-    priceController.text = widget.project.price?.toString();
-    monthController =
-        TextEditingController(text: widget.project.month);
-    yearController = TextEditingController(text: widget.project.year);
+    priceController =
+        TextEditingController(text: widget.project.price?.toString());
+    monthController = TextEditingController(text: widget.project.month);
+    yearController =
+        TextEditingController(text: widget.project.year?.toString());
     completeController = TextEditingController(text: widget.project.complete);
     update = ValueNotifier(true);
     super.initState();
@@ -71,13 +70,14 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
         priceController.text.isNotEmpty &&
         monthController.text.isNotEmpty &&
         yearController.text.isNotEmpty &&
-        double.parse(priceController.text) >= 0) {
+        double.parse(priceController.text) >= 0 &&
+        int.parse(yearController.text) >= 0) {
       widget.project
         ..title = titleController.text
         ..status = statusController.text
         ..price = int.parse(priceController.text)
         ..month = monthController.text
-        ..year = yearController.text
+        ..year = int.parse(yearController.text)
         ..complete = completeController.text;
       if (widget.project.id == null) {
         await Bloc.bloc.projectBloc.addProject(widget.project);
@@ -123,7 +123,9 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                     !(!(priceController.text != '') &&
                         !(widget.project.price != null)) ||
                 monthController.text != widget.project.month ||
-                yearController.text != widget.project.year ||
+                yearController.text != widget.project.year.toString() &&
+                    !(!(yearController.text != '') &&
+                        !(widget.project.year != null)) ||
                 completeController.text != widget.project.complete) {
               showNoYesDialog(
                 context: context,

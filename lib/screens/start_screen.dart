@@ -276,9 +276,13 @@ class __ContentListState extends State<_ContentList> {
         ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
         : '';
     widget.startMonthController.text = widget.plan.startMonth;
-    widget.startYearController.text = widget.plan.startYear;
+    widget.startYearController.text = (widget.plan.startYear != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.startYear.toString())
+        : '';
     widget.endMonthController.text = widget.plan.endMonth;
-    widget.endYearController.text = widget.plan.endYear;
+    widget.endYearController.text = (widget.plan.endYear != null)
+        ? MeasureBeautifier().truncateZero(widget.plan.endYear.toString())
+        : '';
     widget.prizeController.text = (widget.plan.prize != null)
         ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
         : '';
@@ -328,9 +332,9 @@ class __ContentListState extends State<_ContentList> {
             int.parse(widget.amountController_4.text.replaceAll(' ', '')),
           ]
           ..startMonth = widget.startMonthController.text
-          ..startYear = widget.startYearController.text
+          ..startYear = int.parse(widget.startYearController.text)
           ..endMonth = widget.endMonthController.text
-          ..endYear = widget.endYearController.text
+          ..endYear = int.parse(widget.endYearController.text)
           ..prize =
               double.parse(widget.prizeController.text.replaceAll(' ', ''))
           ..percent =
