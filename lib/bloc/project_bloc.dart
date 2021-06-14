@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../models/project.dart';
 import '../repositories/project_repository.dart';
-import '../services/project_sort_service.dart';
+import '../services/project_sort_filter_service.dart';
 
 class ProjectBloc {
   ProjectBloc(this._repository);
@@ -23,7 +23,8 @@ class ProjectBloc {
   void loadAllProjects() async {
     _projectStreamController.sink.add(ProjectState._projectLoading());
     _repository.getAllProjects().then((projectList) {
-      ProjectSortService.sortProjectsBy(projectList);
+      ProjectSortFilterService.filterProjectsBy(projectList);
+      ProjectSortFilterService.sortProjectsBy(projectList);
       if(!_projectStreamController.isClosed)
         _projectStreamController.sink.add(ProjectState._projectData(projectList));
     }).onError((error, stackTrace) {

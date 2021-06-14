@@ -6,7 +6,7 @@ import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/project_bloc.dart';
 import '../services/measure_beautifier.dart';
-import '../services/project_sort_service.dart';
+import '../services/project_sort_filter_service.dart';
 import '../models/project.dart';
 import '../constants.dart';
 import '../global/global_parameters.dart';
@@ -168,7 +168,7 @@ class _ContentTable extends StatelessWidget {
                                       GlobalParameters.projectSortParamName =
                                           text;
                                     }
-                                    ProjectSortService.sortProjectsBy(projects);
+                                    ProjectSortFilterService.sortProjectsBy(projects);
                                     update.value = !update.value;
                                   };
                                 } else {

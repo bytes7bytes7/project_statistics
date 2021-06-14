@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/project_mixed_filter.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
 import '../widgets/bookmark_clipper.dart';
@@ -49,21 +50,24 @@ class ProjectListScreen extends StatelessWidget {
                 );
               },
             ),
-            // IconButton(
-            //   icon: const Icon(Icons.filter_alt_outlined),
-            //   tooltip: ConstantData.appToolTips['filter'],
-            //   onPressed: () {
-            //     showDialog<void>(
-            //       context: context,
-            //       barrierDismissible: true,
-            //       builder: (BuildContext context) {
-            //         return ProjectFilter(
-            //           datesList: ,
-            //         );
-            //       },
-            //     );
-            //   },
-            // ),
+            IconButton(
+              icon: const Icon(Icons.filter_alt_outlined),
+              tooltip: ConstantData.appToolTips['filter'],
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return ProjectMixedFilter(
+                      datesList: GlobalParameters.projectFilterBorders,
+                      refresh: () {
+                        Bloc.bloc.projectBloc.loadAllProjects();
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
         body: _Body(),

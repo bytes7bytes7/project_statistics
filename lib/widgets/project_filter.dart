@@ -108,7 +108,6 @@ class ProjectFilter extends StatelessWidget {
                 datesList[2] = '';
                 datesList[3] = '';
                 refresh();
-                errorNotifier.value = 'Заполните все поля';
                 Navigator.pop(context);
               },
             ),

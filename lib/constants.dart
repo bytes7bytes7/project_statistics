@@ -72,6 +72,15 @@ class ProjectStatuses {
 }
 
 class ProjectParameterNames {
+  ProjectParameterNames._internal();
+
+  static final ProjectParameterNames _singleton =
+      ProjectParameterNames._internal();
+
+  factory ProjectParameterNames() {
+    return _singleton;
+  }
+
   static const String title = 'Название';
   static const String price = 'Сумма';
   static const String status = 'Статус';

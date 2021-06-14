@@ -2,7 +2,23 @@ import '../models/project.dart';
 import '../constants.dart';
 import '../global/global_parameters.dart';
 
-abstract class ProjectSortService {
+abstract class ProjectSortFilterService {
+  static filterProjectsBy(List<Project> projects) {
+    if (GlobalParameters.projectFilterBorders[0] == '' &&
+        GlobalParameters.projectFilterBorders[1] == '' &&
+        GlobalParameters.projectFilterBorders[2] == '') {
+      return;
+    }
+    for (int i = projects.length - 1; i >= 0; i--) {
+      if (projects[i].month != GlobalParameters.projectFilterBorders[0] ||
+          projects[i].year.toString() !=
+              GlobalParameters.projectFilterBorders[1] ||
+          projects[i].status != GlobalParameters.projectFilterBorders[2]) {
+        projects.removeAt(i);
+      }
+    }
+  }
+
   static sortProjectsBy(List<Project> projects) {
     switch (
         ProjectParameterNames.indexOf(GlobalParameters.projectSortParamName)) {
