@@ -88,7 +88,10 @@ abstract class ExcelHelper {
           ConstDBData.percent,
           ConstDBData.ratio,
         ];
-        values = plan.toMap().values.toList();
+        values = plan
+            .toMap()
+            .values
+            .toList();
         thisTable.appendRow(headerRow);
         thisTable.appendRow(values);
       } else if (table == ConstDBData.projectTableName) {
@@ -103,7 +106,10 @@ abstract class ExcelHelper {
         ];
         thisTable.appendRow(headerRow);
         for (int i = 0; i < projects.length; i++) {
-          values = projects[i].toMap().values.toList();
+          values = projects[i]
+              .toMap()
+              .values
+              .toList();
           thisTable.appendRow(values);
         }
       }
@@ -111,6 +117,7 @@ abstract class ExcelHelper {
       // Correct quantity of columns
       if (table == ConstDBData.planTableName ||
           table == ConstDBData.projectTableName) {
+        thisTable = excel.tables[table];
         for (int i = 0; i < thisTable.rows.length; i++) {
           while (thisTable.rows[i].length > headerRow.length) {
             thisTable.removeColumn(thisTable.rows[i].length - 1);
@@ -121,7 +128,7 @@ abstract class ExcelHelper {
 
     // Save excel
     excel.encode().then(
-      (onValue) {
+          (onValue) {
         File(filePath)
           ..createSync(recursive: true)
           ..writeAsBytesSync(onValue);
