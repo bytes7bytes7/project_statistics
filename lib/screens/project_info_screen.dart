@@ -5,6 +5,7 @@ import '../widgets/show_info_snack_bar.dart';
 import '../widgets/input_field.dart';
 import '../widgets/outlined_wide_button.dart';
 import '../widgets/show_no_yes_dialog.dart';
+import '../global/global_parameters.dart';
 import '../bloc/bloc.dart';
 import '../constants.dart';
 import '../models/project.dart';
@@ -289,7 +290,7 @@ class __BodyState extends State<_Body> {
                   child: ChooseField(
                     label: 'Год',
                     chooseLabel: 'Год',
-                    group: ConstantData.appYears,
+                    group: GlobalParameters.planYears,
                     controller: widget.yearController,
                   ),
                 ),

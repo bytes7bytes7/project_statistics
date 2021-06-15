@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../global/global_parameters.dart';
 import '../constants.dart';
 import 'choose_field.dart';
 import 'flat_wide_button.dart';
@@ -45,7 +46,7 @@ class ProjectMixedFilter extends StatelessWidget {
             ChooseField(
               label: 'Год',
               chooseLabel: 'Год',
-              group: ConstantData.appYears,
+              group: GlobalParameters.planYears,
               controller: yearController,
             ),
             ChooseField(

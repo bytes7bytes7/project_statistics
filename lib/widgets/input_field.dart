@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/services/amount_text_input_formatter.dart';
 
 class InputField extends StatelessWidget {
   InputField({

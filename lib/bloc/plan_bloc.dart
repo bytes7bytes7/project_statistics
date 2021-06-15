@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../global/global_parameters.dart';
 import '../models/project.dart';
 import '../models/plan.dart';
 import '../repositories/plan_repository.dart';
@@ -40,6 +41,8 @@ class PlanBloc {
 
   void updatePlan(Plan plan) async{
     _repository.updatePlan(plan);
+    GlobalParameters.planStartYear = plan.startYear;
+    GlobalParameters.planEndYear = plan.endYear;
   }
 
   void importExcel(Plan plan, List<Project> projects)async{

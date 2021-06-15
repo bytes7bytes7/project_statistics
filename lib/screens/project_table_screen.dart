@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/project_mixed_filter.dart';
+import '../widgets/project_sort.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/project_bloc.dart';
 import '../services/measure_beautifier.dart';
-import '../services/project_sort_filter_service.dart';
 import '../models/project.dart';
 import '../constants.dart';
 import '../global/global_parameters.dart';
@@ -34,6 +35,39 @@ class ProjectTableScreen extends StatelessWidget {
             },
             tooltip: ConstantData.appToolTips['list'],
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.sort),
+              tooltip: ConstantData.appToolTips['sort'],
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return ProjectSort();
+                  },
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.filter_alt_outlined),
+              tooltip: ConstantData.appToolTips['filter'],
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (BuildContext context) {
+                    return ProjectMixedFilter(
+                      datesList: GlobalParameters.projectFilterBorders,
+                      refresh: () {
+                        Bloc.bloc.projectBloc.loadAllProjects();
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
         body: _Body(),
         floatingActionButton: FloatingActionButton(
@@ -129,48 +163,11 @@ class _ContentTable extends StatelessWidget {
                             children: List.generate(
                               ProjectParameterNames.length,
                               (columnIndex) {
-                                String text;
+                                String text = '';
                                 Function onTap;
                                 bool redLine = false;
                                 if (rowIndex == 0) {
                                   text = ProjectParameterNames()[columnIndex];
-                                  // if (columnIndex ==
-                                  //     ProjectParameterNames.indexOf(
-                                  //         ProjectParameterNames.price)) {
-                                  //   text += ' млн.руб. ';
-                                  // }
-                                  if (columnIndex ==
-                                      ProjectParameterNames.indexOf(
-                                          GlobalParameters
-                                              .projectSortParamName)) {
-                                    text += ConstantData
-                                            .appProjectSortDirection[
-                                        ConstantData
-                                            .appProjectParameterDirection
-                                            .indexOf(GlobalParameters
-                                                .projectSortParamDirection)];
-                                  }
-                                  onTap = () {
-                                    if (columnIndex ==
-                                        ProjectParameterNames.indexOf(
-                                            GlobalParameters
-                                                .projectSortParamName)) {
-                                      GlobalParameters
-                                          .projectSortParamDirection = ConstantData
-                                              .appProjectParameterDirection[
-                                          (ConstantData
-                                                      .appProjectParameterDirection
-                                                      .indexOf(GlobalParameters
-                                                          .projectSortParamDirection) -
-                                                  1)
-                                              .abs()];
-                                    } else {
-                                      GlobalParameters.projectSortParamName =
-                                          text;
-                                    }
-                                    ProjectSortFilterService.sortProjectsBy(projects);
-                                    update.value = !update.value;
-                                  };
                                 } else {
                                   if (columnIndex == 0) {
                                     text = projects[rowIndex - 1].title;

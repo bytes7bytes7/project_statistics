@@ -8,11 +8,14 @@ import '../global/global_parameters.dart';
 import 'project_table_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-
-  checkPlan()async{
+  checkPlan() async {
     Plan plan = await DatabaseHelper.db.getPlan();
-    if(plan.id != null){
+    if (plan.id != null) {
       GlobalParameters.currentPageIndex.value = 1;
+    }else{
+      GlobalParameters.planStartYear = plan.startYear;
+      GlobalParameters.planEndYear = plan.endYear;
+      GlobalParameters.currentPageIndex.value = 0;
     }
   }
 
@@ -21,14 +24,19 @@ class HomeScreen extends StatelessWidget {
     checkPlan();
     return ValueListenableBuilder(
       valueListenable: GlobalParameters.currentPageIndex,
-      builder: (context, currentIndex, child) {
-        return Scaffold(
-          body: (GlobalParameters.currentPageIndex.value == -1)
-              ? ProjectTableScreen()
-              : ConstantData
-                  .appDestinations[GlobalParameters.currentPageIndex.value].screen,
-          bottomNavigationBar: BottomNavBar(),
-        );
+      builder: (context, _, __) {
+        if (GlobalParameters.currentPageIndex.value == null) {
+          return Scaffold();
+        } else {
+          return Scaffold(
+            body: (GlobalParameters.currentPageIndex.value == -1)
+                ? ProjectTableScreen()
+                : ConstantData
+                    .appDestinations[GlobalParameters.currentPageIndex.value]
+                    .screen,
+            bottomNavigationBar: BottomNavBar(),
+          );
+        }
       },
     );
   }

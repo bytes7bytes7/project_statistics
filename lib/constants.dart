@@ -144,10 +144,6 @@ abstract class ConstantData {
     '↑',
     '↓',
   ];
-  static final DateTime today = DateTime.now();
-  static final List<String> appYears = List.generate(50, (index) {
-    return (today.year - index).toString();
-  });
   static const List<String> appMonths = [
     'Январь',
     'Февраль',

@@ -434,7 +434,7 @@ class __ContentListState extends State<_ContentList> {
                   child: ChooseField(
                     label: 'Начало',
                     chooseLabel: 'Год',
-                    group: ConstantData.appYears,
+                    group: GlobalParameters.appYears,
                     controller: widget.startYearController,
                   ),
                 ),
@@ -455,7 +455,7 @@ class __ContentListState extends State<_ContentList> {
                   child: ChooseField(
                     label: 'Конец',
                     chooseLabel: 'Год',
-                    group: ConstantData.appYears,
+                    group: GlobalParameters.appYears,
                     controller: widget.endYearController,
                   ),
                 ),
