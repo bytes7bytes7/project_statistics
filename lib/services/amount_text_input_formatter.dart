@@ -7,8 +7,18 @@ class AmountTextInputFormatter extends TextInputFormatter {
       TextEditingValue before, TextEditingValue after) {
     String newValue = '';
     int cursorPosition = after.selection.end;
-    TextEditingValue _after =
-        TextEditingValue(text: after.text.replaceAll(' ', ''));
+    String replacedString = after.text;
+    for (int i = replacedString.length - 1; i >= 0; i--) {
+      if (replacedString[i] == ' ') {
+        if (i < cursorPosition) {
+          cursorPosition--;
+        }
+        List<String> tmp = replacedString.split('');
+        tmp.removeAt(i);
+        replacedString = tmp.join('');
+      }
+    }
+    TextEditingValue _after = TextEditingValue(text: replacedString);
 
     if (_after.text.length < 3) {
       newValue = _after.text;
@@ -16,12 +26,12 @@ class AmountTextInputFormatter extends TextInputFormatter {
       newValue = _after.text;
     } else if (_after.text.length > 3) {
       for (int i = 0; i < _after.text.length ~/ 3; i++) {
-        if(i==0){
+        if (i == 0) {
           newValue = _after.text.substring(
               _after.text.length - 3 * (i + 1), _after.text.length - 3 * i);
-        }else {
-          newValue = _after.text.substring(
-              _after.text.length - 3 * (i + 1), _after.text.length - 3 * i) +
+        } else {
+          newValue = _after.text.substring(_after.text.length - 3 * (i + 1),
+                  _after.text.length - 3 * i) +
               ' ' +
               newValue;
           cursorPosition++;
@@ -38,8 +48,8 @@ class AmountTextInputFormatter extends TextInputFormatter {
     print(' ' * cursorPosition + '#');
 
     return TextEditingValue(
-      text: after.text.toString(),
-      selection: TextSelection.collapsed(offset: after.selection.end),
+      text: newValue.toString(),
+      selection: TextSelection.collapsed(offset: cursorPosition),
     );
   }
 }
