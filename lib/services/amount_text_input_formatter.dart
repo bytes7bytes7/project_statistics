@@ -8,6 +8,16 @@ class AmountTextInputFormatter extends TextInputFormatter {
     String newValue = '';
     int cursorPosition = after.selection.end;
     String replacedString = after.text;
+
+    // Check if a space has been deleted
+    if(before.text.length > 0 && cursorPosition != after.text.length && before.text[cursorPosition] == ' ' && after.text[cursorPosition] != ' '){
+      List<String> tmp = replacedString.split('');
+      tmp.removeAt(cursorPosition-1);
+      replacedString = tmp.join('');
+      cursorPosition--;
+    }
+
+    // Transform after to string without spaces
     for (int i = replacedString.length - 1; i >= 0; i--) {
       if (replacedString[i] == ' ') {
         if (i < cursorPosition) {
@@ -18,6 +28,7 @@ class AmountTextInputFormatter extends TextInputFormatter {
         replacedString = tmp.join('');
       }
     }
+
     TextEditingValue _after = TextEditingValue(text: replacedString);
 
     if (_after.text.length < 3) {
