@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/services/amount_text_input_formatter.dart';
 
 class InputField extends StatelessWidget {
   InputField({
@@ -20,7 +21,9 @@ class InputField extends StatelessWidget {
         controller: controller,
         style: Theme.of(context).textTheme.bodyText1,
         keyboardType: textInputType,
-        // TODO: add formatter
+        inputFormatters: [
+          AmountTextInputFormatter(),
+        ],
         decoration: InputDecoration(
           labelText: label,
           labelStyle: Theme.of(context).textTheme.subtitle1,

@@ -240,7 +240,7 @@ class DatabaseHelper {
 
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
-        if (proj['status'] == ProjectStatuses.contract) {
+        if (proj['status'] == ProjectStatuses.contract && proj['complete'] != ProjectCompleteStatuses.canceled) {
           if (GlobalParameters.resultFilterBorders[0] != '' &&
               GlobalParameters.resultFilterBorders[1] != '' &&
               GlobalParameters.resultFilterBorders[2] != '' &&
