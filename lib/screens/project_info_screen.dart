@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/choose_field.dart';
+import '../widgets/choice_field.dart';
 import '../widgets/show_info_snack_bar.dart';
 import '../widgets/input_field.dart';
 import '../widgets/outlined_wide_button.dart';
@@ -66,35 +66,40 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
   }
 
   Future<String> save() async {
-    if (titleController.text.isNotEmpty &&
-        statusController.text.isNotEmpty &&
-        priceController.text.isNotEmpty &&
-        monthController.text.isNotEmpty &&
-        yearController.text.isNotEmpty &&
-        double.parse(priceController.text) >= 0 &&
-        int.parse(yearController.text) >= 0) {
-      widget.project
-        ..title = titleController.text
-        ..status = statusController.text
-        ..price = int.parse(priceController.text)
-        ..month = monthController.text
-        ..year = int.parse(yearController.text)
-        ..complete = completeController.text;
-      if (widget.project.id == null) {
-        await Bloc.bloc.projectBloc.addProject(widget.project);
+    try {
+      if (titleController.text.isNotEmpty &&
+          statusController.text.isNotEmpty &&
+          priceController.text.isNotEmpty &&
+          monthController.text.isNotEmpty &&
+          yearController.text.isNotEmpty &&
+          double.parse(priceController.text) >= 0 &&
+          int.parse(yearController.text) >= 0) {
+        widget.project
+          ..title = titleController.text
+          ..status = statusController.text
+          ..price = int.parse(priceController.text)
+          ..month = monthController.text
+          ..year = int.parse(yearController.text)
+          ..complete = completeController.text;
+        if (widget.project.id == null) {
+          await Bloc.bloc.projectBloc.addProject(widget.project);
+        } else {
+          Bloc.bloc.projectBloc.updateProject(widget.project);
+        }
+        widget.title.value = 'Проект';
+        update.value = !update.value;
+        return '';
+      } else if (priceController.text.isNotEmpty &&
+          double.parse(priceController.text) < 0) {
+        return 'Сумма отрицательна';
       } else {
-        Bloc.bloc.projectBloc.updateProject(widget.project);
+        return 'Заполните все поля';
       }
-      widget.title.value = 'Проект';
-      update.value = !update.value;
-      return '';
-    } else if (priceController.text.isNotEmpty &&
-        double.parse(priceController.text) < 0) {
-      return 'Сумма отрицательна';
-    } else {
-      return 'Заполните все поля';
+    }catch(error){
+      return 'Ошибка ввода';
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -264,7 +269,7 @@ class __BodyState extends State<_Body> {
               label: 'Название',
               controller: widget.titleController,
             ),
-            ChooseField(
+            ChoiceField(
               label: 'Статус',
               chooseLabel: 'Статус',
               group: ProjectStatuses.values,
@@ -278,7 +283,7 @@ class __BodyState extends State<_Body> {
             Row(
               children: [
                 Flexible(
-                  child: ChooseField(
+                  child: ChoiceField(
                     label: 'Месяц',
                     chooseLabel: 'Месяц',
                     group: ConstantData.appMonths,
@@ -287,7 +292,7 @@ class __BodyState extends State<_Body> {
                 ),
                 SizedBox(width: 18),
                 Flexible(
-                  child: ChooseField(
+                  child: ChoiceField(
                     label: 'Год',
                     chooseLabel: 'Год',
                     group: GlobalParameters.planYears,

@@ -117,7 +117,6 @@ abstract class ExcelHelper {
       // Correct quantity of columns
       if (table == ConstDBData.planTableName ||
           table == ConstDBData.projectTableName) {
-        thisTable = excel.tables[table];
         for (int i = 0; i < thisTable.rows.length; i++) {
           while (thisTable.rows[i].length > headerRow.length) {
             thisTable.removeColumn(thisTable.rows[i].length - 1);

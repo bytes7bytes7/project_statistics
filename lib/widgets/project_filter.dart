@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../global/global_parameters.dart';
 import '../constants.dart';
-import 'choose_field.dart';
+import 'choice_field.dart';
 import 'flat_wide_button.dart';
 import 'outlined_wide_button.dart';
 
@@ -42,7 +42,7 @@ class ProjectFilter extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  child: ChooseField(
+                  child: ChoiceField(
                     label: 'Начало',
                     chooseLabel: 'Месяц',
                     group: ConstantData.appMonths,
@@ -51,7 +51,7 @@ class ProjectFilter extends StatelessWidget {
                 ),
                 SizedBox(width: 18),
                 Flexible(
-                  child: ChooseField(
+                  child: ChoiceField(
                     label: 'Начало',
                     chooseLabel: 'Год',
                     group: GlobalParameters.planYears,
@@ -63,7 +63,7 @@ class ProjectFilter extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  child: ChooseField(
+                  child: ChoiceField(
                     label: 'Конец',
                     chooseLabel: 'Месяц',
                     group: ConstantData.appMonths,
@@ -72,7 +72,7 @@ class ProjectFilter extends StatelessWidget {
                 ),
                 SizedBox(width: 18),
                 Flexible(
-                  child: ChooseField(
+                  child: ChoiceField(
                     label: 'Конец',
                     chooseLabel: 'Год',
                     group: GlobalParameters.planYears,

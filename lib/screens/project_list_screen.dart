@@ -173,7 +173,7 @@ class _ProjectCard extends StatelessWidget {
     String price, priceMeasure = 'млн.\nруб.';
     price = MeasureBeautifier()
         .truncateZero((project.price / 1000000).toStringAsFixed(3));
-    Size size = Size(double.infinity, 100);
+    Size size = Size(double.infinity, 110);
     Color color = (project.status == ProjectStatuses.hot)
         ? Theme.of(context).errorColor
         : Theme.of(context).disabledColor;

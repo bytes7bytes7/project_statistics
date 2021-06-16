@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../bloc/bloc.dart';
 import '../global/global_parameters.dart';
 import '../constants.dart';
-import 'choose_field.dart';
+import 'choice_field.dart';
 import 'flat_wide_button.dart';
 
 class ProjectSort extends StatelessWidget {
@@ -25,13 +25,13 @@ class ProjectSort extends StatelessWidget {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            ChooseField(
+            ChoiceField(
               label: 'Параметр',
               chooseLabel: 'Параметр',
               group: ProjectParameterNames.values,
               controller: parameterController,
             ),
-            ChooseField(
+            ChoiceField(
               label: 'Порядок',
               chooseLabel: 'Порядок',
               group: ConstantData.appProjectParameterDirection,

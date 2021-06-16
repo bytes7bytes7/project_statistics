@@ -1,49 +1,66 @@
 import 'package:flutter/material.dart';
 
-class ChooseField extends StatelessWidget {
-  const ChooseField({
+class DoubleChoiceField extends StatelessWidget {
+  const DoubleChoiceField({
     Key key,
     @required this.label,
-    @required this.chooseLabel,
-    @required this.group,
+    @required this.choiceLabel1,
+    @required this.choiceLabel2,
+    @required this.group1,
+    @required this.group2,
     @required this.controller,
   }) : super(key: key);
 
   final String label;
-  final String chooseLabel;
-  final List<String> group;
+  final String choiceLabel1;
+  final String choiceLabel2;
+  final List<String> group1;
+  final List<String> group2;
   final TextEditingController controller;
 
-  Future<void> showChooseDialog(BuildContext context) async {
+  Future<void> showChoiceDialog(BuildContext context, int time) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: (time==1),
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Center(
             child: Text(
-              chooseLabel,
+              (time == 1) ? choiceLabel1 : choiceLabel2,
               style: Theme.of(context).textTheme.headline2,
             ),
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10,vertical: 14),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
           content: SingleChildScrollView(
             child: ListBody(
-              children: group.map<Widget>((e) {
+              children: ((time == 1) ? group1 : group2).map<Widget>((e) {
                 return Card(
                   child: ListTile(
                     onTap: () {
-                      controller.text = e;
-                      Navigator.pop(context);
+                      if (time == 1) {
+                        controller.text = e;
+                        Navigator.pop(context);
+                        showChoiceDialog(context, 2);
+                      } else {
+                        controller.text += ' ' + e;
+                        Navigator.pop(context);
+                      }
                     },
                     contentPadding: const EdgeInsets.all(0),
                     leading: Radio(
                       value: e,
                       groupValue: controller.text,
                       onChanged: (value) {
-                        controller.text = e;
-                        Navigator.pop(context);
+                        if (time == 1) {
+                          controller.text = e;
+                          Navigator.pop(context);
+                          showChoiceDialog(context, 2);
+                        } else {
+                          controller.text += ' ' + e;
+                          Navigator.pop(context);
+                        }
                       },
                     ),
                     title: Text(
@@ -68,7 +85,7 @@ class ChooseField extends StatelessWidget {
       child: InkWell(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          showChooseDialog(context);
+          showChoiceDialog(context, 1);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6),

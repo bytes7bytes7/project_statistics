@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/widgets/double_choice_field.dart';
 
 import '../widgets/show_no_yes_dialog.dart';
 import '../widgets/show_export_dialog.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
-import '../widgets/choose_field.dart';
+import '../widgets/choice_field.dart';
 import '../widgets/show_info_snack_bar.dart';
 import '../widgets/flat_wide_button.dart';
 import '../widgets/input_field.dart';
@@ -29,10 +30,8 @@ class StartScreen extends StatelessWidget {
   final TextEditingController amountController_2 = TextEditingController();
   final TextEditingController amountController_3 = TextEditingController();
   final TextEditingController amountController_4 = TextEditingController();
-  final TextEditingController startMonthController = TextEditingController();
-  final TextEditingController startYearController = TextEditingController();
-  final TextEditingController endMonthController = TextEditingController();
-  final TextEditingController endYearController = TextEditingController();
+  final TextEditingController startController = TextEditingController();
+  final TextEditingController endController = TextEditingController();
   final TextEditingController prizeController = TextEditingController();
   final TextEditingController percentController = TextEditingController();
   final TextEditingController ratioController = TextEditingController();
@@ -48,7 +47,7 @@ class StartScreen extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            'Создание Плана',
+            'План',
             style: Theme.of(context).textTheme.headline1,
           ),
           leading: IconButton(
@@ -71,10 +70,8 @@ class StartScreen extends StatelessWidget {
                   amountController_2.text = '';
                   amountController_3.text = '';
                   amountController_4.text = '';
-                  startMonthController.text = '';
-                  startYearController.text = '';
-                  endMonthController.text = '';
-                  endYearController.text = '';
+                  startController.text = '';
+                  endController.text = '';
                   prizeController.text = '';
                   percentController.text = '';
                   ratioController.text = '';
@@ -98,10 +95,8 @@ class StartScreen extends StatelessWidget {
           amountController_2: amountController_2,
           amountController_3: amountController_3,
           amountController_4: amountController_4,
-          startMonthController: startMonthController,
-          startYearController: startYearController,
-          endMonthController: endMonthController,
-          endYearController: endYearController,
+          startController: startController,
+          endController: endController,
           prizeController: prizeController,
           percentController: percentController,
           ratioController: ratioController,
@@ -122,10 +117,8 @@ class _Body extends StatefulWidget {
     @required this.amountController_2,
     @required this.amountController_3,
     @required this.amountController_4,
-    @required this.startMonthController,
-    @required this.startYearController,
-    @required this.endMonthController,
-    @required this.endYearController,
+    @required this.startController,
+    @required this.endController,
     @required this.prizeController,
     @required this.percentController,
     @required this.ratioController,
@@ -139,10 +132,8 @@ class _Body extends StatefulWidget {
   final TextEditingController amountController_2;
   final TextEditingController amountController_3;
   final TextEditingController amountController_4;
-  final TextEditingController startMonthController;
-  final TextEditingController startYearController;
-  final TextEditingController endMonthController;
-  final TextEditingController endYearController;
+  final TextEditingController startController;
+  final TextEditingController endController;
   final TextEditingController prizeController;
   final TextEditingController percentController;
   final TextEditingController ratioController;
@@ -181,10 +172,8 @@ class __BodyState extends State<_Body> {
                 amountController_2: widget.amountController_2,
                 amountController_3: widget.amountController_3,
                 amountController_4: widget.amountController_4,
-                startMonthController: widget.startMonthController,
-                startYearController: widget.startYearController,
-                endMonthController: widget.endMonthController,
-                endYearController: widget.endYearController,
+                startController: widget.startController,
+                endController: widget.endController,
                 prizeController: widget.prizeController,
                 percentController: widget.percentController,
                 ratioController: widget.ratioController,
@@ -218,10 +207,8 @@ class _ContentList extends StatefulWidget {
     @required this.amountController_2,
     @required this.amountController_3,
     @required this.amountController_4,
-    @required this.startMonthController,
-    @required this.startYearController,
-    @required this.endMonthController,
-    @required this.endYearController,
+    @required this.startController,
+    @required this.endController,
     @required this.prizeController,
     @required this.percentController,
     @required this.ratioController,
@@ -236,10 +223,8 @@ class _ContentList extends StatefulWidget {
   final TextEditingController amountController_2;
   final TextEditingController amountController_3;
   final TextEditingController amountController_4;
-  final TextEditingController startMonthController;
-  final TextEditingController startYearController;
-  final TextEditingController endMonthController;
-  final TextEditingController endYearController;
+  final TextEditingController startController;
+  final TextEditingController endController;
   final TextEditingController prizeController;
   final TextEditingController percentController;
   final TextEditingController ratioController;
@@ -275,14 +260,22 @@ class __ContentListState extends State<_ContentList> {
     widget.amountController_4.text = (widget.plan.amount != null)
         ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
         : '';
-    widget.startMonthController.text = widget.plan.startMonth;
-    widget.startYearController.text = (widget.plan.startYear != null)
-        ? MeasureBeautifier().truncateZero(widget.plan.startYear.toString())
-        : '';
-    widget.endMonthController.text = widget.plan.endMonth;
-    widget.endYearController.text = (widget.plan.endYear != null)
-        ? MeasureBeautifier().truncateZero(widget.plan.endYear.toString())
-        : '';
+    widget.startController.text = widget.plan.startMonth;
+    if (widget.startController.text.isNotEmpty) {
+      widget.startController.text += ' ' +
+          ((widget.plan.startYear != null)
+              ? MeasureBeautifier()
+                  .truncateZero(widget.plan.startYear.toString())
+              : '');
+    }
+    widget.endController.text = widget.plan.endMonth;
+    if (widget.endController.text.isNotEmpty) {
+      widget.endController.text += ' ' +
+          ((widget.plan.endYear != null)
+              ? MeasureBeautifier().truncateZero(widget.plan.endYear.toString())
+              : '');
+    }
+
     widget.prizeController.text = (widget.plan.prize != null)
         ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
         : '';
@@ -295,7 +288,7 @@ class __ContentListState extends State<_ContentList> {
     super.initState();
   }
 
-  Future<bool> save() async {
+  Future<String> save() async {
     if (widget.quantityController_1.text.isNotEmpty &&
         widget.quantityController_2.text.isNotEmpty &&
         widget.quantityController_3.text.isNotEmpty &&
@@ -304,14 +297,16 @@ class __ContentListState extends State<_ContentList> {
         widget.amountController_2.text.isNotEmpty &&
         widget.amountController_3.text.isNotEmpty &&
         widget.amountController_4.text.isNotEmpty &&
-        widget.startMonthController.text.isNotEmpty &&
-        widget.startYearController.text.isNotEmpty &&
-        widget.endMonthController.text.isNotEmpty &&
-        widget.endYearController.text.isNotEmpty &&
+        widget.startController.text.isNotEmpty &&
+        widget.endController.text.isNotEmpty &&
         widget.prizeController.text.isNotEmpty &&
         widget.percentController.text.isNotEmpty &&
         widget.ratioController.text.isNotEmpty) {
       try {
+        if (!widget.startController.text.contains(' ') ||
+            !widget.endController.text.contains(' ')) {
+          return 'Неполная дата';
+        }
         widget.prizeController.text =
             widget.prizeController.text.replaceAll(',', '.');
         widget.percentController.text =
@@ -331,10 +326,16 @@ class __ContentListState extends State<_ContentList> {
             int.parse(widget.amountController_3.text.replaceAll(' ', '')),
             int.parse(widget.amountController_4.text.replaceAll(' ', '')),
           ]
-          ..startMonth = widget.startMonthController.text
-          ..startYear = int.parse(widget.startYearController.text)
-          ..endMonth = widget.endMonthController.text
-          ..endYear = int.parse(widget.endYearController.text)
+          ..startMonth = widget.startController.text
+              .substring(0, widget.startController.text.indexOf(' '))
+          ..startYear = int.parse(widget.startController.text.substring(
+              widget.startController.text.indexOf(' ') + 1,
+              widget.startController.text.length))
+          ..endMonth = widget.endController.text
+              .substring(0, widget.endController.text.indexOf(' '))
+          ..endYear = int.parse(widget.endController.text.substring(
+              widget.endController.text.indexOf(' ') + 1,
+              widget.endController.text.length))
           ..prize =
               double.parse(widget.prizeController.text.replaceAll(' ', ''))
           ..percent =
@@ -343,21 +344,11 @@ class __ContentListState extends State<_ContentList> {
               double.parse(widget.ratioController.text.replaceAll(' ', ''));
         Bloc.bloc.planBloc.updatePlan(widget.plan);
       } catch (error) {
-        showInfoSnackBar(
-          context: context,
-          info: 'Ошибка ввода',
-          icon: Icons.warning_amber_outlined,
-        );
-        return false;
+        return 'Ошибка ввода';
       }
-      return true;
+      return '';
     } else {
-      showInfoSnackBar(
-        context: context,
-        info: 'Заполните все поля',
-        icon: Icons.warning_amber_outlined,
-      );
-      return false;
+      return 'Заполните все поля';
     }
   }
 
@@ -419,47 +410,21 @@ class __ContentListState extends State<_ContentList> {
         PlanCard(
           title: 'Дополнительно',
           children: [
-            Row(
-              children: [
-                Flexible(
-                  child: ChooseField(
-                    label: 'Начало',
-                    chooseLabel: 'Месяц',
-                    group: ConstantData.appMonths,
-                    controller: widget.startMonthController,
-                  ),
-                ),
-                SizedBox(width: 18),
-                Flexible(
-                  child: ChooseField(
-                    label: 'Начало',
-                    chooseLabel: 'Год',
-                    group: GlobalParameters.appYears,
-                    controller: widget.startYearController,
-                  ),
-                ),
-              ],
+            DoubleChoiceField(
+              label: 'Начало',
+              choiceLabel1: 'Месяц',
+              choiceLabel2: 'Год',
+              group1: ConstantData.appMonths,
+              group2: GlobalParameters.appYears,
+              controller: widget.startController,
             ),
-            Row(
-              children: [
-                Flexible(
-                  child: ChooseField(
-                    label: 'Конец',
-                    chooseLabel: 'Месяц',
-                    group: ConstantData.appMonths,
-                    controller: widget.endMonthController,
-                  ),
-                ),
-                SizedBox(width: 18),
-                Flexible(
-                  child: ChooseField(
-                    label: 'Конец',
-                    chooseLabel: 'Год',
-                    group: GlobalParameters.appYears,
-                    controller: widget.endYearController,
-                  ),
-                ),
-              ],
+            DoubleChoiceField(
+              label: 'Конец',
+              choiceLabel1: 'Месяц',
+              choiceLabel2: 'Год',
+              group1: ConstantData.appMonths,
+              group2: GlobalParameters.appYears,
+              controller: widget.endController,
             ),
             InputField(
               label: 'Премия за выполнение (руб)',
@@ -500,16 +465,30 @@ class __ContentListState extends State<_ContentList> {
         OutlinedWideButton(
           title: 'Экспорт',
           onTap: () async {
-            if (await save()) {
+            String result = await save();
+            if (result.isEmpty) {
               showExportDialog(context: context);
+            } else {
+              showInfoSnackBar(
+                context: context,
+                info: result,
+                icon: Icons.warning_amber_outlined,
+              );
             }
           },
         ),
         FlatWideButton(
           title: 'Готово',
           onTap: () async {
-            if (await save()) {
+            String result = await save();
+            if (result.isEmpty) {
               GlobalParameters.currentPageIndex.value = 1;
+            } else {
+              showInfoSnackBar(
+                context: context,
+                info: result,
+                icon: Icons.warning_amber_outlined,
+              );
             }
           },
         ),
