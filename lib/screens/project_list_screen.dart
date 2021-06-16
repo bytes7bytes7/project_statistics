@@ -172,7 +172,7 @@ class _ProjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String price, priceMeasure = 'млн.\nруб.';
     price = MeasureBeautifier()
-        .truncateZero((project.price / 1000000).toStringAsFixed(3));
+        .truncateZero((project.price / 1000000).toString());
     Size size = Size(double.infinity, 110);
     Color color = (project.status == ProjectStatuses.hot)
         ? Theme.of(context).errorColor
@@ -246,7 +246,7 @@ class _ProjectCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${project.month} ${project.year}',
+                        project.date,
                         style: Theme.of(context).textTheme.subtitle2,
                         overflow: TextOverflow.ellipsis,
                       ),

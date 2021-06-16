@@ -230,21 +230,13 @@ abstract class ConstDBData {
     en: 'amount',
     ru: 'Сумма',
   );
-  static const TranslatableVar _startMonth = TranslatableVar(
-    en: 'startMonth',
-    ru: 'Начало - Месяц',
+  static const TranslatableVar _start = TranslatableVar(
+    en: 'start',
+    ru: 'Начало',
   );
-  static const TranslatableVar _startYear = TranslatableVar(
-    en: 'startYear',
-    ru: 'Начало - Год',
-  );
-  static const TranslatableVar _endMonth = TranslatableVar(
-    en: 'endMonth',
-    ru: 'Конец - Месяц',
-  );
-  static const TranslatableVar _endYear = TranslatableVar(
-    en: 'endYear',
-    ru: 'Конец - Год',
+  static const TranslatableVar _end = TranslatableVar(
+    en: 'end',
+    ru: 'Конец',
   );
   static const TranslatableVar _prize = TranslatableVar(
     en: 'prize',
@@ -272,13 +264,9 @@ abstract class ConstDBData {
     en: 'price',
     ru: 'Цена',
   );
-  static const TranslatableVar _month = TranslatableVar(
-    en: 'month',
-    ru: 'Месяц',
-  );
-  static const TranslatableVar _year = TranslatableVar(
-    en: 'year',
-    ru: 'Год',
+  static const TranslatableVar _date = TranslatableVar(
+    en: 'date',
+    ru: 'Дата',
   );
   static const TranslatableVar _complete = TranslatableVar(
     en: 'complete',
@@ -388,41 +376,21 @@ abstract class ConstDBData {
     }
   }
 
-  static String get startMonth {
+  static String get start {
     if (locale == 'en') {
-      return _startMonth.en;
+      return _start.en;
     } else if (locale == 'ru') {
-      return _startMonth.ru;
+      return _start.ru;
     } else {
       return 'undefined locale';
     }
   }
 
-  static String get startYear {
+  static String get end {
     if (locale == 'en') {
-      return _startYear.en;
+      return _end.en;
     } else if (locale == 'ru') {
-      return _startYear.ru;
-    } else {
-      return 'undefined locale';
-    }
-  }
-
-  static String get endMonth {
-    if (locale == 'en') {
-      return _endMonth.en;
-    } else if (locale == 'ru') {
-      return _endMonth.ru;
-    } else {
-      return 'undefined locale';
-    }
-  }
-
-  static String get endYear {
-    if (locale == 'en') {
-      return _endYear.en;
-    } else if (locale == 'ru') {
-      return _endYear.ru;
+      return _end.ru;
     } else {
       return 'undefined locale';
     }
@@ -438,21 +406,11 @@ abstract class ConstDBData {
     }
   }
 
-  static String get month {
+  static String get date {
     if (locale == 'en') {
-      return _month.en;
+      return _date.en;
     } else if (locale == 'ru') {
-      return _month.ru;
-    } else {
-      return 'undefined locale';
-    }
-  }
-
-  static String get year {
-    if (locale == 'en') {
-      return _year.en;
-    } else if (locale == 'ru') {
-      return _year.ru;
+      return _date.ru;
     } else {
       return 'undefined locale';
     }

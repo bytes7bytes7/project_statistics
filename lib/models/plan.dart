@@ -1,12 +1,12 @@
+import 'dart:math';
+
 class Plan {
   Plan({
     this.id,
     this.quantity,
     this.amount,
-    this.startMonth,
-    this.startYear,
-    this.endMonth,
-    this.endYear,
+    this.start,
+    this.end,
     this.prize,
     this.percent,
     this.ratio,
@@ -15,17 +15,15 @@ class Plan {
   int id;
   List<int> quantity;
   List<int> amount;
-  String startMonth;
-  int startYear;
-  String endMonth;
-  int endYear;
+  String start;
+  String end;
   double prize;
   double percent;
   double ratio;
 
   @override
   String toString() {
-    return "Plan(id: $id, quantity: $quantity, amount: $amount, startMonth: $startMonth, startYear: $startYear, endMonth: $endMonth, endYear: $endYear, prize: $prize, percent: $percent, ratio: $ratio)";
+    return "Plan(id: $id, quantity: $quantity, amount: $amount, start: $start, end: $end, prize: $prize, percent: $percent, ratio: $ratio)";
   }
 
   @override
@@ -40,16 +38,10 @@ class Plan {
     for (int i = 0; i < amount.length; i++) {
       if (amount[i] != other.amount[i]) return false;
     }
-    if (startMonth != other.startMonth) {
+    if (start != other.start) {
       return false;
     }
-    if (startYear != other.startYear) {
-      return false;
-    }
-    if (endMonth != other.endMonth) {
-      return false;
-    }
-    if (endYear != other.endYear) {
+    if (end != other.end) {
       return false;
     }
     if (prize != other.prize) {
@@ -68,10 +60,8 @@ class Plan {
     id = map['id'];
     quantity = map['quantity'];
     amount = map['amount'];
-    startMonth = map['startMonth'];
-    startYear = map['startYear'];
-    endMonth = map['endMonth'];
-    endYear = map['endYear'];
+    start = map['start'];
+    end = map['end'];
     prize = map['prize'];
     percent = map['percent'];
     ratio = map['ratio'];
@@ -81,13 +71,11 @@ class Plan {
     id = values[0];
     quantity = values[1];
     amount = values[2];
-    startMonth = values[3];
-    startYear = values[4];
-    endMonth = values[5];
-    endYear = values[6];
-    prize = values[7];
-    percent = values[8];
-    ratio = values[9];
+    start = values[3];
+    end = values[4];
+    prize = values[5];
+    percent = values[6];
+    ratio = values[7];
   }
 
   Map<String, dynamic> toMap() {
@@ -95,10 +83,8 @@ class Plan {
       'id': 1,
       'quantity': quantity?.join(';'),
       'amount': amount?.join(';'),
-      'startMonth': startMonth,
-      'startYear': startYear,
-      'endMonth': endMonth,
-      'endYear': endYear,
+      'start': start,
+      'end': end,
       'prize': prize,
       'percent': percent,
       'ratio': ratio,

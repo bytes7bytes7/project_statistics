@@ -13,8 +13,8 @@ class HomeScreen extends StatelessWidget {
     if (plan.id != null) {
       GlobalParameters.currentPageIndex.value = 1;
     }else{
-      GlobalParameters.planStartYear = plan.startYear;
-      GlobalParameters.planEndYear = plan.endYear;
+      GlobalParameters.planStartYear = int.parse(plan.start.substring(plan.start.indexOf(' ')+1,plan.start.length));
+      GlobalParameters.planEndYear = int.parse(plan.end.substring(plan.end.indexOf(' ')+1,plan.end.length));
       GlobalParameters.currentPageIndex.value = 0;
     }
   }

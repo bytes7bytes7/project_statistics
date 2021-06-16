@@ -37,10 +37,8 @@ class DatabaseHelper {
         ${ConstDBData.id} INTEGER PRIMARY KEY,
         ${ConstDBData.quantity} TEXT,
         ${ConstDBData.amount} TEXT,
-        ${ConstDBData.startMonth} TEXT,
-        ${ConstDBData.startYear} INTEGER,
-        ${ConstDBData.endMonth} TEXT,
-        ${ConstDBData.endYear} INTEGER,
+        ${ConstDBData.start} TEXT,
+        ${ConstDBData.end} TEXT,
         ${ConstDBData.prize} REAL,
         ${ConstDBData.percent} REAL,
         ${ConstDBData.ratio} REAL
@@ -52,8 +50,7 @@ class DatabaseHelper {
         ${ConstDBData.title} TEXT,
         ${ConstDBData.status} TEXT,
         ${ConstDBData.price} INTEGER,
-        ${ConstDBData.month} TEXT,
-        ${ConstDBData.year} INTEGER,
+        ${ConstDBData.date} TEXT,
         ${ConstDBData.complete} TEXT
       )
     ''');
@@ -77,15 +74,13 @@ class DatabaseHelper {
     final db = await database;
     plan.id = 1;
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.id}, ${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startMonth}, ${ConstDBData.startYear},${ConstDBData.endMonth},${ConstDBData.endYear}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.id}, ${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.start}, ${ConstDBData.end}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?,?)",
       [
         plan.id,
         plan.quantity?.join(';'),
         plan.amount?.join(';'),
-        plan.startMonth,
-        plan.startYear,
-        plan.endMonth,
-        plan.endYear,
+        plan.start,
+        plan.end,
         plan.prize,
         plan.percent,
         plan.ratio,
@@ -145,14 +140,13 @@ class DatabaseHelper {
     final db = await database;
     project.id = await _getMaxId(db, ConstDBData.projectTableName);
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.month}, ${ConstDBData.year}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.date}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?)",
       [
         project.id,
         project.title,
         project.status,
         project.price,
-        project.month,
-        project.year,
+        project.date,
         project.complete,
       ],
     );
@@ -164,14 +158,13 @@ class DatabaseHelper {
     for (Project project in projects) {
       project.id = id;
       await db.rawInsert(
-        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.month}, ${ConstDBData.year}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
+        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.date}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?)",
         [
           project.id,
           project.title,
           project.status,
           project.price,
-          project.month,
-          project.year,
+          project.date,
           project.complete,
         ],
       );
@@ -237,6 +230,8 @@ class DatabaseHelper {
     result['until'] = 0.0;
     // премия
     result['prize'] = 0.0;
+
+    // TODO: reimplement (changed project's & plan's models)
 
     if (projects.isNotEmpty) {
       projects.forEach((proj) {

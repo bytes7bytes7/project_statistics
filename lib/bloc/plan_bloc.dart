@@ -41,8 +41,8 @@ class PlanBloc {
 
   void updatePlan(Plan plan) async{
     _repository.updatePlan(plan);
-    GlobalParameters.planStartYear = plan.startYear;
-    GlobalParameters.planEndYear = plan.endYear;
+    GlobalParameters.planStartYear = int.parse(plan.start.substring(plan.start.indexOf(' ')+1,plan.start.length));
+    GlobalParameters.planEndYear = int.parse(plan.end.substring(plan.end.indexOf(' ')+1,plan.end.length));
   }
 
   void importExcel(Plan plan, List<Project> projects)async{

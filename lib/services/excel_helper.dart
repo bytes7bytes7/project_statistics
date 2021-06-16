@@ -80,10 +80,8 @@ abstract class ExcelHelper {
           ConstDBData.id,
           ConstDBData.quantity,
           ConstDBData.amount,
-          ConstDBData.startMonth,
-          ConstDBData.startYear,
-          ConstDBData.endMonth,
-          ConstDBData.endYear,
+          ConstDBData.start,
+          ConstDBData.end,
           ConstDBData.prize,
           ConstDBData.percent,
           ConstDBData.ratio,
@@ -100,8 +98,7 @@ abstract class ExcelHelper {
           ConstDBData.title,
           ConstDBData.status,
           ConstDBData.price,
-          ConstDBData.month,
-          ConstDBData.year,
+          ConstDBData.date,
           ConstDBData.complete,
         ];
         thisTable.appendRow(headerRow);
@@ -203,24 +200,28 @@ abstract class ExcelHelper {
           }
           if (values[3].isEmpty) {
             continue;
+          }else if(!values[3].contains(' ')){
+            continue;
           }
           if (values[4].isEmpty) {
             continue;
+          }else if(!values[4].contains(' ')){
+            continue;
+          }
+          if (values[5].isEmpty) {
+            values[5] = 0.0;
           } else {
             try {
-              values[4] = int.parse(values[4]);
+              values[5] = double.parse(values[5]);
             } catch (error) {
               continue;
             }
           }
-          if (values[5].isEmpty) {
-            continue;
-          }
           if (values[6].isEmpty) {
-            continue;
+            values[6] = 0.0;
           } else {
             try {
-              values[6] = int.parse(values[6]);
+              values[6] = double.parse(values[6]);
             } catch (error) {
               continue;
             }
@@ -234,24 +235,7 @@ abstract class ExcelHelper {
               continue;
             }
           }
-          if (values[8].isEmpty) {
-            values[8] = 0.0;
-          } else {
-            try {
-              values[8] = double.parse(values[8]);
-            } catch (error) {
-              continue;
-            }
-          }
-          if (values[9].isEmpty) {
-            values[9] = 0.0;
-          } else {
-            try {
-              values[9] = double.parse(values[9]);
-            } catch (error) {
-              continue;
-            }
-          }
+
           plan = Plan.fromValues(values);
         } else if (table == ConstDBData.projectTableName) {
           if (thisTable.rows.length > 0) {
@@ -288,15 +272,8 @@ abstract class ExcelHelper {
             }
             if (values[4].isEmpty) {
               continue;
-            }
-            if (values[5].isEmpty) {
+            }else if(!values[4].contains(' ')){
               continue;
-            } else {
-              try {
-                values[5] = int.parse(values[5]);
-              } catch (error) {
-                continue;
-              }
             }
             if (values[6].isEmpty) {
               continue;

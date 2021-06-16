@@ -5,7 +5,6 @@ import '../widgets/show_no_yes_dialog.dart';
 import '../widgets/show_export_dialog.dart';
 import '../widgets/empty_label.dart';
 import '../widgets/error_label.dart';
-import '../widgets/choice_field.dart';
 import '../widgets/show_info_snack_bar.dart';
 import '../widgets/flat_wide_button.dart';
 import '../widgets/input_field.dart';
@@ -260,22 +259,8 @@ class __ContentListState extends State<_ContentList> {
     widget.amountController_4.text = (widget.plan.amount != null)
         ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
         : '';
-    widget.startController.text = widget.plan.startMonth;
-    if (widget.startController.text.isNotEmpty) {
-      widget.startController.text += ' ' +
-          ((widget.plan.startYear != null)
-              ? MeasureBeautifier()
-                  .truncateZero(widget.plan.startYear.toString())
-              : '');
-    }
-    widget.endController.text = widget.plan.endMonth;
-    if (widget.endController.text.isNotEmpty) {
-      widget.endController.text += ' ' +
-          ((widget.plan.endYear != null)
-              ? MeasureBeautifier().truncateZero(widget.plan.endYear.toString())
-              : '');
-    }
-
+    widget.startController.text = widget.plan.start;
+    widget.endController.text = widget.plan.end;
     widget.prizeController.text = (widget.plan.prize != null)
         ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
         : '';
@@ -326,16 +311,8 @@ class __ContentListState extends State<_ContentList> {
             int.parse(widget.amountController_3.text.replaceAll(' ', '')),
             int.parse(widget.amountController_4.text.replaceAll(' ', '')),
           ]
-          ..startMonth = widget.startController.text
-              .substring(0, widget.startController.text.indexOf(' '))
-          ..startYear = int.parse(widget.startController.text.substring(
-              widget.startController.text.indexOf(' ') + 1,
-              widget.startController.text.length))
-          ..endMonth = widget.endController.text
-              .substring(0, widget.endController.text.indexOf(' '))
-          ..endYear = int.parse(widget.endController.text.substring(
-              widget.endController.text.indexOf(' ') + 1,
-              widget.endController.text.length))
+          ..start = widget.startController.text
+          ..end = widget.endController.text
           ..prize =
               double.parse(widget.prizeController.text.replaceAll(' ', ''))
           ..percent =

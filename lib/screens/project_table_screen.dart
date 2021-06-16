@@ -174,15 +174,14 @@ class _ContentTable extends StatelessWidget {
                                   } else if (columnIndex == 1) {
                                     text = MeasureBeautifier().truncateZero(
                                         (projects[rowIndex - 1].price / 1000000)
-                                            .toStringAsFixed(3));
+                                            .toString());
                                   } else if (columnIndex == 2) {
                                     text = projects[rowIndex - 1].status;
                                     if (text == ProjectStatuses.hot) {
                                       redLine = true;
                                     }
                                   } else if (columnIndex == 3) {
-                                    text =
-                                        '${projects[rowIndex - 1].month} ${projects[rowIndex - 1].year}';
+                                    text = projects[rowIndex - 1].date;
                                   } else {
                                     text = projects[rowIndex - 1].complete;
                                   }
