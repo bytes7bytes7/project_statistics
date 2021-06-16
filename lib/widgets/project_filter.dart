@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/double_choice_field.dart';
 import '../global/global_parameters.dart';
 import '../constants.dart';
-import 'choice_field.dart';
 import 'flat_wide_button.dart';
 import 'outlined_wide_button.dart';
 
@@ -11,20 +11,16 @@ class ProjectFilter extends StatelessWidget {
     Key key,
     @required this.datesList,
     @required this.refresh,
-  })  : this.startMonthController = TextEditingController(text: datesList[0]),
-        this.startYearController = TextEditingController(text: datesList[1]),
-        this.endMonthController = TextEditingController(text: datesList[2]),
-        this.endYearController = TextEditingController(text: datesList[3]),
+  })  : this.startController = TextEditingController(text: datesList[0]),
+        this.endController = TextEditingController(text: datesList[2]),
         super(key: key);
 
   final List<String> datesList;
   final Function refresh;
 
   final ValueNotifier<String> errorNotifier = ValueNotifier('');
-  final TextEditingController startMonthController;
-  final TextEditingController startYearController;
-  final TextEditingController endMonthController;
-  final TextEditingController endYearController;
+  final TextEditingController startController;
+  final TextEditingController endController;
 
   @override
   Widget build(BuildContext context) {
@@ -39,47 +35,21 @@ class ProjectFilter extends StatelessWidget {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Row(
-              children: [
-                Flexible(
-                  child: ChoiceField(
-                    label: 'Начало',
-                    chooseLabel: 'Месяц',
-                    group: ConstantData.appMonths,
-                    controller: startMonthController,
-                  ),
-                ),
-                SizedBox(width: 18),
-                Flexible(
-                  child: ChoiceField(
-                    label: 'Начало',
-                    chooseLabel: 'Год',
-                    group: GlobalParameters.planYears,
-                    controller: startYearController,
-                  ),
-                ),
-              ],
+            DoubleChoiceField(
+              label: 'Начало',
+              choiceLabel1: 'Месяц',
+              choiceLabel2: 'Год',
+              group1: ConstantData.appMonths,
+              group2: GlobalParameters.planYears,
+              controller: startController,
             ),
-            Row(
-              children: [
-                Flexible(
-                  child: ChoiceField(
-                    label: 'Конец',
-                    chooseLabel: 'Месяц',
-                    group: ConstantData.appMonths,
-                    controller: endMonthController,
-                  ),
-                ),
-                SizedBox(width: 18),
-                Flexible(
-                  child: ChoiceField(
-                    label: 'Конец',
-                    chooseLabel: 'Год',
-                    group: GlobalParameters.planYears,
-                    controller: endYearController,
-                  ),
-                ),
-              ],
+            DoubleChoiceField(
+              label: 'Конец',
+              choiceLabel1: 'Месяц',
+              choiceLabel2: 'Год',
+              group1: ConstantData.appMonths,
+              group2: GlobalParameters.planYears,
+              controller: endController,
             ),
             SizedBox(height: 10),
             ValueListenableBuilder(
@@ -100,14 +70,10 @@ class ProjectFilter extends StatelessWidget {
             OutlinedWideButton(
               title: 'Сбросить',
               onTap: () {
-                startMonthController.text = '';
-                startYearController.text = '';
-                endMonthController.text = '';
-                endYearController.text = '';
+                startController.text = '';
+                endController.text = '';
                 datesList[0] = '';
                 datesList[1] = '';
-                datesList[2] = '';
-                datesList[3] = '';
                 refresh();
                 Navigator.pop(context);
               },
@@ -115,17 +81,13 @@ class ProjectFilter extends StatelessWidget {
             FlatWideButton(
               title: 'Применить',
               onTap: () {
-                if (startMonthController.text.isEmpty ||
-                    startYearController.text.isEmpty ||
-                    endMonthController.text.isEmpty ||
-                    endYearController.text.isEmpty) {
-                  errorNotifier.value = 'Заполните все поля';
+                if (startController.text.isEmpty ||
+                    endController.text.isEmpty) {
+                  errorNotifier.value = 'Неполная дата';
                 } else {
                   errorNotifier.value = '';
-                  datesList[0] = startMonthController.text;
-                  datesList[1] = startYearController.text;
-                  datesList[2] = endMonthController.text;
-                  datesList[3] = endYearController.text;
+                  datesList[0] = startController.text;
+                  datesList[1] = endController.text;
                   refresh();
                   Navigator.pop(context);
                 }

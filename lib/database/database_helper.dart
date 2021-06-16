@@ -317,6 +317,8 @@ class DatabaseHelper {
     result['planAmount'] =
         List<double>.generate(ProjectStatuses.length, (index) => 0.0);
 
+    // TODO: reimplement (changed project's & plan's models)
+
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         int i = ProjectStatuses.indexOf(proj['status']);

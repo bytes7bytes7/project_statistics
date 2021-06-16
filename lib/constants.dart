@@ -84,7 +84,7 @@ class ProjectParameterNames {
   static const String title = 'Название';
   static const String price = 'Сумма';
   static const String status = 'Статус';
-  static const String period = 'Срок';
+  static const String date = 'Дата';
   static const String complete = 'Завершенность';
 
   static final length = 5;
@@ -97,7 +97,7 @@ class ProjectParameterNames {
         return 1;
       case status:
         return 2;
-      case period:
+      case date:
         return 3;
       case complete:
         return 4;
@@ -115,7 +115,7 @@ class ProjectParameterNames {
       case 2:
         return status;
       case 3:
-        return period;
+        return date;
       case 4:
         return complete;
       default:
@@ -128,7 +128,7 @@ class ProjectParameterNames {
       title,
       price,
       status,
-      period,
+      date,
       complete,
     ];
   }

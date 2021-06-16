@@ -23,6 +23,9 @@ class ProjectBloc {
   void loadAllProjects() async {
     _projectStreamController.sink.add(ProjectState._projectLoading());
     _repository.getAllProjects().then((projectList) {
+
+      // TODO: reimplement (changed project's & plan's models)
+
       ProjectSortFilterService.filterProjectsBy(projectList);
       ProjectSortFilterService.sortProjectsBy(projectList);
       if(!_projectStreamController.isClosed)
