@@ -81,11 +81,18 @@ class ProjectFilter extends StatelessWidget {
             FlatWideButton(
               title: 'Применить',
               onTap: () {
-                errorNotifier.value = '';
-                datesList[0] = startController.text;
-                datesList[1] = endController.text;
-                refresh();
-                Navigator.pop(context);
+                if (startController.text.isNotEmpty &&
+                        !startController.text.contains(' ') ||
+                    endController.text.isNotEmpty &&
+                        !endController.text.contains(' ')) {
+                  errorNotifier.value = 'Неполная дата';
+                } else {
+                  errorNotifier.value = '';
+                  datesList[0] = startController.text;
+                  datesList[1] = endController.text;
+                  refresh();
+                  Navigator.pop(context);
+                }
               },
             ),
           ],

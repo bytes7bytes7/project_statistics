@@ -239,34 +239,80 @@ class DatabaseHelper {
       projects.forEach((proj) {
         if (proj['status'] == ProjectStatuses.contract &&
             proj['complete'] != ProjectCompleteStatuses.canceled) {
-          if (GlobalParameters.resultFilterBorders[0] != '' &&
-              GlobalParameters.resultFilterBorders[1] != '' &&
-              GlobalParameters.resultFilterBorders[2] != '' &&
-              GlobalParameters.resultFilterBorders[3] != '') {
+          if (GlobalParameters.resultFilterBorders[0].isNotEmpty &&
+              GlobalParameters.resultFilterBorders[1].isNotEmpty) {
+            List<String> tmp = proj['date'].split(' ');
             String thisMonth =
-                ConstantData.appMonths.indexOf(proj['month']).toString();
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String thisYear = tmp[1];
             if (thisMonth.length < 2) {
               thisMonth = '0' + thisMonth;
             }
-            String thisDate = proj['year'].toString() + '.' + thisMonth;
-            String sMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.resultFilterBorders[0])
-                .toString();
-            if (sMonth.length < 2) {
-              sMonth = '0' + sMonth;
+            int thisDate = int.parse(thisYear + thisMonth);
+
+            tmp = GlobalParameters.resultFilterBorders[0].split(' ');
+            String startMonth =
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String startYear = tmp[1];
+            if (startMonth.length < 2) {
+              startMonth = '0' + startMonth;
             }
-            String startDate =
-                GlobalParameters.resultFilterBorders[1] + '.' + sMonth;
-            String eMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.resultFilterBorders[2])
-                .toString();
-            if (eMonth.length < 2) {
-              eMonth = '0' + eMonth;
+            int startDate = int.parse(startYear + startMonth);
+
+            tmp = GlobalParameters.resultFilterBorders[1].split(' ');
+            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String endYear = tmp[1];
+            if (endMonth.length < 2) {
+              endMonth = '0' + endMonth;
             }
-            String endDate =
-                GlobalParameters.resultFilterBorders[3] + '.' + eMonth;
-            if (startDate.compareTo(thisDate) <= 0 &&
-                thisDate.compareTo(endDate) <= 0) {
+            int endDate = int.parse(endYear + endMonth);
+
+            if (thisDate >= startDate && thisDate <= endDate) {
+              result['amount'] += proj['price'];
+              result['quantity']++;
+            }
+          } else if (GlobalParameters.resultFilterBorders[0].isNotEmpty) {
+            List<String> tmp = proj['date'].split(' ');
+            String thisMonth =
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String thisYear = tmp[1];
+            if (thisMonth.length < 2) {
+              thisMonth = '0' + thisMonth;
+            }
+            int thisDate = int.parse(thisYear + thisMonth);
+
+            tmp = GlobalParameters.resultFilterBorders[0].split(' ');
+            String startMonth =
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String startYear = tmp[1];
+            if (startMonth.length < 2) {
+              startMonth = '0' + startMonth;
+            }
+            int startDate = int.parse(startYear + startMonth);
+
+            if(thisDate >=startDate){
+              result['amount'] += proj['price'];
+              result['quantity']++;
+            }
+          } else if (GlobalParameters.resultFilterBorders[1].isNotEmpty) {
+            List<String> tmp = proj['date'].split(' ');
+            String thisMonth =
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String thisYear = tmp[1];
+            if (thisMonth.length < 2) {
+              thisMonth = '0' + thisMonth;
+            }
+            int thisDate = int.parse(thisYear + thisMonth);
+
+            tmp = GlobalParameters.resultFilterBorders[1].split(' ');
+            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String endYear = tmp[1];
+            if (endMonth.length < 2) {
+              endMonth = '0' + endMonth;
+            }
+            int endDate = int.parse(endYear + endMonth);
+
+            if(thisDate <= endDate){
               result['amount'] += proj['price'];
               result['quantity']++;
             }
