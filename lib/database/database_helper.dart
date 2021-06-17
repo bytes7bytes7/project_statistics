@@ -112,13 +112,13 @@ class DatabaseHelper {
           whereArgs: [1]);
       if (data.isNotEmpty) {
         Map<String, dynamic> map = Plan.formatMap(data.first);
-        if(map!= null && map.length>0) {
+        if (map != null && map.length > 0) {
           return Plan.fromMap(map);
         }
         return Plan();
       } else
         return Plan();
-    }catch(error){
+    } catch (error) {
       throw error;
     }
   }
@@ -181,7 +181,7 @@ class DatabaseHelper {
           where: "${ConstDBData.id} = ?",
           whereArgs: [id]);
       return res.isNotEmpty ? Project.fromMap(res.first) : Project();
-    }catch(error){
+    } catch (error) {
       throw error;
     }
   }
@@ -190,9 +190,9 @@ class DatabaseHelper {
     try {
       final db = await database;
       List<Map<String, dynamic>> res =
-      await db.query("${ConstDBData.projectTableName}");
+          await db.query("${ConstDBData.projectTableName}");
       return res.isNotEmpty ? res.map((c) => Project.fromMap(c)).toList() : [];
-    }catch(error){
+    } catch (error) {
       throw error;
     }
   }
@@ -237,7 +237,8 @@ class DatabaseHelper {
 
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
-        if (proj['status'] == ProjectStatuses.contract && proj['complete'] != ProjectCompleteStatuses.canceled) {
+        if (proj['status'] == ProjectStatuses.contract &&
+            proj['complete'] != ProjectCompleteStatuses.canceled) {
           if (GlobalParameters.resultFilterBorders[0] != '' &&
               GlobalParameters.resultFilterBorders[1] != '' &&
               GlobalParameters.resultFilterBorders[2] != '' &&
@@ -280,8 +281,8 @@ class DatabaseHelper {
     if (plan.isNotEmpty) {
       result['plan'] += double.parse(plan.first['amount'].split(';')[3]);
       result['until'] = result['plan'] - result['amount'];
-      if(result['until']<0){
-        result['until']=0.0;
+      if (result['until'] < 0) {
+        result['until'] = 0.0;
       }
 
       if (result['plan'] != 0) {
@@ -319,25 +320,86 @@ class DatabaseHelper {
     result['planAmount'] =
         List<double>.generate(ProjectStatuses.length, (index) => 0.0);
 
-    // TODO: reimplement (changed project's & plan's models)
-
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         int i = ProjectStatuses.indexOf(proj['status']);
         if (proj['complete'] != ProjectCompleteStatuses.canceled) {
-          if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
-            int thisMonth = ConstantData.appMonths.indexOf(proj['month']);
-            int sMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.chartFilterBorders[0]);
-            int sYear = int.parse(GlobalParameters.chartFilterBorders[1]);
-            int eMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.chartFilterBorders[2]);
-            int eYear = int.parse(GlobalParameters.chartFilterBorders[3]);
-            if (proj['year'] >= sYear && proj['year'] <= eYear) {
-              if (thisMonth >= sMonth && thisMonth <= eMonth) {
-                result['realQuantity'][i]++;
-                result['realAmount'][i] += proj['price'];
-              }
+          if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[1].isNotEmpty) {
+            List<String> tmp = proj['date'].split(' ');
+            String thisMonth =
+                ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String thisYear = tmp[1];
+            if (thisMonth.length < 2) {
+              thisMonth = '0' + thisMonth;
+            }
+            int thisDate = int.parse(thisYear + thisMonth);
+
+            tmp = GlobalParameters.chartFilterBorders[0].split(' ');
+            String startMonth =
+                ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String startYear = tmp[1];
+            if (startMonth.length < 2) {
+              startMonth = '0' + startMonth;
+            }
+            int startDate = int.parse(startYear + startMonth);
+
+            tmp = GlobalParameters.chartFilterBorders[1].split(' ');
+            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String endYear = tmp[1];
+            if (endMonth.length < 2) {
+              endMonth = '0' + endMonth;
+            }
+            int endDate = int.parse(endYear + endMonth);
+
+            if (thisDate >= startDate && thisDate <= endDate) {
+              result['realQuantity'][i]++;
+              result['realAmount'][i] += proj['price'];
+            }
+          } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
+            List<String> tmp = proj['date'].split(' ');
+            String thisMonth =
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String thisYear = tmp[1];
+            if (thisMonth.length < 2) {
+              thisMonth = '0' + thisMonth;
+            }
+            int thisDate = int.parse(thisYear + thisMonth);
+
+            tmp = GlobalParameters.chartFilterBorders[0].split(' ');
+            String startMonth =
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String startYear = tmp[1];
+            if (startMonth.length < 2) {
+              startMonth = '0' + startMonth;
+            }
+            int startDate = int.parse(startYear + startMonth);
+
+            if(thisDate >=startDate){
+              result['realQuantity'][i]++;
+              result['realAmount'][i] += proj['price'];
+            }
+          } else if (GlobalParameters.chartFilterBorders[1].isNotEmpty) {
+            List<String> tmp = proj['date'].split(' ');
+            String thisMonth =
+            ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String thisYear = tmp[1];
+            if (thisMonth.length < 2) {
+              thisMonth = '0' + thisMonth;
+            }
+            int thisDate = int.parse(thisYear + thisMonth);
+
+            tmp = GlobalParameters.chartFilterBorders[1].split(' ');
+            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
+            String endYear = tmp[1];
+            if (endMonth.length < 2) {
+              endMonth = '0' + endMonth;
+            }
+            int endDate = int.parse(endYear + endMonth);
+
+            if(thisDate <= endDate){
+              result['realQuantity'][i]++;
+              result['realAmount'][i] += proj['price'];
             }
           } else {
             result['realQuantity'][i]++;
