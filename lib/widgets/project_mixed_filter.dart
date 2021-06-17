@@ -87,18 +87,12 @@ class ProjectMixedFilter extends StatelessWidget {
             FlatWideButton(
               title: 'Применить',
               onTap: () {
-                if (monthController.text.isEmpty ||
-                    yearController.text.isEmpty ||
-                    statusController.text.isEmpty) {
-                  errorNotifier.value = 'Заполните все поля';
-                } else {
-                  errorNotifier.value = '';
-                  datesList[0] = monthController.text;
-                  datesList[1] = yearController.text;
-                  datesList[2] = statusController.text;
-                  refresh();
-                  Navigator.pop(context);
-                }
+                errorNotifier.value = '';
+                datesList[0] = monthController.text;
+                datesList[1] = yearController.text;
+                datesList[2] = statusController.text;
+                refresh();
+                Navigator.pop(context);
               },
             ),
           ],

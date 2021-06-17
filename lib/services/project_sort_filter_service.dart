@@ -4,33 +4,49 @@ import '../global/global_parameters.dart';
 
 abstract class ProjectSortFilterService {
   static filterProjectsBy(List<Project> projects) {
-    if (GlobalParameters.projectFilterBorders[0] == '' &&
-        GlobalParameters.projectFilterBorders[1] == '') {
+    int filterMonth, filterYear;
+    String filterStatus;
+    if (GlobalParameters.projectFilterBorders[0].isNotEmpty) {
+      filterMonth = ConstantData.appMonths
+          .indexOf(GlobalParameters.projectFilterBorders[0]);
+    }
+    if (GlobalParameters.projectFilterBorders[1].isNotEmpty) {
+      filterYear = int.parse(GlobalParameters.projectFilterBorders[1]);
+    }
+    if (GlobalParameters.projectFilterBorders[2].isNotEmpty) {
+      filterStatus = GlobalParameters.projectFilterBorders[2];
+    }
+    if (filterMonth == null && filterYear == null && filterStatus == null) {
       return;
     }
-    if (GlobalParameters.projectFilterBorders[0] != '' &&
-        GlobalParameters.projectFilterBorders[1] != '') {
-      for (int i = projects.length - 1; i >= 0; i--) {
-        if (projects[i].date != GlobalParameters.projectFilterBorders[0] ||
-            projects[i].status != GlobalParameters.projectFilterBorders[1]) {
+
+    for (int i = projects.length - 1; i >= 0; i--) {
+      List<String> tmp = projects[i].date.split(' ');
+      int month = ConstantData.appMonths.indexOf(tmp[0]);
+      int year = int.parse(tmp[1]);
+      String status = projects[i].status;
+      if (filterMonth != null) {
+        if (filterMonth != month) {
           projects.removeAt(i);
+          continue;
         }
       }
-    } else if (GlobalParameters.projectFilterBorders[0] != '') {
-      for (int i = projects.length - 1; i >= 0; i--) {
-        if (projects[i].date != GlobalParameters.projectFilterBorders[0]) {
+      if (filterYear != null) {
+        if (filterYear != year) {
           projects.removeAt(i);
+          continue;
         }
       }
-    } else if (GlobalParameters.projectFilterBorders[1] != '') {
-      for (int i = projects.length - 1; i >= 0; i--) {
-        if (projects[i].status != GlobalParameters.projectFilterBorders[1]) {
+      if (filterStatus != null) {
+        if (filterStatus != status) {
           projects.removeAt(i);
+          continue;
         }
       }
     }
   }
 
+  // TODO: check it
   static sortProjectsBy(List<Project> projects) {
     switch (
         ProjectParameterNames.indexOf(GlobalParameters.projectSortParamName)) {
@@ -77,16 +93,16 @@ abstract class ProjectSortFilterService {
                 bMonth = bList[0],
                 bYear = bList[1];
 
-            String aDate = ConstantData.appMonths.indexOf(aMonth).toString();
-            String bDate = ConstantData.appMonths.indexOf(bMonth).toString();
-            if (aDate.length == 1) {
-              aDate = '0' + aDate;
+            aMonth = ConstantData.appMonths.indexOf(aMonth).toString();
+            bMonth = ConstantData.appMonths.indexOf(bMonth).toString();
+            if (aMonth.length == 1) {
+              aMonth = '0' + aMonth;
             }
-            if (bDate.length == 1) {
-              bDate = '0' + bDate;
+            if (bMonth.length == 1) {
+              bMonth = '0' + bMonth;
             }
-            aDate = aYear + aDate;
-            bDate = bYear + bDate;
+            int aDate = int.parse(aYear + aMonth);
+            int bDate = int.parse(bYear + bMonth);
             return aDate.compareTo(bDate);
           });
         } else {
@@ -98,16 +114,16 @@ abstract class ProjectSortFilterService {
                 bMonth = bList[0],
                 bYear = bList[1];
 
-            String aDate = ConstantData.appMonths.indexOf(aMonth).toString();
-            String bDate = ConstantData.appMonths.indexOf(bMonth).toString();
-            if (aDate.length == 1) {
-              aDate = '0' + aDate;
+            aMonth = ConstantData.appMonths.indexOf(aMonth).toString();
+            bMonth = ConstantData.appMonths.indexOf(bMonth).toString();
+            if (aMonth.length == 1) {
+              aMonth = '0' + aMonth;
             }
-            if (bDate.length == 1) {
-              bDate = '0' + bDate;
+            if (bMonth.length == 1) {
+              bMonth = '0' + bMonth;
             }
-            aDate = aYear + aDate;
-            bDate = bYear + bDate;
+            int aDate = int.parse(aYear + aMonth);
+            int bDate = int.parse(bYear + bMonth);
             return bDate.compareTo(aDate);
           });
         }
