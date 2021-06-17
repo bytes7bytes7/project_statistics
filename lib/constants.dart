@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/models/plan.dart';
 
 import 'screens/analysis_chart_screen.dart';
 import 'screens/project_list_screen.dart';

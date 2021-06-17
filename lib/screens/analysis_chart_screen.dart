@@ -294,7 +294,7 @@ class _AnalysisChartCard extends StatelessWidget {
               Text(
                 (real.runtimeType == int)
                     ? real.toString()
-                    : MeasureBeautifier().truncateZero(real.toStringAsFixed(2)),
+                    : MeasureBeautifier().truncateZero(real.toString()),
                 style: Theme
                     .of(context)
                     .textTheme
@@ -315,7 +315,7 @@ class _AnalysisChartCard extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                MeasureBeautifier().truncateZero(plan.toStringAsFixed(2)),
+                MeasureBeautifier().truncateZero(plan.toString()),
                 style: Theme
                     .of(context)
                     .textTheme
@@ -325,7 +325,7 @@ class _AnalysisChartCard extends StatelessWidget {
             ],
           ),
           PercentBar(
-            percent: int.parse((100 * real / plan).toStringAsFixed(0)),
+            percent: int.parse((100 * real / plan).round().toString()),
             color: (primary) ? color : Theme
                 .of(context)
                 .primaryColor,

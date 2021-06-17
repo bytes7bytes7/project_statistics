@@ -56,7 +56,7 @@ class PlanBloc {
 
   Future importExcel(Plan plan, List<Project> projects)async{
     _planStreamController.sink.add(PlanState._planLoading());
-    await _repository.importExcel(plan, projects).then((value) {
+    await _repository.importExcel(plan, projects).then((value)async {
       loadPlan();
     }).onError((error, stackTrace) {
       if (!_planStreamController.isClosed)

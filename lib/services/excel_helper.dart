@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
+import 'package:project_statistics/global/global_parameters.dart';
 
 import '../bloc/bloc.dart';
 import '../models/project.dart';
@@ -131,20 +132,20 @@ abstract class ExcelHelper {
 
       for (var table in excel.tables.keys) {
         var thisTable = excel.tables[table];
-        List<String> values;
+        List<dynamic> values;
         if (table == ConstDBData.planTableName) {
           if (thisTable.rows.length > 0) {
             headerRow =
                 thisTable.rows[0].map<String>((e) => e.toString()).toList();
-            values =
-                thisTable.rows[1].map<String>((e) => e.toString()).toList();
+            headerRow = Plan.translate(headerRow);
+            values = thisTable.rows[1];
           }
-          Map<String, String> map = Map.fromIterables(headerRow, values);
-          map = Plan.formatMap(map);
+          Map<String, dynamic> map =
+              Plan.formatMap(Map.fromIterables(headerRow, values));
           try {
-            if(map != null && map.length > 0) {
+            if (map != null && map.length > 0) {
               plan = Plan.fromMap(map);
-            }else{
+            } else {
               throw Exception('Неверный формат');
             }
           } catch (error) {
@@ -154,12 +155,17 @@ abstract class ExcelHelper {
           if (thisTable.rows.length > 0) {
             headerRow =
                 thisTable.rows[0].map<String>((e) => e.toString()).toList();
+            headerRow = Project.translate(headerRow);
             for (int i = 1; i < thisTable.rows.length; i++) {
-              values =
-                  thisTable.rows[i].map<dynamic>((e) => e.toString()).toList();
+              values = thisTable.rows[i];
+              Map<String, dynamic> map =
+                  Project.formatMap(Map.fromIterables(headerRow, values));
               try {
-                projects
-                    .add(Project.fromMap(Map.fromIterables(headerRow, values)));
+                if (map != null && map.length > 0) {
+                  projects.add(Project.fromMap(map));
+                } else {
+                  throw Exception('Неверный формат');
+                }
               } catch (error) {
                 throw error;
               }
@@ -168,7 +174,7 @@ abstract class ExcelHelper {
         }
       }
 
-      await Bloc.bloc.planBloc.deletePlan(1);
+      ConstDBData.locale='en';
       Bloc.bloc.planBloc.importExcel(plan, projects);
       showInfoSnackBar(
         context: context,

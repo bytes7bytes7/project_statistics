@@ -21,65 +21,64 @@ class Plan {
   double percent;
   double ratio;
 
-  static Map<String, dynamic> formatMap(Map<String, dynamic> oldMap){
+  static Map<String, dynamic> formatMap(Map<String, dynamic> oldMap) {
     List<String> keys = oldMap.keys.toList();
-    List<String> values = oldMap.values.map<String>((e) => e.toString()).toList();
-    Map<String, dynamic> newMap =Map.fromIterables(keys, values);
-    if(newMap['id'].isNotEmpty){
+    List<String> values =
+        oldMap.values.map<String>((e) => e.toString()).toList();
+    Map<String, dynamic> newMap = Map.fromIterables(keys, values);
+    if (newMap['id'].isNotEmpty) {
       try {
         newMap['id'] = int.parse(newMap['id']);
-      }catch(error){
+      } catch (error) {
         return null;
       }
-    }else{
+    } else {
       return null;
     }
-    if(newMap['quantity'].isNotEmpty){
+    if (newMap['quantity'].isNotEmpty) {
       try {
-        newMap['quantity'] =
-            newMap['quantity'].split(';').map<int>((e) => int.parse(e)).toList();
-      }catch(error){
+        newMap['quantity'] = newMap['quantity']
+            .split(';')
+            .map<int>((e) => int.parse(e))
+            .toList();
+      } catch (error) {
         return null;
       }
-    }else{
+    } else {
       return null;
     }
-    if(newMap['amount'].isNotEmpty){
+    if (newMap['amount'].isNotEmpty) {
       try {
         newMap['amount'] =
             newMap['amount'].split(';').map<int>((e) => int.parse(e)).toList();
-      }catch(error){
+      } catch (error) {
         return null;
       }
-    }else{
+    } else {
       return null;
     }
-    if(newMap['start'].isNotEmpty){
-      newMap['start'] = newMap['start'];
-    }else{
+    if (newMap['start'].isEmpty) {
       return null;
     }
-    if(newMap['end'].isNotEmpty){
-      newMap['end'] = newMap['end'];
-    }else{
+    if (newMap['end'].isEmpty) {
       return null;
     }
-    if(newMap['prize'].isNotEmpty){
+    if (newMap['prize'].isNotEmpty) {
       newMap['prize'] = double.parse(newMap['prize']);
-    }else{
+    } else {
       return null;
     }
-    if(newMap['percent'].isNotEmpty){
+    if (newMap['percent'].isNotEmpty) {
       newMap['percent'] = double.parse(newMap['percent']);
-    }else{
+    } else {
       return null;
     }
-    if(newMap['ratio'].isNotEmpty){
+    if (newMap['ratio'].isNotEmpty) {
       newMap['ratio'] = double.parse(newMap['ratio']);
-    }else{
+    } else {
       return null;
     }
-    return newMap;
+    return Map<String, dynamic>.from(newMap);
   }
 
   static List<String> getHeaderRow() {
@@ -93,6 +92,20 @@ class Plan {
       ConstDBData.percent,
       ConstDBData.ratio,
     ];
+  }
+
+  static List<String> translate(List<String> lst) {
+    if (ConstDBData.locale == 'en') {
+      ConstDBData.locale = 'ru';
+      List<String> result = getHeaderRow();
+      ConstDBData.locale = 'en';
+      return result;
+    } else {
+      ConstDBData.locale = 'en';
+      List<String> result = getHeaderRow();
+      ConstDBData.locale = 'ru';
+      return result;
+    }
   }
 
   @override

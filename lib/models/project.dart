@@ -17,7 +17,46 @@ class Project {
   String date;
   String complete;
 
-  static List<String> getHeaderRow(){
+  static Map<String, dynamic> formatMap(Map<String, dynamic> oldMap) {
+    List<String> keys = oldMap.keys.toList();
+    List<String> values =
+        oldMap.values.map<String>((e) => e.toString()).toList();
+    Map<String, dynamic> newMap = Map.fromIterables(keys, values);
+    if (newMap['id'].isNotEmpty) {
+      try {
+        newMap['id'] = int.parse(newMap['id']);
+      } catch (error) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+    if (newMap['title'].isEmpty) {
+      return null;
+    }
+    if (newMap['status'].isEmpty) {
+      return null;
+    }
+    if (newMap['price'].isNotEmpty) {
+      try {
+        newMap['price'] = int.parse(newMap['price']);
+      } catch (error) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+    if (newMap['date'].isEmpty) {
+      return null;
+    }
+    if (newMap['complete'].isEmpty) {
+      return null;
+    }
+
+    return newMap;
+  }
+
+  static List<String> getHeaderRow() {
     return [
       ConstDBData.id,
       ConstDBData.title,
@@ -26,6 +65,20 @@ class Project {
       ConstDBData.date,
       ConstDBData.complete,
     ];
+  }
+
+  static List<String> translate(List<String> lst) {
+    if (ConstDBData.locale == 'en') {
+      ConstDBData.locale = 'ru';
+      List<String> result = getHeaderRow();
+      ConstDBData.locale = 'en';
+      return result;
+    } else {
+      ConstDBData.locale = 'en';
+      List<String> result = getHeaderRow();
+      ConstDBData.locale = 'ru';
+      return result;
+    }
   }
 
   @override
