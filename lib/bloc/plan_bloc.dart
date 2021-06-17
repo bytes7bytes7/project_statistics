@@ -32,23 +32,35 @@ class PlanBloc {
     });
   }
 
-  void deletePlan(int id) async{
+  Future deletePlan(int id) async{
     _planStreamController.sink.add(PlanState._planLoading());
     _repository.deletePlan(id).then((value) {
       loadPlan();
+    }).onError((error, stackTrace) {
+      if (!_planStreamController.isClosed)
+        _planStreamController.sink.add(PlanState._planError(error,stackTrace));
     });
   }
 
   void updatePlan(Plan plan) async{
-    _repository.updatePlan(plan);
-    GlobalParameters.planStartYear = int.parse(plan.start.substring(plan.start.indexOf(' ')+1,plan.start.length));
-    GlobalParameters.planEndYear = int.parse(plan.end.substring(plan.end.indexOf(' ')+1,plan.end.length));
+    _planStreamController.sink.add(PlanState._planLoading());
+    _repository.updatePlan(plan).then((value) {
+      loadPlan();
+      GlobalParameters.planStartYear = int.parse(plan.start.substring(plan.start.indexOf(' ')+1,plan.start.length));
+      GlobalParameters.planEndYear = int.parse(plan.end.substring(plan.end.indexOf(' ')+1,plan.end.length));
+    }).onError((error, stackTrace) {
+      if (!_planStreamController.isClosed)
+        _planStreamController.sink.add(PlanState._planError(error,stackTrace));
+    });
   }
 
-  void importExcel(Plan plan, List<Project> projects)async{
+  Future importExcel(Plan plan, List<Project> projects)async{
     _planStreamController.sink.add(PlanState._planLoading());
     await _repository.importExcel(plan, projects).then((value) {
       loadPlan();
+    }).onError((error, stackTrace) {
+      if (!_planStreamController.isClosed)
+        _planStreamController.sink.add(PlanState._planError(error,stackTrace));
     });
   }
 }

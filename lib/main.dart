@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project_statistics/database/database_helper.dart';
 
 import 'screens/home_screen.dart';
 import 'themes/light_theme.dart';
@@ -9,7 +10,7 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  // Permission.initApp();
+  // DatabaseHelper.db.dropBD();
   runApp(MyApp());
 }
 

@@ -18,7 +18,7 @@ class ErrorLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String _error = 'ERROR:\n $error';
+    String _error = 'Error:\n $error';
     String _stackTrace = '\nStackTrace:\n $stackTrace';
     return Center(
       child: Column(

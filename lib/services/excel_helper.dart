@@ -76,37 +76,15 @@ abstract class ExcelHelper {
       var thisTable = excel.tables[table];
       List<dynamic> values;
       if (table == ConstDBData.planTableName) {
-        headerRow = [
-          ConstDBData.id,
-          ConstDBData.quantity,
-          ConstDBData.amount,
-          ConstDBData.start,
-          ConstDBData.end,
-          ConstDBData.prize,
-          ConstDBData.percent,
-          ConstDBData.ratio,
-        ];
-        values = plan
-            .toMap()
-            .values
-            .toList();
+        headerRow = Plan.getHeaderRow();
         thisTable.appendRow(headerRow);
+        values = plan.toMap().values.toList();
         thisTable.appendRow(values);
       } else if (table == ConstDBData.projectTableName) {
-        headerRow = [
-          ConstDBData.id,
-          ConstDBData.title,
-          ConstDBData.status,
-          ConstDBData.price,
-          ConstDBData.date,
-          ConstDBData.complete,
-        ];
+        headerRow = Project.getHeaderRow();
         thisTable.appendRow(headerRow);
         for (int i = 0; i < projects.length; i++) {
-          values = projects[i]
-              .toMap()
-              .values
-              .toList();
+          values = projects[i].toMap().values.toList();
           thisTable.appendRow(values);
         }
       }
@@ -124,7 +102,7 @@ abstract class ExcelHelper {
 
     // Save excel
     excel.encode().then(
-          (onValue) {
+      (onValue) {
         File(filePath)
           ..createSync(recursive: true)
           ..writeAsBytesSync(onValue);
@@ -143,146 +121,54 @@ abstract class ExcelHelper {
 
     if (result != null) {
       Excel excel;
-      try {
-        String file = result.files.single.path;
-        Iterable<int> bytes = File(file).readAsBytesSync();
-        excel = Excel.decodeBytes(bytes);
-      } catch (error) {
-        showInfoSnackBar(
-          context: context,
-          info: 'Ошибка',
-          icon: Icons.warning_amber_outlined,
-        );
-        return;
-      }
+      String file = result.files.single.path;
+      Iterable<int> bytes = File(file).readAsBytesSync();
+      excel = Excel.decodeBytes(bytes);
+
       Plan plan = Plan();
       List<Project> projects = <Project>[];
-
-      // List<String> headerRow;
+      List<String> headerRow;
 
       for (var table in excel.tables.keys) {
         var thisTable = excel.tables[table];
-        List<dynamic> values;
+        List<String> values;
         if (table == ConstDBData.planTableName) {
           if (thisTable.rows.length > 0) {
-            // headerRow =
-            //     thisTable.rows[0].map<String>((e) => e.toString()).toList();
+            headerRow =
+                thisTable.rows[0].map<String>((e) => e.toString()).toList();
+            values =
+                thisTable.rows[1].map<String>((e) => e.toString()).toList();
           }
-          values = thisTable.rows[1].map<dynamic>((e) => e.toString()).toList();
-          if (values[0].isEmpty) {
-            continue;
-          } else {
-            try {
-              values[0] = int.parse(values[0]);
-            } catch (error) {
-              continue;
+          Map<String, String> map = Map.fromIterables(headerRow, values);
+          map = Plan.formatMap(map);
+          try {
+            if(map != null && map.length > 0) {
+              plan = Plan.fromMap(map);
+            }else{
+              throw Exception('Неверный формат');
             }
+          } catch (error) {
+            throw error;
           }
-          if (values[1].isEmpty) {
-            values[1] = <int>[];
-          } else {
-            try {
-              values[1] =
-                  values[1].split(';').map<int>((e) => int.parse(e)).toList();
-            } catch (error) {
-              continue;
-            }
-          }
-          if (values[2].isEmpty) {
-            values[2] = <int>[];
-          } else {
-            try {
-              values[2] =
-                  values[2].split(';').map<int>((e) => int.parse(e)).toList();
-            } catch (error) {
-              continue;
-            }
-          }
-          if (values[3].isEmpty) {
-            continue;
-          }else if(!values[3].contains(' ')){
-            continue;
-          }
-          if (values[4].isEmpty) {
-            continue;
-          }else if(!values[4].contains(' ')){
-            continue;
-          }
-          if (values[5].isEmpty) {
-            values[5] = 0.0;
-          } else {
-            try {
-              values[5] = double.parse(values[5]);
-            } catch (error) {
-              continue;
-            }
-          }
-          if (values[6].isEmpty) {
-            values[6] = 0.0;
-          } else {
-            try {
-              values[6] = double.parse(values[6]);
-            } catch (error) {
-              continue;
-            }
-          }
-          if (values[7].isEmpty) {
-            values[7] = 0.0;
-          } else {
-            try {
-              values[7] = double.parse(values[7]);
-            } catch (error) {
-              continue;
-            }
-          }
-
-          plan = Plan.fromValues(values);
         } else if (table == ConstDBData.projectTableName) {
           if (thisTable.rows.length > 0) {
-            // headerRow =
-            //     thisTable.rows[0].map<String>((e) => e.toString()).toList();
-          }
-          for (int i = 1; i < thisTable.rows.length; i++) {
-            values =
-                thisTable.rows[i].map<dynamic>((e) => e.toString()).toList();
-
-            if (values[0].isEmpty) {
-              continue;
-            } else {
+            headerRow =
+                thisTable.rows[0].map<String>((e) => e.toString()).toList();
+            for (int i = 1; i < thisTable.rows.length; i++) {
+              values =
+                  thisTable.rows[i].map<dynamic>((e) => e.toString()).toList();
               try {
-                values[0] = int.parse(values[0]);
+                projects
+                    .add(Project.fromMap(Map.fromIterables(headerRow, values)));
               } catch (error) {
-                continue;
+                throw error;
               }
             }
-            if (values[1].isEmpty) {
-              values[1] = 'Пусто';
-            }
-            if (values[2].isEmpty) {
-              continue;
-            }
-            if (values[3].isEmpty) {
-              values[3] = 0;
-            } else {
-              try {
-                values[3] = int.parse(values[3]);
-              } catch (error) {
-                continue;
-              }
-            }
-            if (values[4].isEmpty) {
-              continue;
-            }else if(!values[4].contains(' ')){
-              continue;
-            }
-            if (values[6].isEmpty) {
-              continue;
-            }
-            projects.add(Project.fromValues(values));
           }
         }
       }
 
+      await Bloc.bloc.planBloc.deletePlan(1);
       Bloc.bloc.planBloc.importExcel(plan, projects);
       showInfoSnackBar(
         context: context,

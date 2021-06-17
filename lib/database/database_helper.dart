@@ -104,29 +104,23 @@ class DatabaseHelper {
   }
 
   Future<Plan> getPlan() async {
-    final db = await database;
-    List<Map<String, dynamic>> data = await db.query(
-        "${ConstDBData.planTableName}",
-        where: "${ConstDBData.id} = ?",
-        whereArgs: [1]);
-    if (data.isNotEmpty) {
-      Map<String, dynamic> m = Map<String, dynamic>.from(data.first);
-      List<String> a = [];
-      m[ConstDBData.quantity] = (m[ConstDBData.quantity].length > 0)
-          ? m[ConstDBData.quantity]
-              .split(';')
-              .map<int>((e) => int.parse(e))
-              .toList()
-          : a;
-      m[ConstDBData.amount] = (m[ConstDBData.amount].length > 0)
-          ? m[ConstDBData.amount]
-              .split(';')
-              .map<int>((e) => int.parse(e))
-              .toList()
-          : a;
-      return Plan.fromMap(m);
-    } else
-      return Plan();
+    try {
+      final db = await database;
+      List<Map<String, dynamic>> data = await db.query(
+          "${ConstDBData.planTableName}",
+          where: "${ConstDBData.id} = ?",
+          whereArgs: [1]);
+      if (data.isNotEmpty) {
+        Map<String, dynamic> map = Plan.formatMap(data.first);
+        if(map!= null && map.length>0) {
+          return Plan.fromMap(map);
+        }
+        return Plan();
+      } else
+        return Plan();
+    }catch(error){
+      throw error;
+    }
   }
 
   Future deletePlan() async {
@@ -180,19 +174,27 @@ class DatabaseHelper {
   }
 
   Future<Project> getProject(int id) async {
-    final db = await database;
-    List<Map<String, dynamic>> res = await db.query(
-        "${ConstDBData.projectTableName}",
-        where: "${ConstDBData.id} = ?",
-        whereArgs: [id]);
-    return res.isNotEmpty ? Project.fromMap(res.first) : Project();
+    try {
+      final db = await database;
+      List<Map<String, dynamic>> res = await db.query(
+          "${ConstDBData.projectTableName}",
+          where: "${ConstDBData.id} = ?",
+          whereArgs: [id]);
+      return res.isNotEmpty ? Project.fromMap(res.first) : Project();
+    }catch(error){
+      throw error;
+    }
   }
 
   Future<List<Project>> getAllProjects() async {
-    final db = await database;
-    List<Map<String, dynamic>> res =
-        await db.query("${ConstDBData.projectTableName}");
-    return res.isNotEmpty ? res.map((c) => Project.fromMap(c)).toList() : [];
+    try {
+      final db = await database;
+      List<Map<String, dynamic>> res =
+      await db.query("${ConstDBData.projectTableName}");
+      return res.isNotEmpty ? res.map((c) => Project.fromMap(c)).toList() : [];
+    }catch(error){
+      throw error;
+    }
   }
 
   Future deleteProject(int id) async {

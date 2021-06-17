@@ -15,9 +15,13 @@ class PlanRepository {
     await DatabaseHelper.db.updatePlan(plan);
   }
 
-  Future importExcel(Plan plan, List<Project> projects)async{
-    await DatabaseHelper.db.updatePlan(plan);
-    await DatabaseHelper.db.deleteAllProjects();
-    await DatabaseHelper.db.addAllProjects(projects);
+  Future importExcel(Plan plan, List<Project> projects) async {
+    try {
+      await DatabaseHelper.db.updatePlan(plan);
+      await DatabaseHelper.db.deleteAllProjects();
+      await DatabaseHelper.db.addAllProjects(projects);
+    } catch (error) {
+      throw error;
+    }
   }
 }

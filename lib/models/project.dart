@@ -1,3 +1,5 @@
+import '../constants.dart';
+
 class Project {
   Project({
     this.id,
@@ -14,6 +16,17 @@ class Project {
   int price;
   String date;
   String complete;
+
+  static List<String> getHeaderRow(){
+    return [
+      ConstDBData.id,
+      ConstDBData.title,
+      ConstDBData.status,
+      ConstDBData.price,
+      ConstDBData.date,
+      ConstDBData.complete,
+    ];
+  }
 
   @override
   String toString() {

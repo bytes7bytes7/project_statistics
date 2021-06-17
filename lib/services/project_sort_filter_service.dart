@@ -5,17 +5,28 @@ import '../global/global_parameters.dart';
 abstract class ProjectSortFilterService {
   static filterProjectsBy(List<Project> projects) {
     if (GlobalParameters.projectFilterBorders[0] == '' &&
-        GlobalParameters.projectFilterBorders[1] == '' &&
-        GlobalParameters.projectFilterBorders[2] == '') {
+        GlobalParameters.projectFilterBorders[1] == '') {
       return;
     }
-    for (int i = projects.length - 1; i >= 0; i--) {
-      if (projects[i].date !=
-              (GlobalParameters.projectFilterBorders[0] +
-                  ' ' +
-                  GlobalParameters.projectFilterBorders[1]) ||
-          projects[i].status != GlobalParameters.projectFilterBorders[2]) {
-        projects.removeAt(i);
+    if (GlobalParameters.projectFilterBorders[0] != '' &&
+        GlobalParameters.projectFilterBorders[1] != '') {
+      for (int i = projects.length - 1; i >= 0; i--) {
+        if (projects[i].date != GlobalParameters.projectFilterBorders[0] ||
+            projects[i].status != GlobalParameters.projectFilterBorders[1]) {
+          projects.removeAt(i);
+        }
+      }
+    } else if (GlobalParameters.projectFilterBorders[0] != '') {
+      for (int i = projects.length - 1; i >= 0; i--) {
+        if (projects[i].date != GlobalParameters.projectFilterBorders[0]) {
+          projects.removeAt(i);
+        }
+      }
+    } else if (GlobalParameters.projectFilterBorders[1] != '') {
+      for (int i = projects.length - 1; i >= 0; i--) {
+        if (projects[i].status != GlobalParameters.projectFilterBorders[1]) {
+          projects.removeAt(i);
+        }
       }
     }
   }
@@ -61,7 +72,10 @@ abstract class ProjectSortFilterService {
           projects.sort((a, b) {
             List<String> aList = a.date.split(' ');
             List<String> bList = b.date.split(' ');
-            String aMonth = aList[0], aYear = aList[1], bMonth = bList[0], bYear = bList[1];
+            String aMonth = aList[0],
+                aYear = aList[1],
+                bMonth = bList[0],
+                bYear = bList[1];
 
             String aDate = ConstantData.appMonths.indexOf(aMonth).toString();
             String bDate = ConstantData.appMonths.indexOf(bMonth).toString();
@@ -79,7 +93,10 @@ abstract class ProjectSortFilterService {
           projects.sort((a, b) {
             List<String> aList = a.date.split(' ');
             List<String> bList = b.date.split(' ');
-            String aMonth = aList[0], aYear = aList[1], bMonth = bList[0], bYear = bList[1];
+            String aMonth = aList[0],
+                aYear = aList[1],
+                bMonth = bList[0],
+                bYear = bList[1];
 
             String aDate = ConstantData.appMonths.indexOf(aMonth).toString();
             String bDate = ConstantData.appMonths.indexOf(bMonth).toString();
