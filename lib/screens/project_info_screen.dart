@@ -67,11 +67,12 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       if (titleController.text.isNotEmpty &&
           statusController.text.isNotEmpty &&
           priceController.text.isNotEmpty &&
-          dateController.text.isNotEmpty &&
-          double.parse(priceController.text) >= 0) {
+          dateController.text.isNotEmpty) {
         if (!dateController.text.contains(' ')) {
           return 'Неполная дата';
         }
+        priceController.text = priceController.text.replaceAll(',', '.');
+        priceController.text = priceController.text.replaceAll(' ', '');
         widget.project
           ..title = titleController.text
           ..status = statusController.text
@@ -86,9 +87,6 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
         widget.title.value = 'Проект';
         update.value = !update.value;
         return '';
-      } else if (priceController.text.isNotEmpty &&
-          double.parse(priceController.text) < 0) {
-        return 'Сумма отрицательна';
       } else {
         return 'Заполните все поля';
       }
@@ -119,9 +117,15 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
           ),
           onPressed: () {
             FocusScope.of(context).requestFocus(FocusNode());
+            int price;
+            try {
+              price = int.parse(priceController.text.replaceAll(' ', ''));
+            } catch (error) {
+              // pass
+            }
             if (titleController.text != widget.project.title ||
                 statusController.text != widget.project.status ||
-                priceController.text != widget.project.price.toString() &&
+                price != widget.project.price &&
                     !(!(priceController.text != '') &&
                         !(widget.project.price != null)) ||
                 dateController.text != widget.project.date ||
