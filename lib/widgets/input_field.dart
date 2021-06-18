@@ -7,11 +7,13 @@ class InputField extends StatelessWidget {
     @required this.label,
     @required this.controller,
     this.textInputType = TextInputType.text,
+    this.isNumber = true,
   }) : super(key: key);
 
   final String label;
   final TextEditingController controller;
   final TextInputType textInputType;
+  final bool isNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -19,18 +21,26 @@ class InputField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: TextField(
         controller: controller,
-        style: Theme.of(context).textTheme.bodyText1,
+        style: Theme
+            .of(context)
+            .textTheme
+            .bodyText1,
         keyboardType: textInputType,
-        inputFormatters: [
+        inputFormatters: (isNumber) ? [
           AmountTextInputFormatter(),
-        ],
+        ] : [],
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: Theme.of(context).textTheme.subtitle1,
+          labelStyle: Theme
+              .of(context)
+              .textTheme
+              .subtitle1,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           disabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).disabledColor,
+              color: Theme
+                  .of(context)
+                  .disabledColor,
             ),
           ),
         ),

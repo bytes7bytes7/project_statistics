@@ -258,6 +258,7 @@ class __BodyState extends State<_Body> {
             InputField(
               label: 'Название',
               controller: widget.titleController,
+              isNumber: false,
             ),
             ChoiceField(
               label: 'Статус',
