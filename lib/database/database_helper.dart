@@ -233,8 +233,6 @@ class DatabaseHelper {
     // премия
     result['prize'] = 0.0;
 
-    // TODO: reimplement (changed project's & plan's models)
-
     if (projects.isNotEmpty) {
       projects.forEach((proj) {
         if (proj['status'] == ProjectStatuses.contract &&

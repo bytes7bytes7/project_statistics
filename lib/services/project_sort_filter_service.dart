@@ -46,7 +46,6 @@ abstract class ProjectSortFilterService {
     }
   }
 
-  // TODO: check it
   static sortProjectsBy(List<Project> projects) {
     switch (
         ProjectParameterNames.indexOf(GlobalParameters.projectSortParamName)) {
