@@ -17,6 +17,9 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if(isNumber){
+      controller.text = AmountTextInputFormatter().formatEditUpdate(null, TextEditingValue(text: controller.text)).text;
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: TextField(

@@ -7,6 +7,16 @@ class AmountTextInputFormatter extends TextInputFormatter {
         lst.indexOf(subStr) != -1;
   }
 
+  int countCommaAndPoint(List<String> lst) {
+    int quantity = 0;
+    for (int i = 0; i < lst.length; i++) {
+      if (lst[i] == '.' || lst[i] == ',') {
+        quantity++;
+      }
+    }
+    return quantity;
+  }
+
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue before, TextEditingValue after) {
@@ -28,9 +38,28 @@ class AmountTextInputFormatter extends TextInputFormatter {
       divider = ',';
       integer = integer.sublist(0, integer.indexOf(','));
     } else if (!integer.contains('.') && !integer.contains(',')) {
-      print('integer number!');
+      // integer number
     } else {
-      throw Exception('unimplemented part of AmountTextInputFormatter');
+      // To many dividers (comma & point)
+      if(integer.contains('.') && !integer.contains(',')){
+        fractional.addAll(integer.sublist(integer.indexOf('.') + 1));
+        divider = '.';
+        integer = integer.sublist(0, integer.indexOf('.'));
+      }else if(integer.contains(',') && !integer.contains('.')){
+        fractional.addAll(integer.sublist(integer.indexOf(',') + 1));
+        divider = ',';
+        integer = integer.sublist(0, integer.indexOf(','));
+      }else{
+        if(integer.indexOf('.') < integer.indexOf(',') && integer.indexOf('.')!= -1){
+          fractional.addAll(integer.sublist(integer.indexOf('.') + 1));
+          divider = '.';
+          integer = integer.sublist(0, integer.indexOf('.'));
+        }else{
+          fractional.addAll(integer.sublist(integer.indexOf(',') + 1));
+          divider = ',';
+          integer = integer.sublist(0, integer.indexOf(','));
+        }
+      }
     }
 
     for (int i = fractional.length - 1; i >= 0; i--) {
@@ -50,8 +79,6 @@ class AmountTextInputFormatter extends TextInputFormatter {
         integer.removeAt(i);
       }
     }
-    print(integer.join('') + '#');
-    print(' ' * cursorPosition + '#');
 
     if (integer.length % 3 != 0) {
       newValue = integer.sublist(0, integer.length % 3).join('');
@@ -72,13 +99,9 @@ class AmountTextInputFormatter extends TextInputFormatter {
 
     newValue += divider + fractional.join('');
 
-    print(newValue + '#');
-    print(' ' * cursorPosition + '#');
+    // print(newValue + '#');
+    // print(' ' * cursorPosition + '#');
 
-    // return TextEditingValue(
-    //   text: after.text.toString(),
-    //   selection: TextSelection.collapsed(offset: after.selection.end),
-    // );
     return TextEditingValue(
       text: newValue,
       selection: TextSelection.collapsed(offset: cursorPosition),
