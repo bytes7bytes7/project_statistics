@@ -454,7 +454,7 @@ class __ContentListState extends State<_ContentList> {
           },
         ),
         FlatWideButton(
-          title: 'Готово',
+          title: 'Сохранить',
           onTap: () async {
             String result = await save();
             if (result.isEmpty) {

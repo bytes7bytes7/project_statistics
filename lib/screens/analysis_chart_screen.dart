@@ -248,6 +248,7 @@ class _AnalysisChartCard extends StatelessWidget {
       color = Theme
           .of(context)
           .shadowColor;
+    Size size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 5),
@@ -272,55 +273,77 @@ class _AnalysisChartCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            title,
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyText1
-                .copyWith(color: color),
+          Container(
+            width: size.width*0.9,
+            child: Text(
+              title,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: color),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           Row(
             children: [
-              Text(
-                subtitle1,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline2
-                    .copyWith(color: color),
+              Container(
+                width: size.width*0.5,
+                child: Text(
+                  subtitle1,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline2
+                      .copyWith(color: color),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               Spacer(),
-              Text(
-                (real.runtimeType == int)
-                    ? real.toString()
-                    : MeasureBeautifier().truncateZero(real.toString()),
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headline2
-                    .copyWith(color: color),
+              Container(
+                width: size.width*0.35,
+                child: Text(
+                  (real.runtimeType == int)
+                      ? real.toString()
+                      : MeasureBeautifier().truncateZero(real.toString()),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline2
+                      .copyWith(color: color),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                ),
               ),
             ],
           ),
           Row(
             children: [
-              Text(
-                subtitle2,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .subtitle2
-                    .copyWith(color: color),
+              Container(
+                width: size.width*0.5,
+                child: Text(
+                  subtitle2,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle2
+                      .copyWith(color: color),
+                ),
               ),
               Spacer(),
-              Text(
-                MeasureBeautifier().truncateZero(plan.toString()),
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .subtitle2
-                    .copyWith(color: color),
+              Container(
+                width: size.width*0.35,
+                child: Text(
+                  MeasureBeautifier().truncateZero(plan.toString()),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle2
+                      .copyWith(color: color),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                ),
               ),
             ],
           ),

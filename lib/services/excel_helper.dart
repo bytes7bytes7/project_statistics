@@ -4,7 +4,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
-import 'package:project_statistics/global/global_parameters.dart';
 
 import '../bloc/bloc.dart';
 import '../models/project.dart';
@@ -31,7 +30,9 @@ abstract class ExcelHelper {
         for (String p in directory.path.split('/')) {
           if (p == 'Android')
             break;
-          else if (p.isNotEmpty) newPath += '/' + p;
+          else if (p.isNotEmpty) {
+            newPath += '/' + p;
+          }
         }
         newPath += '/ProjectStatistics';
         directory = Directory(newPath);
@@ -174,7 +175,7 @@ abstract class ExcelHelper {
         }
       }
 
-      ConstDBData.locale='en';
+      ConstDBData.locale = 'en';
       Bloc.bloc.planBloc.importExcel(plan, projects);
       showInfoSnackBar(
         context: context,

@@ -12,6 +12,7 @@ class PercentBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       height: 30,
       width: double.infinity,
@@ -46,14 +47,16 @@ class PercentBar extends StatelessWidget {
             ],
           ),
           Positioned(
-            child: Align(
-              alignment: Alignment.center,
+            child: Container(
+              width: size.width*0.9,
               child: Text(
                 '$percent %',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
                     .copyWith(color: Theme.of(context).focusColor),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

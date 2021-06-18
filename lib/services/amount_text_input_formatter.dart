@@ -58,6 +58,10 @@ class AmountTextInputFormatter extends TextInputFormatter {
     print(newValue + '#');
     print(' ' * cursorPosition + '#');
 
+    // return TextEditingValue(
+    //   text: after.text.toString(),
+    //   selection: TextSelection.collapsed(offset: after.selection.end),
+    // );
     return TextEditingValue(
       text: newValue.toString(),
       selection: TextSelection.collapsed(offset: cursorPosition),
