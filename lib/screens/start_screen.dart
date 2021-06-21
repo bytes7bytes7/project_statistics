@@ -348,7 +348,7 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'Тендеры',
+              label: 'Горячие!!!',
               controller: widget.quantityController_3,
               textInputType: TextInputType.number,
             ),
@@ -373,7 +373,7 @@ class __ContentListState extends State<_ContentList> {
               textInputType: TextInputType.number,
             ),
             InputField(
-              label: 'Тендеры (руб)',
+              label: 'Горячие!!! (руб)',
               controller: widget.amountController_3,
               textInputType: TextInputType.number,
             ),

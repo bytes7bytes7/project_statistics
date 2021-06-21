@@ -227,7 +227,8 @@ class DatabaseHelper {
     // план
     result['plan'] = 0;
     // процент
-    result['percent'] = 0;
+    // Need to be double because of prize
+    result['percent'] = 0.0;
     // сумма до
     result['until'] = 0.0;
     // премия
@@ -330,15 +331,17 @@ class DatabaseHelper {
       }
 
       if (result['plan'] != 0) {
-        result['percent'] = (100 * result['amount'] / result['plan']).round();
+        result['percent'] = 100 * result['amount'] / result['plan'];
       }
 
-      if (result['percent'] > 100) {
+      if (result['percent'] > 100.0) {
         result['prize'] = plan.first['prize'] * plan.first['ratio'];
       } else if (result['percent'] >= plan.first['percent']) {
         result['prize'] = plan.first['prize'];
       }
     }
+
+    result['percent'] = result['percent'].round();
 
     return Result.fromMap(result);
   }
