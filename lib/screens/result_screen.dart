@@ -13,6 +13,8 @@ import '../constants.dart';
 import '../models/result.dart';
 
 class ResultScreen extends StatelessWidget {
+  final ValueNotifier<bool> viewFullNumber = ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -48,13 +50,35 @@ class ResultScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: _Body(),
+        body: _Body(
+          viewFullNumber: viewFullNumber,
+        ),
+        floatingActionButton: ValueListenableBuilder(
+          valueListenable: viewFullNumber,
+          builder: (context, _, __) {
+            return FloatingActionButton(
+              child: viewFullNumber.value
+                  ? Icon(Icons.close_fullscreen_outlined)
+                  : Icon(Icons.open_in_full_outlined),
+              onPressed: () {
+                viewFullNumber.value = !viewFullNumber.value;
+              },
+            );
+          },
+        ),
       ),
     );
   }
 }
 
 class _Body extends StatefulWidget {
+  const _Body({
+    Key key,
+    @required this.viewFullNumber,
+  }) : super(key: key);
+
+  final ValueNotifier<bool> viewFullNumber;
+
   @override
   __BodyState createState() => __BodyState();
 }
@@ -87,6 +111,7 @@ class __BodyState extends State<_Body> {
             if (state.result.amount != null) {
               return _ContentList(
                 result: state.result,
+                viewFullNumber: widget.viewFullNumber,
               );
             } else {
               return EmptyLabel();
@@ -110,9 +135,11 @@ class _ContentList extends StatelessWidget {
   _ContentList({
     Key key,
     @required this.result,
+    @required this.viewFullNumber,
   }) : super(key: key);
 
   final Result result;
+  final ValueNotifier<bool> viewFullNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -186,41 +213,52 @@ class _ContentList extends StatelessWidget {
       return;
     });
 
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      children: [
-        SizedBox(height: 10),
-        ResultInfoLine(
-          title: 'Сумма\nзаключенных\nдоговоров',
-          data: amount,
-          measure: amountMeasure,
-        ),
-        ResultInfoLine(
-          title: 'Количество\nзаключенных\nдоговоров',
-          data: quantity,
-          measure: quantityMeasure,
-        ),
-        ResultInfoLine(
-          title: 'План',
-          data: plan,
-          measure: planMeasure,
-        ),
-        ResultInfoLine(
-          title: 'Процент\nвыполнения',
-          data: percent,
-          measure: percentMeasure,
-        ),
-        ResultInfoLine(
-          title: 'Сумма до\nвыполнения',
-          data: until,
-          measure: untilMeasure,
-        ),
-        ResultInfoLine(
-          title: 'Премия',
-          data: prize,
-          measure: prizeMeasure,
-        ),
-      ],
+    return ValueListenableBuilder(
+      valueListenable: viewFullNumber,
+      builder: (context, _, __) {
+        return ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          children: [
+            SizedBox(height: 10),
+            ResultInfoLine(
+              title: 'Сумма\nзаключенных\nдоговоров',
+              data: amount,
+              measure: amountMeasure,
+              viewFullNumber: viewFullNumber,
+            ),
+            ResultInfoLine(
+              title: 'Количество\nзаключенных\nдоговоров',
+              data: quantity,
+              measure: quantityMeasure,
+              viewFullNumber: viewFullNumber,
+            ),
+            ResultInfoLine(
+              title: 'План',
+              data: plan,
+              measure: planMeasure,
+              viewFullNumber: viewFullNumber,
+            ),
+            ResultInfoLine(
+              title: 'Процент\nвыполнения',
+              data: percent,
+              measure: percentMeasure,
+              viewFullNumber: viewFullNumber,
+            ),
+            ResultInfoLine(
+              title: 'Сумма до\nвыполнения',
+              data: until,
+              measure: untilMeasure,
+              viewFullNumber: viewFullNumber,
+            ),
+            ResultInfoLine(
+              title: 'Премия',
+              data: prize,
+              measure: prizeMeasure,
+              viewFullNumber: viewFullNumber,
+            ),
+          ],
+        );
+      }
     );
   }
 }

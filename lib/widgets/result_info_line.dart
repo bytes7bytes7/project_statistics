@@ -6,11 +6,13 @@ class ResultInfoLine extends StatelessWidget {
     @required this.title,
     @required this.data,
     @required this.measure,
+    @required this.viewFullNumber,
   }) : super(key: key);
 
   final String title;
   final dynamic data;
   final String measure;
+  final ValueNotifier<bool> viewFullNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class ResultInfoLine extends StatelessWidget {
           ),
           Spacer(),
           Container(
-            width: size.width*0.3,
+            width: size.width * 0.3,
             child: Text(
               data.toString(),
               textAlign: TextAlign.end,
@@ -39,7 +41,9 @@ class ResultInfoLine extends StatelessWidget {
                     fontSize: 40,
                     color: Theme.of(context).shadowColor,
                   ),
-              overflow: TextOverflow.ellipsis,
+              overflow: viewFullNumber.value
+                  ? TextOverflow.visible
+                  : TextOverflow.ellipsis,
             ),
           ),
           SizedBox(width: 4),

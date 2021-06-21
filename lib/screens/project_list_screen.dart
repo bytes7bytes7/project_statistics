@@ -173,16 +173,17 @@ class _ProjectCard extends StatelessWidget {
     String price, priceMeasure = 'млн.\nруб.';
     price = MeasureBeautifier()
         .truncateZero((project.price / 1000000).toString());
-    Size size = Size(double.infinity, 110);
+    double boxHeight = 110;
     Color color = (project.status == ProjectStatuses.hot)
         ? Theme.of(context).errorColor
         : Theme.of(context).disabledColor;
+    Size size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Stack(
         children: [
           Container(
-            height: size.height,
+            height: boxHeight,
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -211,17 +212,24 @@ class _ProjectCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
+                      Container(
+                        width: size.width*0.4,
                         child: Text(
                           project.title,
                           style: Theme.of(context).textTheme.bodyText1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Text(
-                        price,
-                        style: Theme.of(context).textTheme.headline3,
-                        overflow: TextOverflow.ellipsis,
+                      Spacer(),
+                      Container(
+                        width: size.width*0.2,
+
+                        child: Text(
+                          price,
+                          style: Theme.of(context).textTheme.headline3,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
                       ),
                       SizedBox(width: 8),
                       Text(
@@ -235,7 +243,8 @@ class _ProjectCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
+                      Container(
+                        width: size.width*0.35,
                         child: Text(
                           project.status,
                           style: Theme.of(context)
@@ -245,10 +254,15 @@ class _ProjectCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Text(
-                        '${project.month} ${project.year}',
-                        style: Theme.of(context).textTheme.subtitle2,
-                        overflow: TextOverflow.ellipsis,
+                      Spacer(),
+                      Container(
+                        width: size.width*0.35,
+                        child: Text(
+                          '${project.month} ${project.year}',
+                          style: Theme.of(context).textTheme.subtitle2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                        ),
                       ),
                     ],
                   ),
@@ -259,7 +273,7 @@ class _ProjectCard extends StatelessWidget {
           Positioned(
             child: ClipPath(
               child: Container(
-                height: size.height,
+                height: boxHeight,
                 color:
                     (project.complete == ProjectCompleteStatuses.notCompleted)
                         ? Colors.transparent
