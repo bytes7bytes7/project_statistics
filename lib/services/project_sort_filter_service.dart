@@ -21,9 +21,8 @@ abstract class ProjectSortFilterService {
     }
 
     for (int i = projects.length - 1; i >= 0; i--) {
-      List<String> tmp = projects[i].date.split(' ');
-      int month = ConstantData.appMonths.indexOf(tmp[0]);
-      int year = int.parse(tmp[1]);
+      int month = ConstantData.appMonths.indexOf(projects[i].month);
+      int year = projects[i].year;
       String status = projects[i].status;
       if (filterMonth != null) {
         if (filterMonth != month) {
@@ -85,44 +84,30 @@ abstract class ProjectSortFilterService {
                 .indexOf(GlobalParameters.projectSortParamDirection) ==
             0) {
           projects.sort((a, b) {
-            List<String> aList = a.date.split(' ');
-            List<String> bList = b.date.split(' ');
-            String aMonth = aList[0],
-                aYear = aList[1],
-                bMonth = bList[0],
-                bYear = bList[1];
-
-            aMonth = ConstantData.appMonths.indexOf(aMonth).toString();
-            bMonth = ConstantData.appMonths.indexOf(bMonth).toString();
+            String aMonth = ConstantData.appMonths.indexOf(a.month).toString();
+            String bMonth = ConstantData.appMonths.indexOf(b.month).toString();
             if (aMonth.length == 1) {
               aMonth = '0' + aMonth;
             }
             if (bMonth.length == 1) {
               bMonth = '0' + bMonth;
             }
-            int aDate = int.parse(aYear + aMonth);
-            int bDate = int.parse(bYear + bMonth);
+            int aDate = int.parse(a.year.toString() + aMonth);
+            int bDate = int.parse(b.year.toString() + bMonth);
             return aDate.compareTo(bDate);
           });
         } else {
           projects.sort((a, b) {
-            List<String> aList = a.date.split(' ');
-            List<String> bList = b.date.split(' ');
-            String aMonth = aList[0],
-                aYear = aList[1],
-                bMonth = bList[0],
-                bYear = bList[1];
-
-            aMonth = ConstantData.appMonths.indexOf(aMonth).toString();
-            bMonth = ConstantData.appMonths.indexOf(bMonth).toString();
+            String aMonth = ConstantData.appMonths.indexOf(a.month).toString();
+            String bMonth = ConstantData.appMonths.indexOf(b.month).toString();
             if (aMonth.length == 1) {
               aMonth = '0' + aMonth;
             }
             if (bMonth.length == 1) {
               bMonth = '0' + bMonth;
             }
-            int aDate = int.parse(aYear + aMonth);
-            int bDate = int.parse(bYear + bMonth);
+            int aDate = int.parse(a.year.toString() + aMonth);
+            int bDate = int.parse(b.year.toString() + bMonth);
             return bDate.compareTo(aDate);
           });
         }

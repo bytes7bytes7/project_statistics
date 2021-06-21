@@ -37,8 +37,10 @@ class DatabaseHelper {
         ${ConstDBData.id} INTEGER PRIMARY KEY,
         ${ConstDBData.quantity} TEXT,
         ${ConstDBData.amount} TEXT,
-        ${ConstDBData.start} TEXT,
-        ${ConstDBData.end} TEXT,
+        ${ConstDBData.startMonth} TEXT,
+        ${ConstDBData.startYear} INTEGER,
+        ${ConstDBData.endMonth} TEXT,
+        ${ConstDBData.endYear} INTEGER,
         ${ConstDBData.prize} REAL,
         ${ConstDBData.percent} REAL,
         ${ConstDBData.ratio} REAL
@@ -50,7 +52,8 @@ class DatabaseHelper {
         ${ConstDBData.title} TEXT,
         ${ConstDBData.status} TEXT,
         ${ConstDBData.price} INTEGER,
-        ${ConstDBData.date} TEXT,
+        ${ConstDBData.month} TEXT,
+        ${ConstDBData.year} INTEGER,
         ${ConstDBData.complete} TEXT
       )
     ''');
@@ -74,13 +77,15 @@ class DatabaseHelper {
     final db = await database;
     plan.id = 1;
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.id}, ${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.start}, ${ConstDBData.end}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.id}, ${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startMonth}, ${ConstDBData.startYear}, ${ConstDBData.endMonth}, ${ConstDBData.endYear}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?,?,?,?)",
       [
         plan.id,
         plan.quantity?.join(';'),
         plan.amount?.join(';'),
-        plan.start,
-        plan.end,
+        plan.startMonth,
+        plan.startYear,
+        plan.endMonth,
+        plan.endYear,
         plan.prize,
         plan.percent,
         plan.ratio,
@@ -134,13 +139,14 @@ class DatabaseHelper {
     final db = await database;
     project.id = await _getMaxId(db, ConstDBData.projectTableName);
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.date}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.month}, ${ConstDBData.year}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
       [
         project.id,
         project.title,
         project.status,
         project.price,
-        project.date,
+        project.month,
+        project.year,
         project.complete,
       ],
     );
@@ -152,13 +158,14 @@ class DatabaseHelper {
     for (Project project in projects) {
       project.id = id;
       await db.rawInsert(
-        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.date}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?)",
+        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.month}, ${ConstDBData.year}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
         [
           project.id,
           project.title,
           project.status,
           project.price,
-          project.date,
+          project.month,
+          project.year,
           project.complete,
         ],
       );
@@ -238,29 +245,31 @@ class DatabaseHelper {
       projects.forEach((proj) {
         if (proj['status'] == ProjectStatuses.contract &&
             proj['complete'] != ProjectCompleteStatuses.canceled) {
-          if (GlobalParameters.resultFilterBorders[0].isNotEmpty &&
-              GlobalParameters.resultFilterBorders[1].isNotEmpty) {
-            List<String> tmp = proj['date'].split(' ');
+          if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[1].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[2].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[3].isNotEmpty) {
             String thisMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String thisYear = tmp[1];
+                ConstantData.appMonths.indexOf(proj['month']).toString();
+            String thisYear = proj['year'].toString();
             if (thisMonth.length < 2) {
               thisMonth = '0' + thisMonth;
             }
             int thisDate = int.parse(thisYear + thisMonth);
 
-            tmp = GlobalParameters.resultFilterBorders[0].split(' ');
-            String startMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String startYear = tmp[1];
+            String startMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[0])
+                .toString();
+            String startYear = GlobalParameters.chartFilterBorders[1];
             if (startMonth.length < 2) {
               startMonth = '0' + startMonth;
             }
             int startDate = int.parse(startYear + startMonth);
 
-            tmp = GlobalParameters.resultFilterBorders[1].split(' ');
-            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String endYear = tmp[1];
+            String endMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[2])
+                .toString();
+            String endYear = GlobalParameters.chartFilterBorders[3];
             if (endMonth.length < 2) {
               endMonth = '0' + endMonth;
             }
@@ -270,48 +279,49 @@ class DatabaseHelper {
               result['amount'] += proj['price'];
               result['quantity']++;
             }
-          } else if (GlobalParameters.resultFilterBorders[0].isNotEmpty) {
-            List<String> tmp = proj['date'].split(' ');
+          } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[1].isNotEmpty) {
             String thisMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String thisYear = tmp[1];
+                ConstantData.appMonths.indexOf(proj['month']).toString();
+            String thisYear = proj['year'].toString();
             if (thisMonth.length < 2) {
               thisMonth = '0' + thisMonth;
             }
             int thisDate = int.parse(thisYear + thisMonth);
 
-            tmp = GlobalParameters.resultFilterBorders[0].split(' ');
-            String startMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String startYear = tmp[1];
+            String startMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[0])
+                .toString();
+            String startYear = GlobalParameters.chartFilterBorders[1];
             if (startMonth.length < 2) {
               startMonth = '0' + startMonth;
             }
             int startDate = int.parse(startYear + startMonth);
 
-            if(thisDate >=startDate){
+            if (thisDate >= startDate) {
               result['amount'] += proj['price'];
               result['quantity']++;
             }
-          } else if (GlobalParameters.resultFilterBorders[1].isNotEmpty) {
-            List<String> tmp = proj['date'].split(' ');
+          } else if (GlobalParameters.chartFilterBorders[2].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[3].isNotEmpty) {
             String thisMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String thisYear = tmp[1];
+                ConstantData.appMonths.indexOf(proj['month']).toString();
+            String thisYear = proj['year'].toString();
             if (thisMonth.length < 2) {
               thisMonth = '0' + thisMonth;
             }
             int thisDate = int.parse(thisYear + thisMonth);
 
-            tmp = GlobalParameters.resultFilterBorders[1].split(' ');
-            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String endYear = tmp[1];
+            String endMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[2])
+                .toString();
+            String endYear = GlobalParameters.chartFilterBorders[3];
             if (endMonth.length < 2) {
               endMonth = '0' + endMonth;
             }
             int endDate = int.parse(endYear + endMonth);
 
-            if(thisDate <= endDate){
+            if (thisDate <= endDate) {
               result['amount'] += proj['price'];
               result['quantity']++;
             }
@@ -372,28 +382,30 @@ class DatabaseHelper {
         int i = ProjectStatuses.indexOf(proj['status']);
         if (proj['complete'] != ProjectCompleteStatuses.canceled) {
           if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
-              GlobalParameters.chartFilterBorders[1].isNotEmpty) {
-            List<String> tmp = proj['date'].split(' ');
+              GlobalParameters.chartFilterBorders[1].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[2].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[3].isNotEmpty) {
             String thisMonth =
-                ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String thisYear = tmp[1];
+                ConstantData.appMonths.indexOf(proj['month']).toString();
+            String thisYear = proj['year'].toString();
             if (thisMonth.length < 2) {
               thisMonth = '0' + thisMonth;
             }
             int thisDate = int.parse(thisYear + thisMonth);
 
-            tmp = GlobalParameters.chartFilterBorders[0].split(' ');
-            String startMonth =
-                ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String startYear = tmp[1];
+            String startMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[0])
+                .toString();
+            String startYear = GlobalParameters.chartFilterBorders[1];
             if (startMonth.length < 2) {
               startMonth = '0' + startMonth;
             }
             int startDate = int.parse(startYear + startMonth);
 
-            tmp = GlobalParameters.chartFilterBorders[1].split(' ');
-            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String endYear = tmp[1];
+            String endMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[2])
+                .toString();
+            String endYear = GlobalParameters.chartFilterBorders[3];
             if (endMonth.length < 2) {
               endMonth = '0' + endMonth;
             }
@@ -403,48 +415,49 @@ class DatabaseHelper {
               result['realQuantity'][i]++;
               result['realAmount'][i] += proj['price'];
             }
-          } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty) {
-            List<String> tmp = proj['date'].split(' ');
+          } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[1].isNotEmpty) {
             String thisMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String thisYear = tmp[1];
+                ConstantData.appMonths.indexOf(proj['month']).toString();
+            String thisYear = proj['year'].toString();
             if (thisMonth.length < 2) {
               thisMonth = '0' + thisMonth;
             }
             int thisDate = int.parse(thisYear + thisMonth);
 
-            tmp = GlobalParameters.chartFilterBorders[0].split(' ');
-            String startMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String startYear = tmp[1];
+            String startMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[0])
+                .toString();
+            String startYear = GlobalParameters.chartFilterBorders[1];
             if (startMonth.length < 2) {
               startMonth = '0' + startMonth;
             }
             int startDate = int.parse(startYear + startMonth);
 
-            if(thisDate >=startDate){
+            if (thisDate >= startDate) {
               result['realQuantity'][i]++;
               result['realAmount'][i] += proj['price'];
             }
-          } else if (GlobalParameters.chartFilterBorders[1].isNotEmpty) {
-            List<String> tmp = proj['date'].split(' ');
+          } else if (GlobalParameters.chartFilterBorders[2].isNotEmpty &&
+              GlobalParameters.chartFilterBorders[3].isNotEmpty) {
             String thisMonth =
-            ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String thisYear = tmp[1];
+                ConstantData.appMonths.indexOf(proj['month']).toString();
+            String thisYear = proj['year'].toString();
             if (thisMonth.length < 2) {
               thisMonth = '0' + thisMonth;
             }
             int thisDate = int.parse(thisYear + thisMonth);
 
-            tmp = GlobalParameters.chartFilterBorders[1].split(' ');
-            String endMonth = ConstantData.appMonths.indexOf(tmp[0]).toString();
-            String endYear = tmp[1];
+            String endMonth = ConstantData.appMonths
+                .indexOf(GlobalParameters.chartFilterBorders[2])
+                .toString();
+            String endYear = GlobalParameters.chartFilterBorders[3];
             if (endMonth.length < 2) {
               endMonth = '0' + endMonth;
             }
             int endDate = int.parse(endYear + endMonth);
 
-            if(thisDate <= endDate){
+            if (thisDate <= endDate) {
               result['realQuantity'][i]++;
               result['realAmount'][i] += proj['price'];
             }

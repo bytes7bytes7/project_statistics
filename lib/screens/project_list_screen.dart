@@ -246,7 +246,7 @@ class _ProjectCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        project.date,
+                        '${project.month} ${project.year}',
                         style: Theme.of(context).textTheme.subtitle2,
                         overflow: TextOverflow.ellipsis,
                       ),

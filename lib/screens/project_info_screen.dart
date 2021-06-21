@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/double_choice_field.dart';
 import '../widgets/choice_field.dart';
 import '../widgets/show_info_snack_bar.dart';
 import '../widgets/input_field.dart';
 import '../widgets/outlined_wide_button.dart';
 import '../widgets/show_no_yes_dialog.dart';
-import '../global/global_parameters.dart';
 import '../bloc/bloc.dart';
 import '../constants.dart';
 import '../models/project.dart';
@@ -30,7 +28,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
   TextEditingController titleController;
   TextEditingController statusController;
   TextEditingController priceController;
-  TextEditingController dateController;
+  TextEditingController monthController;
+  TextEditingController yearController;
   TextEditingController completeController;
   ValueNotifier<bool> update;
 
@@ -38,7 +37,7 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
   void initState() {
     widget.project.title = widget.project.title ?? '';
     widget.project.status = widget.project.status ?? '';
-    widget.project.date = widget.project.date ?? '';
+    widget.project.month = widget.project.month ?? '';
     widget.project.complete =
         widget.project.complete ?? ProjectCompleteStatuses.notCompleted;
 
@@ -46,7 +45,9 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     statusController = TextEditingController(text: widget.project.status);
     priceController =
         TextEditingController(text: widget.project.price?.toString());
-    dateController = TextEditingController(text: widget.project.date);
+    monthController = TextEditingController(text: widget.project.month);
+    yearController =
+        TextEditingController(text: widget.project.year?.toString());
     completeController = TextEditingController(text: widget.project.complete);
     update = ValueNotifier(true);
     super.initState();
@@ -57,7 +58,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
     titleController.dispose();
     statusController.dispose();
     priceController.dispose();
-    dateController.dispose();
+    monthController.dispose();
+    yearController.dispose();
     completeController.dispose();
     super.dispose();
   }
@@ -67,17 +69,16 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
       if (titleController.text.isNotEmpty &&
           statusController.text.isNotEmpty &&
           priceController.text.isNotEmpty &&
-          dateController.text.isNotEmpty) {
-        if (!dateController.text.contains(' ')) {
-          return 'Неполная дата';
-        }
+          monthController.text.isNotEmpty &&
+          yearController.text.isNotEmpty) {
         priceController.text = priceController.text.replaceAll(',', '.');
         priceController.text = priceController.text.replaceAll(' ', '');
         widget.project
           ..title = titleController.text
           ..status = statusController.text
           ..price = int.parse(priceController.text)
-          ..date = dateController.text
+          ..month = monthController.text
+          ..year = int.parse(yearController.text)
           ..complete = completeController.text;
         if (widget.project.id == null) {
           await Bloc.bloc.projectBloc.addProject(widget.project);
@@ -117,9 +118,10 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
           ),
           onPressed: () {
             FocusScope.of(context).requestFocus(FocusNode());
-            int price;
+            int price, year;
             try {
               price = int.parse(priceController.text.replaceAll(' ', ''));
+              year = int.parse(yearController.text);
             } catch (error) {
               // pass
             }
@@ -128,7 +130,10 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
                 price != widget.project.price &&
                     !(!(priceController.text != '') &&
                         !(widget.project.price != null)) ||
-                dateController.text != widget.project.date ||
+                monthController.text != widget.project.month ||
+                year != widget.project.year &&
+                    !(!(yearController.text != '') &&
+                        !(widget.project.year != null)) ||
                 completeController.text != widget.project.complete) {
               showNoYesDialog(
                 context: context,
@@ -210,7 +215,8 @@ class _ProjectInfoScreenState extends State<ProjectInfoScreen> {
         titleController: titleController,
         statusController: statusController,
         priceController: priceController,
-        dateController: dateController,
+        monthController: monthController,
+        yearController: yearController,
         completeController: completeController,
         update: update,
         save: save,
@@ -227,7 +233,8 @@ class _Body extends StatefulWidget {
     @required this.titleController,
     @required this.statusController,
     @required this.priceController,
-    @required this.dateController,
+    @required this.monthController,
+    @required this.yearController,
     @required this.completeController,
     @required this.update,
     @required this.save,
@@ -238,7 +245,8 @@ class _Body extends StatefulWidget {
   final TextEditingController titleController;
   final TextEditingController statusController;
   final TextEditingController priceController;
-  final TextEditingController dateController;
+  final TextEditingController monthController;
+  final TextEditingController yearController;
   final TextEditingController completeController;
   final ValueNotifier<bool> update;
   final Function save;
@@ -262,26 +270,41 @@ class __BodyState extends State<_Body> {
             InputField(
               label: 'Название',
               controller: widget.titleController,
-              isNumber: false,
+              amountFormatter: false,
             ),
-            ChoiceField(
-              label: 'Статус',
-              chooseLabel: 'Статус',
-              group: ProjectStatuses.values,
-              controller: widget.statusController,
+            Flexible(
+              child: ChoiceField(
+                label: 'Статус',
+                chooseLabel: 'Статус',
+                group: ProjectStatuses.values,
+                controller: widget.statusController,
+              ),
             ),
             InputField(
               label: 'Сумма (руб)',
               controller: widget.priceController,
               textInputType: TextInputType.number,
             ),
-            DoubleChoiceField(
-              label: 'Дата',
-              choiceLabel1: 'Месяц',
-              choiceLabel2: 'Год',
-              group1: ConstantData.appMonths,
-              group2: GlobalParameters.planYears,
-              controller: widget.dateController,
+            Row(
+              children: [
+                Flexible(
+                  child: ChoiceField(
+                    label: 'Месяц',
+                    chooseLabel: 'Месяц',
+                    group: ConstantData.appMonths,
+                    controller: widget.monthController,
+                  ),
+                ),
+                SizedBox(width: 18),
+                Flexible(
+                  child: InputField(
+                    label: 'Год',
+                    controller: widget.yearController,
+                    textInputType: TextInputType.number,
+                    amountFormatter: false,
+                  ),
+                ),
+              ],
             ),
             Spacer(),
             ValueListenableBuilder(

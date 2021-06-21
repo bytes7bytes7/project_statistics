@@ -6,7 +6,8 @@ class Project {
     this.title,
     this.status,
     this.price,
-    this.date,
+    this.month,
+    this.year,
     this.complete,
   });
 
@@ -14,7 +15,8 @@ class Project {
   String title;
   String status;
   int price;
-  String date;
+  String month;
+  int year;
   String complete;
 
   static Map<String, dynamic> formatMap(Map<String, dynamic> oldMap) {
@@ -46,7 +48,16 @@ class Project {
     } else {
       return null;
     }
-    if (newMap['date'].isEmpty) {
+    if (newMap['month'].isEmpty) {
+      return null;
+    }
+    if (newMap['year'].isNotEmpty) {
+      try {
+        newMap['year'] = int.parse(newMap['year']);
+      } catch (error) {
+        return null;
+      }
+    } else {
       return null;
     }
     if (newMap['complete'].isEmpty) {
@@ -62,7 +73,8 @@ class Project {
       ConstDBData.title,
       ConstDBData.status,
       ConstDBData.price,
-      ConstDBData.date,
+      ConstDBData.month,
+      ConstDBData.year,
       ConstDBData.complete,
     ];
   }
@@ -83,7 +95,7 @@ class Project {
 
   @override
   String toString() {
-    return 'Project(id: $id, title: $title, status: $status, price: $price, date: $date, complete: $complete)';
+    return 'Project(id: $id, title: $title, status: $status, price: $price, month: $month, year: $year, complete: $complete)';
   }
 
   Project.fromMap(Map<String, dynamic> map) {
@@ -91,7 +103,8 @@ class Project {
     title = map['title'];
     status = map['status'];
     price = map['price'];
-    date = map['date'];
+    month = map['month'];
+    year = map['year'];
     complete = map['complete'];
   }
 
@@ -100,8 +113,9 @@ class Project {
     title = values[1];
     status = values[2];
     price = values[3];
-    date = values[4];
-    complete = values[5];
+    month = values[4];
+    year = values[5];
+    complete = values[6];
   }
 
   Map<String, dynamic> toMap() {
@@ -110,7 +124,8 @@ class Project {
       'title': title,
       'status': status,
       'price': price,
-      'date': date,
+      'month': month,
+      'year': year,
       'complete': complete,
     };
   }

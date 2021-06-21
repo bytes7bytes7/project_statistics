@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_statistics/widgets/double_choice_field.dart';
 
+import '../widgets/choice_field.dart';
 import '../widgets/show_no_yes_dialog.dart';
 import '../widgets/show_export_dialog.dart';
 import '../widgets/empty_label.dart';
@@ -29,8 +29,10 @@ class StartScreen extends StatelessWidget {
   final TextEditingController amountController_2 = TextEditingController();
   final TextEditingController amountController_3 = TextEditingController();
   final TextEditingController amountController_4 = TextEditingController();
-  final TextEditingController startController = TextEditingController();
-  final TextEditingController endController = TextEditingController();
+  final TextEditingController startMonthController = TextEditingController();
+  final TextEditingController startYearController = TextEditingController();
+  final TextEditingController endMonthController = TextEditingController();
+  final TextEditingController endYearController = TextEditingController();
   final TextEditingController prizeController = TextEditingController();
   final TextEditingController percentController = TextEditingController();
   final TextEditingController ratioController = TextEditingController();
@@ -69,8 +71,10 @@ class StartScreen extends StatelessWidget {
                   amountController_2.text = '';
                   amountController_3.text = '';
                   amountController_4.text = '';
-                  startController.text = '';
-                  endController.text = '';
+                  startMonthController.text = '';
+                  startYearController.text = '';
+                  endMonthController.text = '';
+                  endYearController.text = '';
                   prizeController.text = '';
                   percentController.text = '';
                   ratioController.text = '';
@@ -94,8 +98,10 @@ class StartScreen extends StatelessWidget {
           amountController_2: amountController_2,
           amountController_3: amountController_3,
           amountController_4: amountController_4,
-          startController: startController,
-          endController: endController,
+          startMonthController: startMonthController,
+          startYearController: startYearController,
+          endMonthController: endMonthController,
+          endYearController: endYearController,
           prizeController: prizeController,
           percentController: percentController,
           ratioController: ratioController,
@@ -116,8 +122,10 @@ class _Body extends StatefulWidget {
     @required this.amountController_2,
     @required this.amountController_3,
     @required this.amountController_4,
-    @required this.startController,
-    @required this.endController,
+    @required this.startMonthController,
+    @required this.startYearController,
+    @required this.endMonthController,
+    @required this.endYearController,
     @required this.prizeController,
     @required this.percentController,
     @required this.ratioController,
@@ -131,8 +139,10 @@ class _Body extends StatefulWidget {
   final TextEditingController amountController_2;
   final TextEditingController amountController_3;
   final TextEditingController amountController_4;
-  final TextEditingController startController;
-  final TextEditingController endController;
+  final TextEditingController startMonthController;
+  final TextEditingController startYearController;
+  final TextEditingController endMonthController;
+  final TextEditingController endYearController;
   final TextEditingController prizeController;
   final TextEditingController percentController;
   final TextEditingController ratioController;
@@ -171,8 +181,10 @@ class __BodyState extends State<_Body> {
                 amountController_2: widget.amountController_2,
                 amountController_3: widget.amountController_3,
                 amountController_4: widget.amountController_4,
-                startController: widget.startController,
-                endController: widget.endController,
+                startMonthController: widget.startMonthController,
+                startYearController: widget.startYearController,
+                endMonthController: widget.endMonthController,
+                endYearController: widget.endYearController,
                 prizeController: widget.prizeController,
                 percentController: widget.percentController,
                 ratioController: widget.ratioController,
@@ -206,8 +218,10 @@ class _ContentList extends StatefulWidget {
     @required this.amountController_2,
     @required this.amountController_3,
     @required this.amountController_4,
-    @required this.startController,
-    @required this.endController,
+    @required this.startMonthController,
+    @required this.startYearController,
+    @required this.endMonthController,
+    @required this.endYearController,
     @required this.prizeController,
     @required this.percentController,
     @required this.ratioController,
@@ -222,8 +236,10 @@ class _ContentList extends StatefulWidget {
   final TextEditingController amountController_2;
   final TextEditingController amountController_3;
   final TextEditingController amountController_4;
-  final TextEditingController startController;
-  final TextEditingController endController;
+  final TextEditingController startMonthController;
+  final TextEditingController startYearController;
+  final TextEditingController endMonthController;
+  final TextEditingController endYearController;
   final TextEditingController prizeController;
   final TextEditingController percentController;
   final TextEditingController ratioController;
@@ -259,8 +275,15 @@ class __ContentListState extends State<_ContentList> {
     widget.amountController_4.text = (widget.plan.amount != null)
         ? MeasureBeautifier().truncateZero(widget.plan.amount[3].toString())
         : '';
-    widget.startController.text = widget.plan.start;
-    widget.endController.text = widget.plan.end;
+    widget.startMonthController.text = (widget.plan.startMonth != null)
+        ? widget.plan.startMonth.toString()
+        : '';
+    widget.startYearController.text =
+        (widget.plan.startYear != null) ? widget.plan.startYear.toString() : '';
+    widget.endMonthController.text =
+        (widget.plan.endMonth != null) ? widget.plan.endMonth.toString() : '';
+    widget.endYearController.text =
+        (widget.plan.endYear != null) ? widget.plan.endYear.toString() : '';
     widget.prizeController.text = (widget.plan.prize != null)
         ? MeasureBeautifier().truncateZero(widget.plan.prize.toString())
         : '';
@@ -282,16 +305,14 @@ class __ContentListState extends State<_ContentList> {
         widget.amountController_2.text.isNotEmpty &&
         widget.amountController_3.text.isNotEmpty &&
         widget.amountController_4.text.isNotEmpty &&
-        widget.startController.text.isNotEmpty &&
-        widget.endController.text.isNotEmpty &&
+        widget.startMonthController.text.isNotEmpty &&
+        widget.startYearController.text.isNotEmpty &&
+        widget.endMonthController.text.isNotEmpty &&
+        widget.endYearController.text.isNotEmpty &&
         widget.prizeController.text.isNotEmpty &&
         widget.percentController.text.isNotEmpty &&
         widget.ratioController.text.isNotEmpty) {
       try {
-        if (!widget.startController.text.contains(' ') ||
-            !widget.endController.text.contains(' ')) {
-          return 'Неполная дата';
-        }
         widget.prizeController.text =
             widget.prizeController.text.replaceAll(',', '.');
         widget.percentController.text =
@@ -311,8 +332,10 @@ class __ContentListState extends State<_ContentList> {
             int.parse(widget.amountController_3.text.replaceAll(' ', '')),
             int.parse(widget.amountController_4.text.replaceAll(' ', '')),
           ]
-          ..start = widget.startController.text
-          ..end = widget.endController.text
+          ..startMonth = widget.startMonthController.text
+          ..startYear = int.parse(widget.startYearController.text)
+          ..endMonth = widget.endMonthController.text
+          ..endYear = int.parse(widget.endYearController.text)
           ..prize =
               double.parse(widget.prizeController.text.replaceAll(' ', ''))
           ..percent =
@@ -387,21 +410,47 @@ class __ContentListState extends State<_ContentList> {
         PlanCard(
           title: 'Дополнительно',
           children: [
-            DoubleChoiceField(
-              label: 'Начало',
-              choiceLabel1: 'Месяц',
-              choiceLabel2: 'Год',
-              group1: ConstantData.appMonths,
-              group2: GlobalParameters.appYears,
-              controller: widget.startController,
+            Row(
+              children: [
+                Flexible(
+                  child: ChoiceField(
+                    label: 'Месяц',
+                    chooseLabel: 'Начало: Месяц',
+                    group: ConstantData.appMonths,
+                    controller: widget.startMonthController,
+                  ),
+                ),
+                SizedBox(width: 18),
+                Flexible(
+                  child: InputField(
+                    label: 'Год',
+                    controller: widget.startYearController,
+                    textInputType: TextInputType.number,
+                    amountFormatter: false,
+                  ),
+                ),
+              ],
             ),
-            DoubleChoiceField(
-              label: 'Конец',
-              choiceLabel1: 'Месяц',
-              choiceLabel2: 'Год',
-              group1: ConstantData.appMonths,
-              group2: GlobalParameters.appYears,
-              controller: widget.endController,
+            Row(
+              children: [
+                Flexible(
+                  child: ChoiceField(
+                    label: 'Месяц',
+                    chooseLabel: 'Конец: Месяц',
+                    group: ConstantData.appMonths,
+                    controller: widget.endMonthController,
+                  ),
+                ),
+                SizedBox(width: 18),
+                Flexible(
+                  child: InputField(
+                    label: 'Год',
+                    controller: widget.endYearController,
+                    textInputType: TextInputType.number,
+                    amountFormatter: false,
+                  ),
+                ),
+              ],
             ),
             InputField(
               label: 'Премия за выполнение (руб)',

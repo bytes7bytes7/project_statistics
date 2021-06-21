@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import '../global/global_parameters.dart';
 import '../models/project.dart';
 import '../models/plan.dart';
 import '../repositories/plan_repository.dart';
@@ -46,8 +45,6 @@ class PlanBloc {
     _planStreamController.sink.add(PlanState._planLoading());
     _repository.updatePlan(plan).then((value) {
       loadPlan();
-      GlobalParameters.planStartYear = int.parse(plan.start.substring(plan.start.indexOf(' ')+1,plan.start.length));
-      GlobalParameters.planEndYear = int.parse(plan.end.substring(plan.end.indexOf(' ')+1,plan.end.length));
     }).onError((error, stackTrace) {
       if (!_planStreamController.isClosed)
         _planStreamController.sink.add(PlanState._planError(error,stackTrace));

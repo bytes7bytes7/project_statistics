@@ -5,8 +5,10 @@ class Plan {
     this.id,
     this.quantity,
     this.amount,
-    this.start,
-    this.end,
+    this.startMonth,
+    this.startYear,
+    this.endMonth,
+    this.endYear,
     this.prize,
     this.percent,
     this.ratio,
@@ -15,8 +17,10 @@ class Plan {
   int id;
   List<int> quantity;
   List<int> amount;
-  String start;
-  String end;
+  String startMonth;
+  int startYear;
+  String endMonth;
+  int endYear;
   double prize;
   double percent;
   double ratio;
@@ -57,10 +61,28 @@ class Plan {
     } else {
       return null;
     }
-    if (newMap['start'].isEmpty) {
+    if (newMap['startMonth'].isEmpty) {
       return null;
     }
-    if (newMap['end'].isEmpty) {
+    if (newMap['startYear'].isNotEmpty) {
+      try {
+        newMap['startYear'] = int.parse(newMap['startYear']);
+      } catch (error) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+    if (newMap['endMonth'].isEmpty) {
+      return null;
+    }
+    if (newMap['endYear'].isNotEmpty) {
+      try {
+        newMap['endYear'] = int.parse(newMap['endYear']);
+      } catch (error) {
+        return null;
+      }
+    } else {
       return null;
     }
     if (newMap['prize'].isNotEmpty) {
@@ -86,8 +108,10 @@ class Plan {
       ConstDBData.id,
       ConstDBData.quantity,
       ConstDBData.amount,
-      ConstDBData.start,
-      ConstDBData.end,
+      ConstDBData.startMonth,
+      ConstDBData.startYear,
+      ConstDBData.endMonth,
+      ConstDBData.endYear,
       ConstDBData.prize,
       ConstDBData.percent,
       ConstDBData.ratio,
@@ -110,7 +134,7 @@ class Plan {
 
   @override
   String toString() {
-    return "Plan(id: $id, quantity: $quantity, amount: $amount, start: $start, end: $end, prize: $prize, percent: $percent, ratio: $ratio)";
+    return "Plan(id: $id, quantity: $quantity, amount: $amount, startMonth: $startMonth, startYear: $startYear, endMonth: $endMonth, endYear: $endYear, prize: $prize, percent: $percent, ratio: $ratio)";
   }
 
   @override
@@ -125,10 +149,16 @@ class Plan {
     for (int i = 0; i < amount.length; i++) {
       if (amount[i] != other.amount[i]) return false;
     }
-    if (start != other.start) {
+    if (startMonth != other.startMonth) {
       return false;
     }
-    if (end != other.end) {
+    if (startYear != other.startYear) {
+      return false;
+    }
+    if (endMonth != other.endMonth) {
+      return false;
+    }
+    if (endYear != other.endYear) {
       return false;
     }
     if (prize != other.prize) {
@@ -147,8 +177,10 @@ class Plan {
     id = map['id'];
     quantity = map['quantity'];
     amount = map['amount'];
-    start = map['start'];
-    end = map['end'];
+    startMonth = map['startMonth'];
+    startYear = map['startYear'];
+    endMonth = map['endMonth'];
+    endYear = map['endYear'];
     prize = map['prize'];
     percent = map['percent'];
     ratio = map['ratio'];
@@ -158,11 +190,13 @@ class Plan {
     id = values[0];
     quantity = values[1];
     amount = values[2];
-    start = values[3];
-    end = values[4];
-    prize = values[5];
-    percent = values[6];
-    ratio = values[7];
+    startMonth = values[3];
+    startYear = values[4];
+    endMonth = values[5];
+    endYear = values[6];
+    prize = values[7];
+    percent = values[8];
+    ratio = values[9];
   }
 
   Map<String, dynamic> toMap() {
@@ -170,8 +204,10 @@ class Plan {
       'id': 1,
       'quantity': quantity?.join(';'),
       'amount': amount?.join(';'),
-      'start': start,
-      'end': end,
+      'startMonth': startMonth,
+      'startYear': startYear,
+      'endMonth': endMonth,
+      'endYear': endYear,
       'prize': prize,
       'percent': percent,
       'ratio': ratio,

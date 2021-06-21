@@ -181,8 +181,10 @@ class _ContentTable extends StatelessWidget {
                                       redLine = true;
                                     }
                                   } else if (columnIndex == 3) {
-                                    text = projects[rowIndex - 1].date;
-                                  } else {
+                                    text = projects[rowIndex - 1].month;
+                                  } else if(columnIndex == 4){
+                                    text = projects[rowIndex - 1].year.toString();
+                                  }else {
                                     text = projects[rowIndex - 1].complete;
                                   }
                                   onTap = () {

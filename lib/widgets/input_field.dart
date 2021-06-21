@@ -7,17 +7,17 @@ class InputField extends StatelessWidget {
     @required this.label,
     @required this.controller,
     this.textInputType = TextInputType.text,
-    this.isNumber = true,
+    this.amountFormatter = true,
   }) : super(key: key);
 
   final String label;
   final TextEditingController controller;
   final TextInputType textInputType;
-  final bool isNumber;
+  final bool amountFormatter;
 
   @override
   Widget build(BuildContext context) {
-    if(isNumber){
+    if(amountFormatter){
       controller.text = AmountTextInputFormatter().formatEditUpdate(null, TextEditingValue(text: controller.text)).text;
     }
     return Padding(
@@ -29,7 +29,7 @@ class InputField extends StatelessWidget {
             .textTheme
             .bodyText1,
         keyboardType: textInputType,
-        inputFormatters: (isNumber) ? [
+        inputFormatters: (amountFormatter) ? [
           AmountTextInputFormatter(),
         ] : [],
         decoration: InputDecoration(

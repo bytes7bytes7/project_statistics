@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../global/global_parameters.dart';
+import '../widgets/input_field.dart';
 import '../constants.dart';
 import 'choice_field.dart';
 import 'flat_wide_button.dart';
@@ -37,17 +37,24 @@ class ProjectMixedFilter extends StatelessWidget {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            ChoiceField(
-              label: 'Месяц',
-              chooseLabel: 'Месяц',
-              group: ConstantData.appMonths,
-              controller: monthController,
-            ),
-            ChoiceField(
-              label: 'Год',
-              chooseLabel: 'Год',
-              group: GlobalParameters.planYears,
-              controller: yearController,
+            Row(
+              children: [
+                Flexible(
+                  child: ChoiceField(
+                    label: 'Месяц',
+                    chooseLabel: 'Месяц',
+                    group: ConstantData.appMonths,
+                    controller: monthController,
+                  ),
+                ),
+                SizedBox(width: 18),
+                Flexible(
+                  child: InputField(
+                    label: 'Год',
+                    controller: yearController,
+                  ),
+                ),
+              ],
             ),
             ChoiceField(
               label: 'Статус',
