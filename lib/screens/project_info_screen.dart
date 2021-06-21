@@ -272,13 +272,11 @@ class __BodyState extends State<_Body> {
               controller: widget.titleController,
               amountFormatter: false,
             ),
-            Flexible(
-              child: ChoiceField(
-                label: 'Статус',
-                chooseLabel: 'Статус',
-                group: ProjectStatuses.values,
-                controller: widget.statusController,
-              ),
+            ChoiceField(
+              label: 'Статус',
+              chooseLabel: 'Статус',
+              group: ProjectStatuses.values,
+              controller: widget.statusController,
             ),
             InputField(
               label: 'Сумма (руб)',

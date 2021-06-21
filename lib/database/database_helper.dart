@@ -33,43 +33,43 @@ class DatabaseHelper {
 
   Future _createDB(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS ${ConstDBData.planTableName} (
-        ${ConstDBData.id} INTEGER PRIMARY KEY,
-        ${ConstDBData.quantity} TEXT,
-        ${ConstDBData.amount} TEXT,
-        ${ConstDBData.startMonth} TEXT,
-        ${ConstDBData.startYear} INTEGER,
-        ${ConstDBData.endMonth} TEXT,
-        ${ConstDBData.endYear} INTEGER,
-        ${ConstDBData.prize} REAL,
-        ${ConstDBData.percent} REAL,
-        ${ConstDBData.ratio} REAL
+      CREATE TABLE IF NOT EXISTS ${ConstDBData.planTableName.en} (
+        ${ConstDBData.id.en} INTEGER PRIMARY KEY,
+        ${ConstDBData.quantity.en} TEXT,
+        ${ConstDBData.amount.en} TEXT,
+        ${ConstDBData.startMonth.en} TEXT,
+        ${ConstDBData.startYear.en} INTEGER,
+        ${ConstDBData.endMonth.en} TEXT,
+        ${ConstDBData.endYear.en} INTEGER,
+        ${ConstDBData.prize.en} REAL,
+        ${ConstDBData.percent.en} REAL,
+        ${ConstDBData.ratio.en} REAL
       )
     ''');
     await db.execute('''
-      CREATE TABLE IF NOT EXISTS ${ConstDBData.projectTableName} (
-        ${ConstDBData.id} INTEGER PRIMARY KEY,
-        ${ConstDBData.title} TEXT,
-        ${ConstDBData.status} TEXT,
-        ${ConstDBData.price} INTEGER,
-        ${ConstDBData.month} TEXT,
-        ${ConstDBData.year} INTEGER,
-        ${ConstDBData.complete} TEXT
+      CREATE TABLE IF NOT EXISTS ${ConstDBData.projectTableName.en} (
+        ${ConstDBData.id.en} INTEGER PRIMARY KEY,
+        ${ConstDBData.title.en} TEXT,
+        ${ConstDBData.status.en} TEXT,
+        ${ConstDBData.price.en} INTEGER,
+        ${ConstDBData.month.en} TEXT,
+        ${ConstDBData.year.en} INTEGER,
+        ${ConstDBData.complete.en} TEXT
       )
     ''');
   }
 
   Future dropBD() async {
     final db = await database;
-    await db.execute('DROP TABLE IF EXISTS ${ConstDBData.planTableName};');
-    await db.execute('DROP TABLE IF EXISTS ${ConstDBData.projectTableName};');
+    await db.execute('DROP TABLE IF EXISTS ${ConstDBData.planTableName.en};');
+    await db.execute('DROP TABLE IF EXISTS ${ConstDBData.projectTableName.en};');
     await _createDB(db, ConstDBData.databaseVersion);
   }
 
   Future<int> _getMaxId(Database db, String tableName) async {
     var table = await db.rawQuery(
-        "SELECT MAX(${ConstDBData.id})+1 AS ${ConstDBData.id} FROM $tableName");
-    return table.first["${ConstDBData.id}"] ?? 1;
+        "SELECT MAX(${ConstDBData.id.en})+1 AS ${ConstDBData.id.en} FROM $tableName");
+    return table.first["${ConstDBData.id.en}"] ?? 1;
   }
 
   // Plan methods
@@ -77,7 +77,7 @@ class DatabaseHelper {
     final db = await database;
     plan.id = 1;
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.planTableName} (${ConstDBData.id}, ${ConstDBData.quantity}, ${ConstDBData.amount}, ${ConstDBData.startMonth}, ${ConstDBData.startYear}, ${ConstDBData.endMonth}, ${ConstDBData.endYear}, ${ConstDBData.prize}, ${ConstDBData.percent}, ${ConstDBData.ratio}) VALUES (?,?,?,?,?,?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.planTableName.en} (${ConstDBData.id.en}, ${ConstDBData.quantity.en}, ${ConstDBData.amount.en}, ${ConstDBData.startMonth.en}, ${ConstDBData.startYear.en}, ${ConstDBData.endMonth.en}, ${ConstDBData.endYear.en}, ${ConstDBData.prize.en}, ${ConstDBData.percent.en}, ${ConstDBData.ratio.en}) VALUES (?,?,?,?,?,?,?,?,?,?)",
       [
         plan.id,
         plan.quantity?.join(';'),
@@ -97,12 +97,12 @@ class DatabaseHelper {
     final db = await database;
     var map = plan.toMap();
     List<Map<String, dynamic>> data = await db.query(
-        "${ConstDBData.planTableName}",
-        where: "${ConstDBData.id} = ?",
+        "${ConstDBData.planTableName.en}",
+        where: "${ConstDBData.id.en} = ?",
         whereArgs: [1]);
     if (data.isNotEmpty) {
-      await db.update("${ConstDBData.planTableName}", map,
-          where: "${ConstDBData.id} = ?", whereArgs: [1]);
+      await db.update("${ConstDBData.planTableName.en}", map,
+          where: "${ConstDBData.id.en} = ?", whereArgs: [1]);
     } else {
       await addPlan(plan);
     }
@@ -112,8 +112,8 @@ class DatabaseHelper {
     try {
       final db = await database;
       List<Map<String, dynamic>> data = await db.query(
-          "${ConstDBData.planTableName}",
-          where: "${ConstDBData.id} = ?",
+          "${ConstDBData.planTableName.en}",
+          where: "${ConstDBData.id.en} = ?",
           whereArgs: [1]);
       if (data.isNotEmpty) {
         Map<String, dynamic> map = Plan.formatMap(data.first);
@@ -130,16 +130,16 @@ class DatabaseHelper {
 
   Future deletePlan() async {
     final db = await database;
-    db.delete("${ConstDBData.planTableName}",
-        where: "${ConstDBData.id} = ?", whereArgs: [1]);
+    db.delete("${ConstDBData.planTableName.en}",
+        where: "${ConstDBData.id.en} = ?", whereArgs: [1]);
   }
 
   // Project methods
   Future addProject(Project project) async {
     final db = await database;
-    project.id = await _getMaxId(db, ConstDBData.projectTableName);
+    project.id = await _getMaxId(db, ConstDBData.projectTableName.en);
     await db.rawInsert(
-      "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.month}, ${ConstDBData.year}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
+      "INSERT INTO ${ConstDBData.projectTableName.en} (${ConstDBData.id.en},${ConstDBData.title.en},${ConstDBData.status.en},${ConstDBData.price.en}, ${ConstDBData.month.en}, ${ConstDBData.year.en}, ${ConstDBData.complete.en}) VALUES (?,?,?,?,?,?,?)",
       [
         project.id,
         project.title,
@@ -154,11 +154,11 @@ class DatabaseHelper {
 
   Future addAllProjects(List<Project> projects) async {
     final db = await database;
-    int id = await _getMaxId(db, ConstDBData.projectTableName);
+    int id = await _getMaxId(db, ConstDBData.projectTableName.en);
     for (Project project in projects) {
       project.id = id;
       await db.rawInsert(
-        "INSERT INTO ${ConstDBData.projectTableName} (${ConstDBData.id},${ConstDBData.title},${ConstDBData.status},${ConstDBData.price}, ${ConstDBData.month}, ${ConstDBData.year}, ${ConstDBData.complete}) VALUES (?,?,?,?,?,?,?)",
+        "INSERT INTO ${ConstDBData.projectTableName.en} (${ConstDBData.id.en},${ConstDBData.title.en},${ConstDBData.status.en},${ConstDBData.price.en}, ${ConstDBData.month.en}, ${ConstDBData.year.en}, ${ConstDBData.complete.en}) VALUES (?,?,?,?,?,?,?)",
         [
           project.id,
           project.title,
@@ -176,16 +176,16 @@ class DatabaseHelper {
   Future updateProject(Project project) async {
     final db = await database;
     var map = project.toMap();
-    await db.update("${ConstDBData.projectTableName}", map,
-        where: "${ConstDBData.id} = ?", whereArgs: [project.id]);
+    await db.update("${ConstDBData.projectTableName.en}", map,
+        where: "${ConstDBData.id.en} = ?", whereArgs: [project.id]);
   }
 
   Future<Project> getProject(int id) async {
     try {
       final db = await database;
       List<Map<String, dynamic>> res = await db.query(
-          "${ConstDBData.projectTableName}",
-          where: "${ConstDBData.id} = ?",
+          "${ConstDBData.projectTableName.en}",
+          where: "${ConstDBData.id.en} = ?",
           whereArgs: [id]);
       return res.isNotEmpty ? Project.fromMap(res.first) : Project();
     } catch (error) {
@@ -197,7 +197,7 @@ class DatabaseHelper {
     try {
       final db = await database;
       List<Map<String, dynamic>> res =
-          await db.query("${ConstDBData.projectTableName}");
+          await db.query("${ConstDBData.projectTableName.en}");
       return res.isNotEmpty ? res.map((c) => Project.fromMap(c)).toList() : [];
     } catch (error) {
       throw error;
@@ -206,13 +206,13 @@ class DatabaseHelper {
 
   Future deleteProject(int id) async {
     final db = await database;
-    db.delete("${ConstDBData.projectTableName}",
-        where: "${ConstDBData.id} = ?", whereArgs: [id]);
+    db.delete("${ConstDBData.projectTableName.en}",
+        where: "${ConstDBData.id.en} = ?", whereArgs: [id]);
   }
 
   Future deleteAllProjects() async {
     final db = await database;
-    db.rawDelete("DELETE FROM ${ConstDBData.projectTableName}");
+    db.rawDelete("DELETE FROM ${ConstDBData.projectTableName.en}");
   }
 
   // Result methods
@@ -221,10 +221,10 @@ class DatabaseHelper {
     Map<String, dynamic> result = Result().toMap();
 
     List<Map<String, dynamic>> projects =
-        await db.query("${ConstDBData.projectTableName}");
+        await db.query("${ConstDBData.projectTableName.en}");
     List<Map<String, dynamic>> plan = await db.query(
-        "${ConstDBData.planTableName}",
-        where: "${ConstDBData.id} = ?",
+        "${ConstDBData.planTableName.en}",
+        where: "${ConstDBData.id.en} = ?",
         whereArgs: [1]);
 
     // сумма договоров
@@ -362,10 +362,10 @@ class DatabaseHelper {
     Map<String, dynamic> result = AnalysisChart().toMap();
 
     List<Map<String, dynamic>> projects =
-        await db.query("${ConstDBData.projectTableName}");
+        await db.query("${ConstDBData.projectTableName.en}");
     List<Map<String, dynamic>> plan = await db.query(
-        "${ConstDBData.planTableName}",
-        where: "${ConstDBData.id} = ?",
+        "${ConstDBData.planTableName.en}",
+        where: "${ConstDBData.id.en} = ?",
         whereArgs: [1]);
 
     result['realQuantity'] =

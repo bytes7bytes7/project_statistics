@@ -24,7 +24,7 @@ class Project {
     List<String> values =
         oldMap.values.map<String>((e) => e.toString()).toList();
     Map<String, dynamic> newMap = Map.fromIterables(keys, values);
-    if (newMap['id'].isNotEmpty) {
+    if (newMap['id']!= 'null') {
       try {
         newMap['id'] = int.parse(newMap['id']);
       } catch (error) {
@@ -33,13 +33,13 @@ class Project {
     } else {
       return null;
     }
-    if (newMap['title'].isEmpty) {
+    if (newMap['title'] == 'null') {
       return null;
     }
-    if (newMap['status'].isEmpty) {
+    if (newMap['status'] == 'null') {
       return null;
     }
-    if (newMap['price'].isNotEmpty) {
+    if (newMap['price']!= 'null') {
       try {
         newMap['price'] = int.parse(newMap['price']);
       } catch (error) {
@@ -48,10 +48,10 @@ class Project {
     } else {
       return null;
     }
-    if (newMap['month'].isEmpty) {
+    if (newMap['month']== 'null') {
       return null;
     }
-    if (newMap['year'].isNotEmpty) {
+    if (newMap['year'] != 'null') {
       try {
         newMap['year'] = int.parse(newMap['year']);
       } catch (error) {
@@ -60,37 +60,52 @@ class Project {
     } else {
       return null;
     }
-    if (newMap['complete'].isEmpty) {
+    if (newMap['complete'] == 'null') {
       return null;
     }
 
     return newMap;
   }
 
+  // To export
   static List<String> getHeaderRow() {
     return [
-      ConstDBData.id,
-      ConstDBData.title,
-      ConstDBData.status,
-      ConstDBData.price,
-      ConstDBData.month,
-      ConstDBData.year,
-      ConstDBData.complete,
+      ConstDBData.id.ru,
+      ConstDBData.title.ru,
+      ConstDBData.status.ru,
+      ConstDBData.price.ru,
+      ConstDBData.month.ru,
+      ConstDBData.year.ru,
+      ConstDBData.complete.ru,
     ];
   }
 
-  static List<String> translate(List<String> lst) {
-    if (ConstDBData.locale == 'en') {
-      ConstDBData.locale = 'ru';
-      List<String> result = getHeaderRow();
-      ConstDBData.locale = 'en';
-      return result;
-    } else {
-      ConstDBData.locale = 'en';
-      List<String> result = getHeaderRow();
-      ConstDBData.locale = 'ru';
-      return result;
+  static List<String> translateToEN(List<String> list) {
+    Map<int, String> indexed = {};
+    if(list.contains(ConstDBData.id.ru)){
+      indexed[list.indexOf(ConstDBData.id.ru)] = ConstDBData.id.en;
     }
+    if(list.contains(ConstDBData.title.ru)){
+      indexed[list.indexOf(ConstDBData.title.ru)] = ConstDBData.title.en;
+    }
+    if(list.contains(ConstDBData.status.ru)){
+      indexed[list.indexOf(ConstDBData.status.ru)] = ConstDBData.status.en;
+    }
+    if(list.contains(ConstDBData.price.ru)){
+      indexed[list.indexOf(ConstDBData.price.ru)] = ConstDBData.price.en;
+    }
+    if(list.contains(ConstDBData.month.ru)){
+      indexed[list.indexOf(ConstDBData.month.ru)] = ConstDBData.month.en;
+    }
+    if(list.contains(ConstDBData.year.ru)){
+      indexed[list.indexOf(ConstDBData.year.ru)] = ConstDBData.year.en;
+    }
+    if(list.contains(ConstDBData.complete.ru)){
+      indexed[list.indexOf(ConstDBData.complete.ru)] = ConstDBData.complete.en;
+    }
+    List<int> keys = indexed.keys.toList();
+    keys.sort();
+    return keys.map<String>((k) => indexed[k]).toList();
   }
 
   @override

@@ -30,7 +30,7 @@ class Plan {
     List<String> values =
         oldMap.values.map<String>((e) => e.toString()).toList();
     Map<String, dynamic> newMap = Map.fromIterables(keys, values);
-    if (newMap['id'].isNotEmpty) {
+    if (newMap['id'] != 'null') {
       try {
         newMap['id'] = int.parse(newMap['id']);
       } catch (error) {
@@ -39,7 +39,7 @@ class Plan {
     } else {
       return null;
     }
-    if (newMap['quantity'].isNotEmpty) {
+    if (newMap['quantity'] != 'null') {
       try {
         newMap['quantity'] = newMap['quantity']
             .split(';')
@@ -51,7 +51,7 @@ class Plan {
     } else {
       return null;
     }
-    if (newMap['amount'].isNotEmpty) {
+    if (newMap['amount'] != 'null') {
       try {
         newMap['amount'] =
             newMap['amount'].split(';').map<int>((e) => int.parse(e)).toList();
@@ -61,10 +61,10 @@ class Plan {
     } else {
       return null;
     }
-    if (newMap['startMonth'].isEmpty) {
+    if (newMap['startMonth'] == 'null') {
       return null;
     }
-    if (newMap['startYear'].isNotEmpty) {
+    if (newMap['startYear'] != 'null') {
       try {
         newMap['startYear'] = int.parse(newMap['startYear']);
       } catch (error) {
@@ -73,10 +73,10 @@ class Plan {
     } else {
       return null;
     }
-    if (newMap['endMonth'].isEmpty) {
+    if (newMap['endMonth'] == 'null') {
       return null;
     }
-    if (newMap['endYear'].isNotEmpty) {
+    if (newMap['endYear'] != 'null') {
       try {
         newMap['endYear'] = int.parse(newMap['endYear']);
       } catch (error) {
@@ -85,17 +85,17 @@ class Plan {
     } else {
       return null;
     }
-    if (newMap['prize'].isNotEmpty) {
+    if (newMap['prize'] != 'null') {
       newMap['prize'] = double.parse(newMap['prize']);
     } else {
       return null;
     }
-    if (newMap['percent'].isNotEmpty) {
+    if (newMap['percent'] != 'null') {
       newMap['percent'] = double.parse(newMap['percent']);
     } else {
       return null;
     }
-    if (newMap['ratio'].isNotEmpty) {
+    if (newMap['ratio']!= 'null') {
       newMap['ratio'] = double.parse(newMap['ratio']);
     } else {
       return null;
@@ -103,33 +103,57 @@ class Plan {
     return Map<String, dynamic>.from(newMap);
   }
 
+  // To export
   static List<String> getHeaderRow() {
     return [
-      ConstDBData.id,
-      ConstDBData.quantity,
-      ConstDBData.amount,
-      ConstDBData.startMonth,
-      ConstDBData.startYear,
-      ConstDBData.endMonth,
-      ConstDBData.endYear,
-      ConstDBData.prize,
-      ConstDBData.percent,
-      ConstDBData.ratio,
+      ConstDBData.id.ru,
+      ConstDBData.quantity.ru,
+      ConstDBData.amount.ru,
+      ConstDBData.startMonth.ru,
+      ConstDBData.startYear.ru,
+      ConstDBData.endMonth.ru,
+      ConstDBData.endYear.ru,
+      ConstDBData.prize.ru,
+      ConstDBData.percent.ru,
+      ConstDBData.ratio.ru,
     ];
   }
 
-  static List<String> translate(List<String> lst) {
-    if (ConstDBData.locale == 'en') {
-      ConstDBData.locale = 'ru';
-      List<String> result = getHeaderRow();
-      ConstDBData.locale = 'en';
-      return result;
-    } else {
-      ConstDBData.locale = 'en';
-      List<String> result = getHeaderRow();
-      ConstDBData.locale = 'ru';
-      return result;
+  static List<String> translateToEN(List<String> list) {
+    Map<int, String> indexed = {};
+    if(list.contains(ConstDBData.id.ru)){
+      indexed[list.indexOf(ConstDBData.id.ru)] = ConstDBData.id.en;
     }
+    if(list.contains(ConstDBData.quantity.ru)){
+      indexed[list.indexOf(ConstDBData.quantity.ru)] = ConstDBData.quantity.en;
+    }
+    if(list.contains(ConstDBData.amount.ru)){
+      indexed[list.indexOf(ConstDBData.amount.ru)] = ConstDBData.amount.en;
+    }
+    if(list.contains(ConstDBData.startMonth.ru)){
+      indexed[list.indexOf(ConstDBData.startMonth.ru)] = ConstDBData.startMonth.en;
+    }
+    if(list.contains(ConstDBData.startYear.ru)){
+      indexed[list.indexOf(ConstDBData.startYear.ru)] = ConstDBData.startYear.en;
+    }
+    if(list.contains(ConstDBData.endMonth.ru)){
+      indexed[list.indexOf(ConstDBData.endMonth.ru)] = ConstDBData.endMonth.en;
+    }
+    if(list.contains(ConstDBData.endYear.ru)){
+      indexed[list.indexOf(ConstDBData.endYear.ru)] = ConstDBData.endYear.en;
+    }
+    if(list.contains(ConstDBData.prize.ru)){
+      indexed[list.indexOf(ConstDBData.prize.ru)] = ConstDBData.prize.en;
+    }
+    if(list.contains(ConstDBData.percent.ru)){
+      indexed[list.indexOf(ConstDBData.percent.ru)] = ConstDBData.percent.en;
+    }
+    if(list.contains(ConstDBData.ratio.ru)){
+      indexed[list.indexOf(ConstDBData.ratio.ru)] = ConstDBData.ratio.en;
+    }
+    List<int> keys = indexed.keys.toList();
+    keys.sort();
+    return keys.map<String>((k) => indexed[k]).toList();
   }
 
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_statistics/widgets/show_info_snack_bar.dart';
 
-import '../constants.dart';
 import '../services/value_validation.dart';
 import '../services/excel_helper.dart';
 
@@ -83,8 +82,6 @@ Future<void> showExportDialog({BuildContext context, Function onDone}) async {
                   _formKey.currentState.validate();
                 } else {
                   errorNotifier.value = null;
-                  // Change locale to RU
-                  ConstDBData.locale = 'ru';
                   try {
                     await ExcelHelper.exportToExcel(context, controller.text);
                   } catch (error) {
@@ -94,8 +91,6 @@ Future<void> showExportDialog({BuildContext context, Function onDone}) async {
                       icon: Icons.warning_amber_outlined,
                     );
                   }
-                  // Change locale to EN
-                  ConstDBData.locale = 'en';
                 }
               },
             ),

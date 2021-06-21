@@ -59,17 +59,13 @@ abstract class ExcelHelper {
 
     // Init excel
     Excel excel = Excel.createExcel();
-    excel.copy('Sheet1', ConstDBData.planTableName);
-    excel.copy('Sheet1', ConstDBData.projectTableName);
+    excel.copy('Sheet1', ConstDBData.planTableName.en);
+    excel.copy('Sheet1', ConstDBData.projectTableName.en);
     excel.delete('Sheet1');
 
     // Get data
-    // Change locale to EN
-    ConstDBData.locale = 'en';
     Plan plan = await DatabaseHelper.db.getPlan();
     List<Project> projects = await DatabaseHelper.db.getAllProjects();
-    // Change locale to RU
-    ConstDBData.locale = 'ru';
 
     List<String> headerRow;
 
@@ -77,12 +73,12 @@ abstract class ExcelHelper {
     for (var table in excel.tables.keys) {
       var thisTable = excel.tables[table];
       List<dynamic> values;
-      if (table == ConstDBData.planTableName) {
+      if (table == ConstDBData.planTableName.ru) {
         headerRow = Plan.getHeaderRow();
         thisTable.appendRow(headerRow);
         values = plan.toMap().values.toList();
         thisTable.appendRow(values);
-      } else if (table == ConstDBData.projectTableName) {
+      } else if (table == ConstDBData.projectTableName.ru) {
         headerRow = Project.getHeaderRow();
         thisTable.appendRow(headerRow);
         for (int i = 0; i < projects.length; i++) {
@@ -92,8 +88,8 @@ abstract class ExcelHelper {
       }
 
       // Correct quantity of columns
-      if (table == ConstDBData.planTableName ||
-          table == ConstDBData.projectTableName) {
+      if (table == ConstDBData.planTableName.ru ||
+          table == ConstDBData.projectTableName.ru) {
         for (int i = 0; i < thisTable.rows.length; i++) {
           while (thisTable.rows[i].length > headerRow.length) {
             thisTable.removeColumn(thisTable.rows[i].length - 1);
@@ -134,11 +130,11 @@ abstract class ExcelHelper {
       for (var table in excel.tables.keys) {
         var thisTable = excel.tables[table];
         List<dynamic> values;
-        if (table == ConstDBData.planTableName) {
+        if (table == ConstDBData.planTableName.ru) {
           if (thisTable.rows.length > 0) {
             headerRow =
                 thisTable.rows[0].map<String>((e) => e.toString()).toList();
-            headerRow = Plan.translate(headerRow);
+            headerRow = Plan.translateToEN(headerRow);
             values = thisTable.rows[1];
           }
           Map<String, dynamic> map =
@@ -147,16 +143,17 @@ abstract class ExcelHelper {
             if (map != null && map.length > 0) {
               plan = Plan.fromMap(map);
             } else {
+              // TODO: try to throw diff exceptions
               throw Exception('Неверный формат');
             }
           } catch (error) {
             throw error;
           }
-        } else if (table == ConstDBData.projectTableName) {
+        } else if (table == ConstDBData.projectTableName.ru) {
           if (thisTable.rows.length > 0) {
             headerRow =
                 thisTable.rows[0].map<String>((e) => e.toString()).toList();
-            headerRow = Project.translate(headerRow);
+            headerRow = Project.translateToEN(headerRow);
             for (int i = 1; i < thisTable.rows.length; i++) {
               values = thisTable.rows[i];
               Map<String, dynamic> map =
@@ -175,7 +172,6 @@ abstract class ExcelHelper {
         }
       }
 
-      ConstDBData.locale = 'en';
       Bloc.bloc.planBloc.importExcel(plan, projects);
       showInfoSnackBar(
         context: context,

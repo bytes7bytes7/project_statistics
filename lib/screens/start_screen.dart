@@ -472,8 +472,6 @@ class __ContentListState extends State<_ContentList> {
         OutlinedWideButton(
           title: 'Импорт',
           onTap: () async {
-            // Change locale to RU
-            ConstDBData.locale = 'ru';
             try {
               await ExcelHelper.importFromExcel(context);
             } catch (error) {
@@ -483,8 +481,6 @@ class __ContentListState extends State<_ContentList> {
                 icon: Icons.warning_amber_outlined,
               );
             }
-            // Change locale to RU
-            ConstDBData.locale = 'en';
           },
         ),
         OutlinedWideButton(
