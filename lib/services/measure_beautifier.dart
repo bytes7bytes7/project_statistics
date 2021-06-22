@@ -40,7 +40,7 @@ class MeasureBeautifier {
         resultMeasure.level = MeasureLevel.millions;
       } else if (number >= 1000) {
         if (level == MeasureLevel.unit) {
-          result = (number / 1000).round().toString();
+          result = (number / 1000).toString();
           resultMeasure.level = MeasureLevel.thousands;
         } else if (level == MeasureLevel.thousands) {
           result = (number / 1000).toString();
@@ -53,27 +53,5 @@ class MeasureBeautifier {
       result = '-' + result;
     }
     return [result, resultMeasure.toString() + measure];
-  }
-
-  String addSeparators(String value) {
-    value = value.replaceAll(',', '.');
-    String begin = '', end = '';
-    if (value.contains('.')) {
-      end = value.substring(value.indexOf('.'));
-      value = value.substring(0, value.indexOf('.'));
-    }
-
-    int i = value.length;
-    while (i - 3 >= 0) {
-      begin = value.substring(i - 3, i) + begin;
-      begin = ' ' + begin;
-      i -= 3;
-    }
-    if (i > 0) {
-      begin = value.substring(0, i) + begin;
-    }
-
-    begin = begin.trim();
-    return begin + end;
   }
 }

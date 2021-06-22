@@ -32,7 +32,7 @@ class Plan {
     Map<String, dynamic> newMap = Map.fromIterables(keys, values);
     if (newMap['id'] != 'null') {
       try {
-        newMap['id'] = int.parse(newMap['id']);
+        newMap['id'] = int.parse(newMap['id'].replaceAll(' ', ''));
       } catch (error) {
         return null;
       }
@@ -43,7 +43,7 @@ class Plan {
       try {
         newMap['quantity'] = newMap['quantity']
             .split(';')
-            .map<int>((e) => int.parse(e))
+            .map<int>((e) => int.parse(e.replaceAll(' ', '')))
             .toList();
       } catch (error) {
         return null;
@@ -53,8 +53,10 @@ class Plan {
     }
     if (newMap['amount'] != 'null') {
       try {
-        newMap['amount'] =
-            newMap['amount'].split(';').map<int>((e) => int.parse(e)).toList();
+        newMap['amount'] = newMap['amount']
+            .split(';')
+            .map<int>((e) => int.parse(e.replaceAll(' ', '')))
+            .toList();
       } catch (error) {
         return null;
       }
@@ -66,7 +68,7 @@ class Plan {
     }
     if (newMap['startYear'] != 'null') {
       try {
-        newMap['startYear'] = int.parse(newMap['startYear']);
+        newMap['startYear'] = int.parse(newMap['startYear'].replaceAll(' ',''));
       } catch (error) {
         return null;
       }
@@ -78,7 +80,7 @@ class Plan {
     }
     if (newMap['endYear'] != 'null') {
       try {
-        newMap['endYear'] = int.parse(newMap['endYear']);
+        newMap['endYear'] = int.parse(newMap['endYear'].replaceAll(' ',''));
       } catch (error) {
         return null;
       }
@@ -86,17 +88,17 @@ class Plan {
       return null;
     }
     if (newMap['prize'] != 'null') {
-      newMap['prize'] = double.parse(newMap['prize']);
+      newMap['prize'] = double.parse(newMap['prize'].replaceAll(' ',''));
     } else {
       return null;
     }
     if (newMap['percent'] != 'null') {
-      newMap['percent'] = double.parse(newMap['percent']);
+      newMap['percent'] = double.parse(newMap['percent'].replaceAll(' ',''));
     } else {
       return null;
     }
-    if (newMap['ratio']!= 'null') {
-      newMap['ratio'] = double.parse(newMap['ratio']);
+    if (newMap['ratio'] != 'null') {
+      newMap['ratio'] = double.parse(newMap['ratio'].replaceAll(' ',''));
     } else {
       return null;
     }
@@ -121,34 +123,36 @@ class Plan {
 
   static List<String> translateToEN(List<String> list) {
     Map<int, String> indexed = {};
-    if(list.contains(ConstDBData.id.ru)){
+    if (list.contains(ConstDBData.id.ru)) {
       indexed[list.indexOf(ConstDBData.id.ru)] = ConstDBData.id.en;
     }
-    if(list.contains(ConstDBData.quantity.ru)){
+    if (list.contains(ConstDBData.quantity.ru)) {
       indexed[list.indexOf(ConstDBData.quantity.ru)] = ConstDBData.quantity.en;
     }
-    if(list.contains(ConstDBData.amount.ru)){
+    if (list.contains(ConstDBData.amount.ru)) {
       indexed[list.indexOf(ConstDBData.amount.ru)] = ConstDBData.amount.en;
     }
-    if(list.contains(ConstDBData.startMonth.ru)){
-      indexed[list.indexOf(ConstDBData.startMonth.ru)] = ConstDBData.startMonth.en;
+    if (list.contains(ConstDBData.startMonth.ru)) {
+      indexed[list.indexOf(ConstDBData.startMonth.ru)] =
+          ConstDBData.startMonth.en;
     }
-    if(list.contains(ConstDBData.startYear.ru)){
-      indexed[list.indexOf(ConstDBData.startYear.ru)] = ConstDBData.startYear.en;
+    if (list.contains(ConstDBData.startYear.ru)) {
+      indexed[list.indexOf(ConstDBData.startYear.ru)] =
+          ConstDBData.startYear.en;
     }
-    if(list.contains(ConstDBData.endMonth.ru)){
+    if (list.contains(ConstDBData.endMonth.ru)) {
       indexed[list.indexOf(ConstDBData.endMonth.ru)] = ConstDBData.endMonth.en;
     }
-    if(list.contains(ConstDBData.endYear.ru)){
+    if (list.contains(ConstDBData.endYear.ru)) {
       indexed[list.indexOf(ConstDBData.endYear.ru)] = ConstDBData.endYear.en;
     }
-    if(list.contains(ConstDBData.prize.ru)){
+    if (list.contains(ConstDBData.prize.ru)) {
       indexed[list.indexOf(ConstDBData.prize.ru)] = ConstDBData.prize.en;
     }
-    if(list.contains(ConstDBData.percent.ru)){
+    if (list.contains(ConstDBData.percent.ru)) {
       indexed[list.indexOf(ConstDBData.percent.ru)] = ConstDBData.percent.en;
     }
-    if(list.contains(ConstDBData.ratio.ru)){
+    if (list.contains(ConstDBData.ratio.ru)) {
       indexed[list.indexOf(ConstDBData.ratio.ru)] = ConstDBData.ratio.en;
     }
     List<int> keys = indexed.keys.toList();

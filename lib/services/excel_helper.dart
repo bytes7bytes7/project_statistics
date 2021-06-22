@@ -59,8 +59,8 @@ abstract class ExcelHelper {
 
     // Init excel
     Excel excel = Excel.createExcel();
-    excel.copy('Sheet1', ConstDBData.planTableName.en);
-    excel.copy('Sheet1', ConstDBData.projectTableName.en);
+    excel.copy('Sheet1', ConstDBData.planTableName.ru);
+    excel.copy('Sheet1', ConstDBData.projectTableName.ru);
     excel.delete('Sheet1');
 
     // Get data

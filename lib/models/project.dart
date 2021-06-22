@@ -26,7 +26,7 @@ class Project {
     Map<String, dynamic> newMap = Map.fromIterables(keys, values);
     if (newMap['id']!= 'null') {
       try {
-        newMap['id'] = int.parse(newMap['id']);
+        newMap['id'] = int.parse(newMap['id'].replaceAll(' ',''));
       } catch (error) {
         return null;
       }
@@ -41,7 +41,7 @@ class Project {
     }
     if (newMap['price']!= 'null') {
       try {
-        newMap['price'] = int.parse(newMap['price']);
+        newMap['price'] = int.parse(newMap['price'].replaceAll(' ',''));
       } catch (error) {
         return null;
       }
@@ -53,7 +53,7 @@ class Project {
     }
     if (newMap['year'] != 'null') {
       try {
-        newMap['year'] = int.parse(newMap['year']);
+        newMap['year'] = int.parse(newMap['year'].replaceAll(' ',''));
       } catch (error) {
         return null;
       }
