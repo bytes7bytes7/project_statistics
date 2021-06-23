@@ -96,11 +96,10 @@ class ProjectParameterNames {
   static const String title = 'Название';
   static const String price = 'Сумма';
   static const String status = 'Статус';
-  static const String month = 'Месяц';
-  static const String year = 'Год';
+  static const String date = 'Дата';
   static const String complete = 'Завершенность';
 
-  static final length = 5;
+  static final length = values.length;
 
   static int indexOf(String value) {
     switch (value) {
@@ -110,12 +109,10 @@ class ProjectParameterNames {
         return 1;
       case status:
         return 2;
-      case month:
+      case date:
         return 3;
-      case year:
-        return 4;
       case complete:
-        return 5;
+        return 4;
       default:
         return -1;
     }
@@ -130,10 +127,8 @@ class ProjectParameterNames {
       case 2:
         return status;
       case 3:
-        return month;
+        return date;
       case 4:
-        return year;
-      case 5:
         return complete;
       default:
         return '';
@@ -145,11 +140,12 @@ class ProjectParameterNames {
       title,
       price,
       status,
-      month,
-      year,
+      date,
       complete,
     ];
   }
+
+
 }
 
 abstract class ConstantData {

@@ -53,6 +53,7 @@ class ProjectMixedFilter extends StatelessWidget {
                     label: 'Год',
                     controller: yearController,
                     amountFormatter: false,
+                    textInputType: TextInputType.number,
                   ),
                 ),
               ],

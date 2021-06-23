@@ -257,10 +257,10 @@ class DatabaseHelper {
       projects.forEach((proj) {
         if (proj['status'] == ProjectStatuses.contract &&
             proj['complete'] != ProjectCompleteStatuses.canceled) {
-          if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
-              GlobalParameters.chartFilterBorders[1].isNotEmpty &&
-              GlobalParameters.chartFilterBorders[2].isNotEmpty &&
-              GlobalParameters.chartFilterBorders[3].isNotEmpty) {
+          if (GlobalParameters.resultFilterBorders[0].isNotEmpty &&
+              GlobalParameters.resultFilterBorders[1].isNotEmpty &&
+              GlobalParameters.resultFilterBorders[2].isNotEmpty &&
+              GlobalParameters.resultFilterBorders[3].isNotEmpty) {
             String thisMonth =
                 ConstantData.appMonths.indexOf(proj['month']).toString();
             String thisYear = proj['year'].toString();
@@ -270,18 +270,18 @@ class DatabaseHelper {
             int thisDate = int.parse(thisYear + thisMonth);
 
             String startMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.chartFilterBorders[0])
+                .indexOf(GlobalParameters.resultFilterBorders[0])
                 .toString();
-            String startYear = GlobalParameters.chartFilterBorders[1];
+            String startYear = GlobalParameters.resultFilterBorders[1];
             if (startMonth.length < 2) {
               startMonth = '0' + startMonth;
             }
             int startDate = int.parse(startYear + startMonth);
 
             String endMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.chartFilterBorders[2])
+                .indexOf(GlobalParameters.resultFilterBorders[2])
                 .toString();
-            String endYear = GlobalParameters.chartFilterBorders[3];
+            String endYear = GlobalParameters.resultFilterBorders[3];
             if (endMonth.length < 2) {
               endMonth = '0' + endMonth;
             }
@@ -291,8 +291,8 @@ class DatabaseHelper {
               result['amount'] += proj['price'];
               result['quantity']++;
             }
-          } else if (GlobalParameters.chartFilterBorders[0].isNotEmpty &&
-              GlobalParameters.chartFilterBorders[1].isNotEmpty) {
+          } else if (GlobalParameters.resultFilterBorders[0].isNotEmpty &&
+              GlobalParameters.resultFilterBorders[1].isNotEmpty) {
             String thisMonth =
                 ConstantData.appMonths.indexOf(proj['month']).toString();
             String thisYear = proj['year'].toString();
@@ -302,9 +302,9 @@ class DatabaseHelper {
             int thisDate = int.parse(thisYear + thisMonth);
 
             String startMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.chartFilterBorders[0])
+                .indexOf(GlobalParameters.resultFilterBorders[0])
                 .toString();
-            String startYear = GlobalParameters.chartFilterBorders[1];
+            String startYear = GlobalParameters.resultFilterBorders[1];
             if (startMonth.length < 2) {
               startMonth = '0' + startMonth;
             }
@@ -314,8 +314,8 @@ class DatabaseHelper {
               result['amount'] += proj['price'];
               result['quantity']++;
             }
-          } else if (GlobalParameters.chartFilterBorders[2].isNotEmpty &&
-              GlobalParameters.chartFilterBorders[3].isNotEmpty) {
+          } else if (GlobalParameters.resultFilterBorders[2].isNotEmpty &&
+              GlobalParameters.resultFilterBorders[3].isNotEmpty) {
             String thisMonth =
                 ConstantData.appMonths.indexOf(proj['month']).toString();
             String thisYear = proj['year'].toString();
@@ -325,9 +325,9 @@ class DatabaseHelper {
             int thisDate = int.parse(thisYear + thisMonth);
 
             String endMonth = ConstantData.appMonths
-                .indexOf(GlobalParameters.chartFilterBorders[2])
+                .indexOf(GlobalParameters.resultFilterBorders[2])
                 .toString();
-            String endYear = GlobalParameters.chartFilterBorders[3];
+            String endYear = GlobalParameters.resultFilterBorders[3];
             if (endMonth.length < 2) {
               endMonth = '0' + endMonth;
             }
