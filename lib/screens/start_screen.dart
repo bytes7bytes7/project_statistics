@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/widgets/show_import_dialog.dart';
 
 import '../widgets/choice_field.dart';
 import '../widgets/show_no_yes_dialog.dart';
@@ -13,7 +14,6 @@ import '../widgets/plan_card.dart';
 import '../widgets/loading_circle.dart';
 import '../bloc/bloc.dart';
 import '../bloc/plan_bloc.dart';
-import '../services/excel_helper.dart';
 import '../services/measure_beautifier.dart';
 import '../database/database_helper.dart';
 import '../models/plan.dart';
@@ -408,7 +408,7 @@ class __ContentListState extends State<_ContentList> {
           ],
         ),
         PlanCard(
-          title: 'Дополнительно',
+          title: 'Премия за продажи',
           children: [
             Row(
               children: [
@@ -471,16 +471,8 @@ class __ContentListState extends State<_ContentList> {
         ),
         OutlinedWideButton(
           title: 'Импорт',
-          onTap: () async {
-            try {
-              await ExcelHelper.importFromExcel(context);
-            } catch (error) {
-              showInfoSnackBar(
-                context: context,
-                info: error.toString(),
-                icon: Icons.warning_amber_outlined,
-              );
-            }
+          onTap: () {
+           showImportDialog(context: context);
           },
         ),
         OutlinedWideButton(

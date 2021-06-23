@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import '../constants.dart';
 
 class Project {
@@ -24,9 +25,9 @@ class Project {
     List<String> values =
         oldMap.values.map<String>((e) => e.toString()).toList();
     Map<String, dynamic> newMap = Map.fromIterables(keys, values);
-    if (newMap['id']!= 'null') {
+    if (newMap['id'] != 'null') {
       try {
-        newMap['id'] = int.parse(newMap['id'].replaceAll(' ',''));
+        newMap['id'] = int.parse(newMap['id'].replaceAll(' ', ''));
       } catch (error) {
         return null;
       }
@@ -36,31 +37,77 @@ class Project {
     if (newMap['title'] == 'null') {
       return null;
     }
-    if (newMap['status'] == 'null') {
+    if (newMap['status'] != 'null') {
+      newMap['status'] =
+          toBeginningOfSentenceCase(newMap['status'].replaceAll(' ', ''));
+      bool found = false;
+      for (String status in ProjectStatuses.values) {
+        if (newMap['status'] == status) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return null;
+      }
+    } else {
       return null;
     }
-    if (newMap['price']!= 'null') {
+    if (newMap['price'] != 'null') {
+      newMap['price'] = newMap['price'].replaceAll(' ', '');
+      if (newMap['price'].contains('.')) {
+        newMap['price'] =
+            newMap['price'].substring(0, newMap['price'].indexOf('.'));
+      } else if (newMap['price'].contains(',')) {
+        newMap['price'] =
+            newMap['price'].substring(0, newMap['price'].indexOf(','));
+      }
       try {
-        newMap['price'] = int.parse(newMap['price'].replaceAll(' ',''));
+        newMap['price'] = int.parse(newMap['price'].replaceAll(' ', ''));
       } catch (error) {
         return null;
       }
     } else {
       return null;
     }
-    if (newMap['month']== 'null') {
+    if (newMap['month'] != 'null') {
+      newMap['month'] =
+          toBeginningOfSentenceCase(newMap['month'].replaceAll(' ', ''));
+      bool found = false;
+      for (String month in ConstantData.appMonths) {
+        if (newMap['month'] == month) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return null;
+      }
+    } else {
       return null;
     }
     if (newMap['year'] != 'null') {
       try {
-        newMap['year'] = int.parse(newMap['year'].replaceAll(' ',''));
+        newMap['year'] = int.parse(newMap['year'].replaceAll(' ', ''));
       } catch (error) {
         return null;
       }
     } else {
       return null;
     }
-    if (newMap['complete'] == 'null') {
+    if (newMap['complete'] != 'null') {
+      newMap['complete'] = newMap['complete'].toLowerCase();
+      bool found = false;
+      for (String complete in ProjectCompleteStatuses.values) {
+        if (complete == newMap['complete']) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return null;
+      }
+    } else {
       return null;
     }
 
@@ -81,26 +128,34 @@ class Project {
   }
 
   static List<String> translateToEN(List<String> list) {
+    // capitalize
+    for (int i = 0; i < list.length; i++) {
+      if (list[i].toLowerCase() == 'id') {
+        list[i] = list[i].toLowerCase();
+      } else {
+        list[i] = toBeginningOfSentenceCase(list[i]);
+      }
+    }
     Map<int, String> indexed = {};
-    if(list.contains(ConstDBData.id.ru)){
+    if (list.contains(ConstDBData.id.ru)) {
       indexed[list.indexOf(ConstDBData.id.ru)] = ConstDBData.id.en;
     }
-    if(list.contains(ConstDBData.title.ru)){
+    if (list.contains(ConstDBData.title.ru)) {
       indexed[list.indexOf(ConstDBData.title.ru)] = ConstDBData.title.en;
     }
-    if(list.contains(ConstDBData.status.ru)){
+    if (list.contains(ConstDBData.status.ru)) {
       indexed[list.indexOf(ConstDBData.status.ru)] = ConstDBData.status.en;
     }
-    if(list.contains(ConstDBData.price.ru)){
+    if (list.contains(ConstDBData.price.ru)) {
       indexed[list.indexOf(ConstDBData.price.ru)] = ConstDBData.price.en;
     }
-    if(list.contains(ConstDBData.month.ru)){
+    if (list.contains(ConstDBData.month.ru)) {
       indexed[list.indexOf(ConstDBData.month.ru)] = ConstDBData.month.en;
     }
-    if(list.contains(ConstDBData.year.ru)){
+    if (list.contains(ConstDBData.year.ru)) {
       indexed[list.indexOf(ConstDBData.year.ru)] = ConstDBData.year.en;
     }
-    if(list.contains(ConstDBData.complete.ru)){
+    if (list.contains(ConstDBData.complete.ru)) {
       indexed[list.indexOf(ConstDBData.complete.ru)] = ConstDBData.complete.en;
     }
     List<int> keys = indexed.keys.toList();

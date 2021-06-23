@@ -1,5 +1,3 @@
-import '../constants.dart';
-
 class Plan {
   Plan({
     this.id,
@@ -103,61 +101,6 @@ class Plan {
       return null;
     }
     return Map<String, dynamic>.from(newMap);
-  }
-
-  // To export
-  static List<String> getHeaderRow() {
-    return [
-      ConstDBData.id.ru,
-      ConstDBData.quantity.ru,
-      ConstDBData.amount.ru,
-      ConstDBData.startMonth.ru,
-      ConstDBData.startYear.ru,
-      ConstDBData.endMonth.ru,
-      ConstDBData.endYear.ru,
-      ConstDBData.prize.ru,
-      ConstDBData.percent.ru,
-      ConstDBData.ratio.ru,
-    ];
-  }
-
-  static List<String> translateToEN(List<String> list) {
-    Map<int, String> indexed = {};
-    if (list.contains(ConstDBData.id.ru)) {
-      indexed[list.indexOf(ConstDBData.id.ru)] = ConstDBData.id.en;
-    }
-    if (list.contains(ConstDBData.quantity.ru)) {
-      indexed[list.indexOf(ConstDBData.quantity.ru)] = ConstDBData.quantity.en;
-    }
-    if (list.contains(ConstDBData.amount.ru)) {
-      indexed[list.indexOf(ConstDBData.amount.ru)] = ConstDBData.amount.en;
-    }
-    if (list.contains(ConstDBData.startMonth.ru)) {
-      indexed[list.indexOf(ConstDBData.startMonth.ru)] =
-          ConstDBData.startMonth.en;
-    }
-    if (list.contains(ConstDBData.startYear.ru)) {
-      indexed[list.indexOf(ConstDBData.startYear.ru)] =
-          ConstDBData.startYear.en;
-    }
-    if (list.contains(ConstDBData.endMonth.ru)) {
-      indexed[list.indexOf(ConstDBData.endMonth.ru)] = ConstDBData.endMonth.en;
-    }
-    if (list.contains(ConstDBData.endYear.ru)) {
-      indexed[list.indexOf(ConstDBData.endYear.ru)] = ConstDBData.endYear.en;
-    }
-    if (list.contains(ConstDBData.prize.ru)) {
-      indexed[list.indexOf(ConstDBData.prize.ru)] = ConstDBData.prize.en;
-    }
-    if (list.contains(ConstDBData.percent.ru)) {
-      indexed[list.indexOf(ConstDBData.percent.ru)] = ConstDBData.percent.en;
-    }
-    if (list.contains(ConstDBData.ratio.ru)) {
-      indexed[list.indexOf(ConstDBData.ratio.ru)] = ConstDBData.ratio.en;
-    }
-    List<int> keys = indexed.keys.toList();
-    keys.sort();
-    return keys.map<String>((k) => indexed[k]).toList();
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_statistics/constants.dart';
 import 'package:project_statistics/widgets/show_info_snack_bar.dart';
 
 import '../services/value_validation.dart';
@@ -34,9 +35,19 @@ Future<void> showExportDialog({BuildContext context, Function onDone}) async {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
+                TextField(
+                  enabled: false,
+                  controller: TextEditingController(text: '/${ConstantData.appFolderName}'),
+                  style: Theme.of(context).textTheme.subtitle1,
+                  decoration: InputDecoration(
+                    labelText: 'Папка',
+                    labelStyle: Theme.of(context).textTheme.subtitle1,
+                  ),
+                ),
                 Form(
                   key: _formKey,
                   child: TextFormField(
+                    autofocus: true,
                     controller: controller,
                     style: Theme.of(context).textTheme.bodyText1,
                     validator: (value) {

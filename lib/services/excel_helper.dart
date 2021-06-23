@@ -4,10 +4,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
+import 'package:flutter/services.dart' show ByteData, rootBundle;
 
 import '../bloc/bloc.dart';
 import '../models/project.dart';
-import '../models/plan.dart';
 import '../widgets/show_info_snack_bar.dart';
 import '../constants.dart';
 import '../database/database_helper.dart';
@@ -34,7 +34,7 @@ abstract class ExcelHelper {
             newPath += '/' + p;
           }
         }
-        newPath += '/ProjectStatistics';
+        newPath += '/'+ConstantData.appFolderName;
         directory = Directory(newPath);
         if (!await directory.exists()) {
           await directory.create(recursive: true);
@@ -53,18 +53,38 @@ abstract class ExcelHelper {
     return null;
   }
 
+  static saveExample(BuildContext context)async{
+    Directory directory = await _getApplicationDirectory(context);
+    String filePath = '${directory.path}/import.xlsx';
+
+    ByteData data = await rootBundle.load("assets/import.xlsx");
+    var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    var excel = Excel.decodeBytes(bytes);
+
+    excel.encode().then(
+          (onValue) {
+        File(filePath)
+          ..createSync(recursive: true)
+          ..writeAsBytesSync(onValue);
+      },
+    );
+    showInfoSnackBar(
+      context: context,
+      info: '/${ConstantData.appFolderName}/import.xlsx',
+      icon: Icons.done_all_outlined,
+    );
+  }
+
   static exportToExcel(BuildContext context, String filename) async {
     Directory directory = await _getApplicationDirectory(context);
     String filePath = '${directory.path}/$filename.xlsx';
 
     // Init excel
     Excel excel = Excel.createExcel();
-    excel.copy('Sheet1', ConstDBData.planTableName.ru);
     excel.copy('Sheet1', ConstDBData.projectTableName.ru);
     excel.delete('Sheet1');
 
     // Get data
-    Plan plan = await DatabaseHelper.db.getPlan();
     List<Project> projects = await DatabaseHelper.db.getAllProjects();
 
     List<String> headerRow;
@@ -73,12 +93,7 @@ abstract class ExcelHelper {
     for (var table in excel.tables.keys) {
       var thisTable = excel.tables[table];
       List<dynamic> values;
-      if (table == ConstDBData.planTableName.ru) {
-        headerRow = Plan.getHeaderRow();
-        thisTable.appendRow(headerRow);
-        values = plan.toMap().values.toList();
-        thisTable.appendRow(values);
-      } else if (table == ConstDBData.projectTableName.ru) {
+      if (table == ConstDBData.projectTableName.ru) {
         headerRow = Project.getHeaderRow();
         thisTable.appendRow(headerRow);
         for (int i = 0; i < projects.length; i++) {
@@ -88,8 +103,7 @@ abstract class ExcelHelper {
       }
 
       // Correct quantity of columns
-      if (table == ConstDBData.planTableName.ru ||
-          table == ConstDBData.projectTableName.ru) {
+      if (table == ConstDBData.projectTableName.ru) {
         for (int i = 0; i < thisTable.rows.length; i++) {
           while (thisTable.rows[i].length > headerRow.length) {
             thisTable.removeColumn(thisTable.rows[i].length - 1);
@@ -123,33 +137,14 @@ abstract class ExcelHelper {
       Iterable<int> bytes = File(file).readAsBytesSync();
       excel = Excel.decodeBytes(bytes);
 
-      Plan plan = Plan();
       List<Project> projects = <Project>[];
       List<String> headerRow;
+      int failedProjects = 0;
 
       for (var table in excel.tables.keys) {
         var thisTable = excel.tables[table];
         List<dynamic> values;
-        if (table == ConstDBData.planTableName.ru) {
-          if (thisTable.rows.length > 0) {
-            headerRow =
-                thisTable.rows[0].map<String>((e) => e.toString()).toList();
-            headerRow = Plan.translateToEN(headerRow);
-            values = thisTable.rows[1];
-          }
-          Map<String, dynamic> map =
-              Plan.formatMap(Map.fromIterables(headerRow, values));
-          try {
-            if (map != null && map.length > 0) {
-              plan = Plan.fromMap(map);
-            } else {
-              // TODO: try to throw diff exceptions
-              throw Exception('Неверный формат');
-            }
-          } catch (error) {
-            throw error;
-          }
-        } else if (table == ConstDBData.projectTableName.ru) {
+        if (table == ConstDBData.projectTableName.ru) {
           if (thisTable.rows.length > 0) {
             headerRow =
                 thisTable.rows[0].map<String>((e) => e.toString()).toList();
@@ -162,7 +157,7 @@ abstract class ExcelHelper {
                 if (map != null && map.length > 0) {
                   projects.add(Project.fromMap(map));
                 } else {
-                  throw Exception('Неверный формат');
+                  failedProjects++;
                 }
               } catch (error) {
                 throw error;
@@ -172,10 +167,12 @@ abstract class ExcelHelper {
         }
       }
 
-      Bloc.bloc.planBloc.importExcel(plan, projects);
+      int all = projects.length + failedProjects;
+
+      Bloc.bloc.planBloc.importExcel(projects);
       showInfoSnackBar(
         context: context,
-        info: 'Импорт завершен',
+        info: '${projects.length}/$all импортировано',
         icon: Icons.done_all_outlined,
       );
     }

@@ -62,7 +62,8 @@ class DatabaseHelper {
   Future dropBD() async {
     final db = await database;
     await db.execute('DROP TABLE IF EXISTS ${ConstDBData.planTableName.en};');
-    await db.execute('DROP TABLE IF EXISTS ${ConstDBData.projectTableName.en};');
+    await db
+        .execute('DROP TABLE IF EXISTS ${ConstDBData.projectTableName.en};');
     await _createDB(db, ConstDBData.databaseVersion);
   }
 
@@ -138,6 +139,13 @@ class DatabaseHelper {
   Future addProject(Project project) async {
     final db = await database;
     project.id = await _getMaxId(db, ConstDBData.projectTableName.en);
+    List<Map<String, dynamic>> data = await db.query(
+        "${ConstDBData.projectTableName.en}",
+        where: "${ConstDBData.id.en} = ?",
+        whereArgs: [project.id]);
+    if (data.isNotEmpty) {
+      return;
+    }
     await db.rawInsert(
       "INSERT INTO ${ConstDBData.projectTableName.en} (${ConstDBData.id.en},${ConstDBData.title.en},${ConstDBData.status.en},${ConstDBData.price.en}, ${ConstDBData.month.en}, ${ConstDBData.year.en}, ${ConstDBData.complete.en}) VALUES (?,?,?,?,?,?,?)",
       [
@@ -154,22 +162,26 @@ class DatabaseHelper {
 
   Future addAllProjects(List<Project> projects) async {
     final db = await database;
-    int id = await _getMaxId(db, ConstDBData.projectTableName.en);
+    List<Map<String, dynamic>> res =
+        await db.query("${ConstDBData.projectTableName.en}");
+    List<int> projectIds =
+        res.isNotEmpty ? res.map<int>((c) => c['id']).toList() : <int>[];
     for (Project project in projects) {
-      project.id = id;
-      await db.rawInsert(
-        "INSERT INTO ${ConstDBData.projectTableName.en} (${ConstDBData.id.en},${ConstDBData.title.en},${ConstDBData.status.en},${ConstDBData.price.en}, ${ConstDBData.month.en}, ${ConstDBData.year.en}, ${ConstDBData.complete.en}) VALUES (?,?,?,?,?,?,?)",
-        [
-          project.id,
-          project.title,
-          project.status,
-          project.price,
-          project.month,
-          project.year,
-          project.complete,
-        ],
-      );
-      id++;
+      if (!projectIds.contains(project.id)) {
+        await db.rawInsert(
+          "INSERT INTO ${ConstDBData.projectTableName.en} (${ConstDBData.id.en},${ConstDBData.title.en},${ConstDBData.status.en},${ConstDBData.price.en}, ${ConstDBData.month.en}, ${ConstDBData.year.en}, ${ConstDBData.complete.en}) VALUES (?,?,?,?,?,?,?)",
+          [
+            project.id,
+            project.title,
+            project.status,
+            project.price,
+            project.month,
+            project.year,
+            project.complete,
+          ],
+        );
+        projectIds.add(project.id);
+      }
     }
   }
 

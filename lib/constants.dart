@@ -18,6 +18,13 @@ abstract class ConstantColors {
 class ProjectCompleteStatuses {
   static const String notCompleted = 'не завершен';
   static const String canceled = 'отменен';
+
+  static get values {
+    return <String>[
+      notCompleted,
+      canceled,
+    ];
+  }
 }
 
 class ProjectStatuses {
@@ -146,6 +153,7 @@ class ProjectParameterNames {
 }
 
 abstract class ConstantData {
+  static const String appFolderName = 'Статистика';
   static const String forbiddenFileCharacters = r'\/:*?"<>|+%!@';
   static const List<String> appProjectParameterDirection = [
     'По возрастанию',
