@@ -181,7 +181,7 @@ class _ContentTable extends StatelessWidget {
                                       redLine = true;
                                     }
                                   } else if (columnIndex == 3) {
-                                    text = projects[rowIndex - 1].month + ' '+projects[rowIndex - 1].year.toString();;
+                                    text = projects[rowIndex - 1].month + ' '+projects[rowIndex - 1].year.toString();
                                   }else {
                                     text = projects[rowIndex - 1].complete;
                                   }
@@ -252,12 +252,9 @@ class _ProjectCell extends StatelessWidget {
           width: 180.0,
           height: 40.0,
           decoration: BoxDecoration(
-            // color: (complete == ProjectCompleteStatuses.canceled)
-            //     ? Theme.of(context).errorColor.withOpacity(0.4)
-            //     : Colors.transparent,
             color: Colors.transparent,
             border: Border.all(
-              color: Theme.of(context).shadowColor.withOpacity(0.2),
+              color: Theme.of(context).disabledColor,
             ),
           ),
           child: Text(

@@ -492,6 +492,10 @@ class DatabaseHelper {
           .toList();
     }
 
+    for (int i = 0; i < result['realAmount'].length; i++) {
+      result['realAmount'][i] /= 1000000;
+    }
+
     return AnalysisChart.fromMap(result);
   }
 }

@@ -18,40 +18,34 @@ class _ChartColumn {
 class StackedHorizontalBarChart extends StatelessWidget {
   StackedHorizontalBarChart({
     Key key,
-    @required List<dynamic> r,
-    @required List<dynamic> p,
+    @required this.size,
+    @required List<dynamic> real,
+    @required List<dynamic> plan,
     @required this.colors,
-  }){
-    List<dynamic> tmp=[];
-    r.forEach((element) {
-      tmp.add(element);
-    });
-    real = tmp;
-    List<dynamic> tmp2=[];
-    p.forEach((element) {
-      tmp2.add(element);
-    });
-    plan = tmp2;
-  }
+  })  : this.real = List.from(real),
+        this.plan = List.from(plan);
 
-  List<dynamic> real, plan;
-  List<Color> colors;
+  final Size size;
+  final List<dynamic> real, plan;
+  final List<Color> colors;
 
   @override
   Widget build(BuildContext context) {
-    for(int i =0;i<plan.length;i++){
-      plan[i]-=real[i];
-      if(plan[i]<0) plan[i]=0;
+    for (int i = 0; i < plan.length; i++) {
+      plan[i] -= real[i];
+      if (plan[i] < 0) plan[i] = 0;
     }
 
-    List<_ChartColumn> chartRealData =
-        List<_ChartColumn>.generate(real.length, (i) {
-      return _ChartColumn(
-        title: ProjectStatuses()[i],
-        value: real[i],
-        color: colors[i],
-      );
-    });
+    List<_ChartColumn> chartRealData = List<_ChartColumn>.generate(
+      real.length,
+      (i) {
+        return _ChartColumn(
+          title: ProjectStatuses()[i],
+          value: real[i],
+          color: colors[i],
+        );
+      },
+    );
 
     List<_ChartColumn> chartPlanData =
         List<_ChartColumn>.generate(plan.length, (i) {
@@ -96,19 +90,39 @@ class StackedHorizontalBarChart extends StatelessWidget {
 
     return RotationTransition(
       turns: AlwaysStoppedAnimation(90 / 360),
-      child: charts.BarChart(
-        chartData,
-        animate: false,
-        barGroupingType: charts.BarGroupingType.stacked,
-        vertical: true,
-        domainAxis: charts.OrdinalAxisSpec(
-          showAxisLine: true,
-          renderSpec: charts.SmallTickRendererSpec(
-            labelAnchor: charts.TickLabelAnchor.centered,
-            tickLengthPx: 0,
-            labelOffsetFromAxisPx: 7,
+      child: Stack(
+        children: [
+          charts.BarChart(
+            chartData,
+            animate: false,
+            barGroupingType: charts.BarGroupingType.stacked,
+            vertical: true,
+            domainAxis: charts.OrdinalAxisSpec(
+              showAxisLine: true,
+              renderSpec: charts.SmallTickRendererSpec(
+                labelAnchor: charts.TickLabelAnchor.centered,
+                tickLengthPx: 0,
+                labelOffsetFromAxisPx: 7,
+              ),
+            ),
           ),
-        ),
+          Positioned(
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            child: InkWell(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onTap: () {},
+              child: Container(
+                height: size.height,
+                width: size.width,
+                //color: Colors.blue.withOpacity(0.2),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

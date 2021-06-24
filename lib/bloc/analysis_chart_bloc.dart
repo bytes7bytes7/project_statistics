@@ -11,7 +11,7 @@ class AnalysisChartBloc {
 
   Stream<AnalysisChartState> get analysisChart {
     if (_analysisChartStreamController == null || _analysisChartStreamController.isClosed)
-      _analysisChartStreamController = StreamController<AnalysisChartState>();
+      _analysisChartStreamController = StreamController<AnalysisChartState>.broadcast();
     return _analysisChartStreamController.stream;
   }
 

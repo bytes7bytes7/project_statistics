@@ -26,10 +26,7 @@ class AnalysisChartScreen extends StatelessWidget {
           centerTitle: true,
           title: Text(
             'Диаграмма',
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline1,
+            style: Theme.of(context).textTheme.headline1,
           ),
           actions: [
             IconButton(
@@ -58,18 +55,7 @@ class AnalysisChartScreen extends StatelessWidget {
   }
 }
 
-class _Body extends StatefulWidget {
-  @override
-  __BodyState createState() => __BodyState();
-}
-
-class __BodyState extends State<_Body> {
-  @override
-  void dispose() {
-    Bloc.bloc.analysisChartBloc.dispose();
-    super.dispose();
-  }
-
+class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -83,9 +69,6 @@ class __BodyState extends State<_Body> {
           return LoadingCircle();
         } else if (snapshot.data is AnalysisChartDataState) {
           AnalysisChartDataState state = snapshot.data;
-          for (int i = 0; i < state.analysisChart.realAmount.length; i++) {
-            state.analysisChart.realAmount[i] /= 1000000;
-          }
           if (state.analysisChart.realAmount.length > 0) {
             return _ContentList(analysisChart: state.analysisChart);
           } else {
@@ -115,9 +98,7 @@ class _ContentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return PageView(
       children: [
         ListView.builder(
@@ -130,20 +111,22 @@ class _ContentList extends StatelessWidget {
                 children: [
                   Text(
                     'Количество',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline2,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   SizedBox(height: 10),
                   Container(
                     height: (size.height < size.width)
                         ? size.height - 20
                         : size.width - 20,
-                    width: double.infinity,
+                    width: size.width,
                     child: StackedHorizontalBarChart(
-                      r: analysisChart.realQuantity,
-                      p: analysisChart.planQuantity,
+                      size: Size(
+                          size.width,
+                          (size.height < size.width)
+                              ? size.height - 20
+                              : size.width - 20),
+                      real: analysisChart.realQuantity,
+                      plan: analysisChart.planQuantity,
                       colors: [
                         Color(0xFFE49BE2),
                         Color(0xFFFE7674),
@@ -177,20 +160,22 @@ class _ContentList extends StatelessWidget {
                 children: [
                   Text(
                     'Сумма',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline2,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   SizedBox(height: 10),
                   Container(
                     height: (size.height < size.width)
                         ? size.height - 20
                         : size.width - 20,
-                    width: double.infinity,
+                    width: size.width,
                     child: StackedHorizontalBarChart(
-                      r: analysisChart.realAmount,
-                      p: analysisChart.planAmount,
+                      size: Size(
+                          size.width,
+                          (size.height < size.width)
+                              ? size.height - 20
+                              : size.width - 20),
+                      real: analysisChart.realAmount,
+                      plan: analysisChart.planAmount,
                       colors: [
                         Color(0xFFE49BE2),
                         Color(0xFFFE7674),
@@ -241,29 +226,20 @@ class _AnalysisChartCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Color color;
     if (primary)
-      color = Theme
-          .of(context)
-          .errorColor;
+      color = Theme.of(context).errorColor;
     else
-      color = Theme
-          .of(context)
-          .shadowColor;
+      color = Theme.of(context).shadowColor;
     Size size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: Theme
-            .of(context)
-            .focusColor,
+        color: Theme.of(context).focusColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Theme
-                .of(context)
-                .shadowColor
-                .withOpacity(0.3),
+            color: Theme.of(context).shadowColor.withOpacity(0.3),
             spreadRadius: 1,
             blurRadius: 4,
             offset: Offset(2, 2),
@@ -274,14 +250,11 @@ class _AnalysisChartCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: size.width*0.9,
+            width: size.width * 0.9,
             child: Text(
               title,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyText1
-                  .copyWith(color: color),
+              style:
+                  Theme.of(context).textTheme.bodyText1.copyWith(color: color),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
             ),
@@ -289,11 +262,10 @@ class _AnalysisChartCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: size.width*0.5,
+                width: size.width * 0.5,
                 child: Text(
                   subtitle1,
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .headline2
                       .copyWith(color: color),
@@ -302,13 +274,12 @@ class _AnalysisChartCard extends StatelessWidget {
               ),
               Spacer(),
               Container(
-                width: size.width*0.35,
+                width: size.width * 0.35,
                 child: Text(
                   (real.runtimeType == int)
                       ? real.toString()
                       : MeasureBeautifier().truncateZero(real.toString()),
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .headline2
                       .copyWith(color: color),
@@ -321,11 +292,10 @@ class _AnalysisChartCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: size.width*0.5,
+                width: size.width * 0.5,
                 child: Text(
                   subtitle2,
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .subtitle2
                       .copyWith(color: color),
@@ -333,11 +303,10 @@ class _AnalysisChartCard extends StatelessWidget {
               ),
               Spacer(),
               Container(
-                width: size.width*0.35,
+                width: size.width * 0.35,
                 child: Text(
                   MeasureBeautifier().truncateZero(plan.toString()),
-                  style: Theme
-                      .of(context)
+                  style: Theme.of(context)
                       .textTheme
                       .subtitle2
                       .copyWith(color: color),
@@ -349,9 +318,7 @@ class _AnalysisChartCard extends StatelessWidget {
           ),
           PercentBar(
             percent: int.parse((100 * real / plan).round().toString()),
-            color: (primary) ? color : Theme
-                .of(context)
-                .primaryColor,
+            color: (primary) ? color : Theme.of(context).primaryColor,
           ),
         ],
       ),

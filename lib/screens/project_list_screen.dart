@@ -77,12 +77,14 @@ class ProjectListScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) {
-                return ProjectInfoScreen(
-                  str: 'Новый Проект',
-                  project: Project(),
-                );
-              }),
+              MaterialPageRoute(
+                builder: (context) {
+                  return ProjectInfoScreen(
+                    str: 'Новый Проект',
+                    project: Project(),
+                  );
+                },
+              ),
             );
           },
         ),
@@ -91,16 +93,7 @@ class ProjectListScreen extends StatelessWidget {
   }
 }
 
-class _Body extends StatefulWidget {
-  const _Body({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  __BodyState createState() => __BodyState();
-}
-
-class __BodyState extends State<_Body> {
+class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -171,8 +164,8 @@ class _ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String price, priceMeasure = 'млн.\nруб.';
-    price = MeasureBeautifier()
-        .truncateZero((project.price / 1000000).toString());
+    price =
+        MeasureBeautifier().truncateZero((project.price / 1000000).toString());
     double boxHeight = 110;
     Color color = (project.status == ProjectStatuses.hot)
         ? Theme.of(context).errorColor
@@ -213,7 +206,7 @@ class _ProjectCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: size.width*0.4,
+                        width: size.width * 0.4,
                         child: Text(
                           project.title,
                           style: Theme.of(context).textTheme.bodyText1,
@@ -222,8 +215,7 @@ class _ProjectCard extends StatelessWidget {
                       ),
                       Spacer(),
                       Container(
-                        width: size.width*0.2,
-
+                        width: size.width * 0.2,
                         child: Text(
                           price,
                           style: Theme.of(context).textTheme.headline3,
@@ -244,7 +236,7 @@ class _ProjectCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        width: size.width*0.35,
+                        width: size.width * 0.35,
                         child: Text(
                           project.status,
                           style: Theme.of(context)
@@ -256,7 +248,7 @@ class _ProjectCard extends StatelessWidget {
                       ),
                       Spacer(),
                       Container(
-                        width: size.width*0.35,
+                        width: size.width * 0.35,
                         child: Text(
                           '${project.month} ${project.year}',
                           style: Theme.of(context).textTheme.subtitle2,
