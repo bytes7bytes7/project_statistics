@@ -142,80 +142,77 @@ class _ContentTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Size cellSize = Size(180, 40);
     return ValueListenableBuilder(
       valueListenable: update,
       builder: (context, value, child) {
-        return Container(
-          margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
-          child: SingleChildScrollView(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Flexible(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                        projects.length + 1,
-                        (rowIndex) {
-                          return Row(
-                            children: List.generate(
-                              ProjectParameterNames.length,
-                              (columnIndex) {
-                                String text = '';
-                                Function onTap;
-                                bool redLine = false;
-                                if (rowIndex == 0) {
-                                  text = ProjectParameterNames()[columnIndex];
-                                } else {
-                                  if (columnIndex == 0) {
-                                    text = projects[rowIndex - 1].title;
-                                  } else if (columnIndex == 1) {
-                                    text = MeasureBeautifier().truncateZero(
-                                        (projects[rowIndex - 1].price / 1000000)
-                                            .toString());
-                                  } else if (columnIndex == 2) {
-                                    text = projects[rowIndex - 1].status;
-                                    if (text == ProjectStatuses.hot) {
-                                      redLine = true;
-                                    }
-                                  } else if (columnIndex == 3) {
-                                    text = projects[rowIndex - 1].month + ' '+projects[rowIndex - 1].year.toString();
-                                  }else {
-                                    text = projects[rowIndex - 1].complete;
-                                  }
-                                  onTap = () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return ProjectInfoScreen(
-                                            str: 'Проект',
-                                            project: projects[rowIndex - 1],
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  };
-                                }
-                                return _ProjectCell(
-                                  text: text,
-                                  onTap: onTap,
-                                  complete: (rowIndex > 0)
-                                      ? projects[rowIndex - 1].complete
-                                      : null,
-                                  redLine: redLine,
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            height: size.height,
+            width: cellSize.width * ProjectParameterNames.length,
+            child: ListView.builder(
+              itemCount: projects.length + 1,
+              itemExtent: cellSize.height,
+              shrinkWrap: true,
+              itemBuilder: (context, rowIndex) {
+                return Row(
+                  children: List.generate(
+                    ProjectParameterNames.length,
+                    (columnIndex) {
+                      String text = '';
+                      Function onTap;
+                      bool redLine = false;
+                      if (rowIndex == 0) {
+                        text = ProjectParameterNames()[columnIndex];
+                      } else {
+                        if (columnIndex == 0) {
+                          text = projects[rowIndex - 1].title;
+                        } else if (columnIndex == 1) {
+                          text = MeasureBeautifier().truncateZero(
+                              (projects[rowIndex - 1].price / 1000000)
+                                  .toString());
+                        } else if (columnIndex == 2) {
+                          text = projects[rowIndex - 1].status;
+                          if (text == ProjectStatuses.hot) {
+                            redLine = true;
+                          }
+                        } else if (columnIndex == 3) {
+                          text = projects[rowIndex - 1].month +
+                              ' ' +
+                              projects[rowIndex - 1].year.toString();
+                        } else {
+                          text = projects[rowIndex - 1].complete;
+                        }
+                        onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ProjectInfoScreen(
+                                  str: 'Проект',
+                                  project: projects[rowIndex - 1],
                                 );
                               },
                             ),
                           );
-                        },
-                      ),
-                    ),
+                        };
+                      }
+                      return _ProjectCell(
+                        size: cellSize,
+                        text: text,
+                        onTap: onTap,
+                        complete: (rowIndex > 0)
+                            ? projects[rowIndex - 1].complete
+                            : null,
+                        redLine: redLine,
+                      );
+                    },
                   ),
-                )
-              ],
+                );
+              },
             ),
           ),
         );
@@ -227,12 +224,14 @@ class _ContentTable extends StatelessWidget {
 class _ProjectCell extends StatelessWidget {
   const _ProjectCell({
     Key key,
+    @required this.size,
     @required this.text,
     @required this.onTap,
     @required this.complete,
     @required this.redLine,
   }) : super(key: key);
 
+  final Size size;
   final String text;
   final Function onTap;
   final String complete;
@@ -249,8 +248,8 @@ class _ProjectCell extends StatelessWidget {
           alignment: Alignment.center,
           margin: EdgeInsets.all(0),
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          width: 180.0,
-          height: 40.0,
+          width: size.width,
+          height: size.height,
           decoration: BoxDecoration(
             color: Colors.transparent,
             border: Border.all(
